@@ -11,7 +11,7 @@ import { faHouseChimney, faUsers } from '@fortawesome/free-solid-svg-icons';;
   `,
   styles: [`
     //Colours
-    $navbar-bg-color: #3c40c6;
+    $navbar-bg-color: #0D6EFD;
     $navbar-item-hover: #3437b3;
     $navbar-item-active: #2c2f9e;
     
@@ -25,10 +25,12 @@ import { faHouseChimney, faUsers } from '@fortawesome/free-solid-svg-icons';;
       top: 0;
       left: 0;
       bottom: 0;
-      padding: 0.5em;
       transition: 0.3s ease;
       display: flex;
       flex-direction: column;
+      width: 4%;
+      box-shadow: 0 0 5px rgba(black, 0.5);;
+
     }
     
     
@@ -42,22 +44,26 @@ import { faHouseChimney, faUsers } from '@fortawesome/free-solid-svg-icons';;
         user-select: none;
         margin: 0.1em 0;
         padding: 0.4em;
-        border-radius: 0.25em;
         height: 1.5em;
         color: white;
         text-decoration: none;
         margin-bottom: 10px;
+        height: 50px;
       }
       .link:hover {
-        background-color: $navbar-item-hover;
+        /* background-color: $navbar-item-hover; */
+        background: rgba(0, 0, 0, 0.2);
       }
       .link.active {
-        background-color: $navbar-item-active;
+        /* background-color: $navbar-item-active; */
+        background: rgba(0, 0, 0, 0.2);
       }
     
       .link .icon {
         text-align: center;
         margin: 0.1em;
+        margin-left: auto;
+        margin-right: auto;
       }
       `
   ]

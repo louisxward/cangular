@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api/user.service';
 import { User } from '../../user'
 import { Observable } from 'rxjs';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';;
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-list',
@@ -38,7 +38,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';;
   styles: [
   ]
 })
-export class UserListComponent implements OnInit {
+export class UserDetailsComponent implements OnInit {
 
   users!: Observable<User[]>
 

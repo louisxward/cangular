@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./users/feature/user-shell/user-shell.module').then(
         (m) => m.UserShellModule
-      ),
+      )
   }
 ];
 

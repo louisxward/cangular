@@ -2,8 +2,8 @@
 
 /* Importing Bootstrap SCSS file. */
 
-$body-bg: #485460;
-$body-color: white;
+$body-bg: #CED4DA;
+$body-color: black;
 
 @import '~bootstrap/scss/bootstrap';
 
@@ -12,4 +12,25 @@ html, body {
     margin: 0;
     height: 100%;
     overflow: hidden;
+}
+
+h1{
+    font-size: 1.5em;
+    padding: 1rem 1.5rem;
+    display: inline-block;
+    margin-bottom: 0px;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.5rem 0.5rem;
+}
+
+thead{
+    background-color: #F8F9FA;
+    border-top-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.mt-0 {
+    margin-top: revert !important;
 }

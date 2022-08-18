@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserListComponentRoutingModule } from './user-list-routing.module';
+import { UserListComponentRoutingModule } from './user-details-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { UserListComponent } from './user-list.component';
+import { UserDetailsComponent } from './user-details.component';
 
 @NgModule({
   imports: [
@@ -13,6 +13,6 @@ import { UserListComponent } from './user-list.component';
     UserListComponentRoutingModule,
     FontAwesomeModule
   ],
-  declarations: [UserListComponent],
+  declarations: [UserDetailsComponent],
 })
 export class UserListComponentModule {}
