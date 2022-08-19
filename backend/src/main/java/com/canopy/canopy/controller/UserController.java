@@ -14,6 +14,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/users/{id}")
+    public User one(@PathVariable Long id) {
+        System.out.println("one");
+        System.out.println(id);
+        return userRepository.findById(id).get();
+        //.orElseThrow(() -> new EmployeeNotFoundException(id)
+    }
+
     @GetMapping("/users")
     public List<User> fetchUsers(){
         return userRepository.findAll();

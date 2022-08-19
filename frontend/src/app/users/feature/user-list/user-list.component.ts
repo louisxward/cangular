@@ -24,16 +24,17 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';;
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor='let user of users | async'>
-          <td style="text-align: center;"><input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input"></td>
-          <td scope="row">{{user.id}}</td>
-          <td>{{user.username}}</td>
-          <td>{{user.firstName}}</td>
-          <td>{{user.lastName}}</td>
-          <td>{{user.email}}</td>
-      </tr>
+        <tr *ngFor='let user of users | async' routerLink="{{user.id}}">
+            <td style="text-align: center;"><input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input"></td>
+            <td scope="row">{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.email}}</td>
+        </tr>
     </tbody>
   </table>
+  <a class="link" routerLink="1">Test</a>
   `,
   styles: [
   ]

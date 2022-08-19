@@ -2,56 +2,45 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api/user.service';
 import { User } from '../../user'
-import { Observable } from 'rxjs';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
   template: `
   <div class="header">
-    <h1>User List</h1>
-      <button type="button" class="btn btn-primary"><fa-icon [icon]="faPlus"></fa-icon></button>
+    <h1>User Details</h1>
   </div>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">UID</th>
-        <th scope="col">Username</th>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor='let user of users | async'>
-          <td style="text-align: center;"><input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input"></td>
-          <td scope="row">{{user.id}}</td>
-          <td>{{user.username}}</td>
-          <td>{{user.firstName}}</td>
-          <td>{{user.lastName}}</td>
-          <td>{{user.email}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="isDataAvailable">
+    <h3>{{id}}</h3>
+    <h3>{{user.email}}</h3>
+  </div>
   `,
   styles: [
   ]
 })
+
 export class UserDetailsComponent implements OnInit {
+  id!: number;
+  private sub: any;
+  isDataAvailable: boolean = false;
 
-  users!: Observable<User[]>
+  user!: User;
 
-  constructor(private api: ApiService) {}
-
-  faPlus = faPlus;
+  constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(){
-    this.getUsers()
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      this.getUser();
+   });
   }
 
-  getUsers(){
-    this.users = this.api.getUsers()
+  getUser(){
+    this.api.getUser(this.id).subscribe((response:User) => {
+      this.user = response;
+      console.log(this.user.id);
+      this.isDataAvailable = true;
+    });
   }
 
 }

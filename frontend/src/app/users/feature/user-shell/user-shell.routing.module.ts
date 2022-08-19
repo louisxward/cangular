@@ -8,6 +8,13 @@ const routes: Routes = [
       import('../user-list/user-list.module').then(
         (m) => m.UserListComponentModule
       ),
+  },
+  {
+    path: ':id',
+    loadChildren: () =>
+      import('../user-details/user-details.module').then(
+        (m) => m.UserDetailsComponentModule
+      ),
   }
 ];
 

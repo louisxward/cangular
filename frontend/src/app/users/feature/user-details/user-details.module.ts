@@ -15,4 +15,4 @@ import { UserDetailsComponent } from './user-details.component';
   ],
   declarations: [UserDetailsComponent],
 })
-export class UserListComponentModule {}
+export class UserDetailsComponentModule {}
