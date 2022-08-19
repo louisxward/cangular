@@ -3,6 +3,7 @@ package com.canopy.canopy.controller;
 import com.canopy.canopy.entity.User;
 import com.canopy.canopy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +17,9 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User one(@PathVariable Long id) {
-        System.out.println("one");
-        System.out.println(id);
         return userRepository.findById(id).get();
         //.orElseThrow(() -> new EmployeeNotFoundException(id)
     }
-
     @GetMapping("/users")
     public List<User> fetchUsers(){
         return userRepository.findAll();
@@ -35,6 +33,12 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable Long id){
         userRepository.deleteById(id);
+    }
+
+    @PutMapping("/users/{id}")
+    public void saveUser(@RequestBody User user, @PathVariable Long id) {
+        userRepository.save(user);
+        //return ResponseEntity.ok("resource saved");
     }
 
 }

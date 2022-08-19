@@ -1,5 +1,6 @@
 package com.canopy.canopy;
 
+import com.canopy.canopy.controller.UserController;
 import com.canopy.canopy.entity.User;
 import com.canopy.canopy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class CanopyBackendApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserRepository userRepository;
+	private UserController userController;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -44,5 +46,7 @@ public class CanopyBackendApplication implements CommandLineRunner {
 		userRepository.save(user);
 		userRepository.save(user2);
 		userRepository.save(user3);
+
+
 	}
 }

@@ -27,12 +27,16 @@ export class ApiService {
   }
 
   deleteUser(id: number){
-      return this.http.delete(USER_API_BASE_URL+id);
+      return this.http.delete<User>(USER_API_BASE_URL+id);
   }
 
   addUser(user: User){
-      return this.http.post(USER_API_BASE_URL, user);
+      return this.http.post<User>(USER_API_BASE_URL, user);
   }
 
-  
+  saveUser(user: User){
+    this.http.put(USER_API_BASE_URL+user.id, user)
+    .subscribe();
+}
+
 }
