@@ -10,7 +10,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   template: `
   <div class="header">
     <h1>User List</h1>
-      <button type="button" class="btn btn-primary"><fa-icon [icon]="faPlus"></fa-icon></button>
+    <button type="button" class="btn btn-primary right"><fa-icon [icon]="faPlus"></fa-icon></button>
   </div>
   <table class="table table-hover">
     <thead>
@@ -34,14 +34,15 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
         </tr>
     </tbody>
   </table>
-  <a class="link" routerLink="1">Test</a>
   `,
-  styles: [
-  ]
+  styles: [`
+`]
 })
 export class UserListComponent implements OnInit {
 
   users!: Observable<User[]>
+
+  isDataAvailable: boolean = false;
 
   constructor(private api: ApiService) {}
 

@@ -38,3 +38,19 @@ thead{
 .content{
     padding: 1rem 1.5rem;  
 }
+
+.header{
+    position: relative;
+}
+
+.right{
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: 1.5rem;
+  }
+
+  .form-control{
+    background-color: #edeeef;
+  }
