@@ -17,8 +17,6 @@ export class ApiService {
   }
 
   getUser(id: number){
-    console.log("getUser")
-    console.log(USER_API_BASE_URL+id)
     return this.http.get<User>(USER_API_BASE_URL+id);
   }
   
@@ -27,7 +25,8 @@ export class ApiService {
   }
 
   deleteUser(id: number){
-      return this.http.delete<User>(USER_API_BASE_URL+id);
+      return this.http.delete<User>(USER_API_BASE_URL+id)
+      .subscribe();
   }
 
   addUser(user: User){

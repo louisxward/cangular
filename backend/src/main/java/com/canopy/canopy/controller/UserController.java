@@ -27,7 +27,11 @@ public class UserController {
 
     @PostMapping("/users")
     public User newUser(@RequestBody User user){
-        return userRepository.save(user);
+
+        System.out.println("newUser()");
+        User user2 = userRepository.save(user);
+        System.out.println(user2.getId());
+        return user2;
     }
 
     @DeleteMapping("/users/{id}")

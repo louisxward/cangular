@@ -10,7 +10,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   template: `
   <div class="header">
     <h1>User List</h1>
-    <button type="button" class="btn btn-primary right"><fa-icon [icon]="faPlus"></fa-icon></button>
+    <button type="button" class="btn btn-primary right" routerLink="0"><fa-icon [icon]="faPlus"></fa-icon></button>
   </div>
   <table class="table table-hover">
     <thead>
