@@ -18,7 +18,6 @@ export class UserDetailsComponent  implements OnInit{
   loaded = false
   found = false;
 
-
   constructor(private route: ActivatedRoute, private fb:FormBuilder){
     const param = this.route.snapshot.paramMap.get("userId");
     if(null != param){
@@ -49,8 +48,7 @@ export class UserDetailsComponent  implements OnInit{
         console.log(value)
         this.loaded = true
         this.found = true;
-        this.userForm.value.username = value.username
-        console.log(value.username)
+        this.userForm.get("username")?.setValue(value.username);
    })
    .catch((error)=>{ 
       console.log(error)
@@ -61,7 +59,6 @@ export class UserDetailsComponent  implements OnInit{
   submit() {
     console.log("Form Submitted")
     console.log(this.userForm.value)
-
     const myPromise = this.pb.collection('users').update(this.userId, this.userForm.value);
     myPromise.then((value) => { 
       console.log("saved")
@@ -70,6 +67,4 @@ export class UserDetailsComponent  implements OnInit{
       console.log(error)
     }) 
   }
-
-
 }
