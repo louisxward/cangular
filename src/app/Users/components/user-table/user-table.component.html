@@ -14,7 +14,9 @@
             <td style="width: 10%;">{{userTableItem.id}}</td>
             <td style="width: 20%;">{{userTableItem.username}}</td>
             <td style="width: 40%;">{{userTableItem.email}}</td>
-            <td></td>
+            <td>
+                <button (click)="viewUser(userTableItem.id)">View</button>
+            </td>
         </tr>
     </tbody>
 </table>

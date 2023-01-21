@@ -1,0 +1,16 @@
+<main class="userDetails-page">
+    <app-page-header header="User Details"></app-page-header>
+    <h3 *ngIf="!loaded">Loading...</h3>
+    <h3 *ngIf="loaded && !found">No Results</h3>
+    <h3 *ngIf="loaded && found">{{userId}}</h3>
+    <div class="form">
+        <form [formGroup]="userForm">
+            <div>
+                <label for="username">
+                  Username
+                </label>
+                <input id="username" type="text" formControlName="username" value="{{this.userForm.value.username}}">
+              </div>
+        </form>
+    </div>
+</main>

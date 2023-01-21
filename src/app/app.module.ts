@@ -10,6 +10,7 @@ import { AboutComponent } from './About/about/about.component';
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component';
 import { UserTableComponent } from './Users/components/user-table/user-table.component';
 import { UsersComponent } from './Users/users/users.component';
+import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -21,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AboutComponent,
     PageHeaderComponent,
     UsersComponent,
-    UserTableComponent
+    UserTableComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,

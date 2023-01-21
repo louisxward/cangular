@@ -8,10 +8,6 @@ export interface userTableItem {
   email: string;
 } 
 
-
-
-
-
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
@@ -19,11 +15,12 @@ export interface userTableItem {
 })
 export class UserTableComponent implements OnInit{
 
-    pagnationForm:FormGroup;
+    pb = new PocketBase('http://127.0.0.1:8090')
 
+    pagnationForm:FormGroup;
     results : any[] = []
     loaded = false
-    pb = new PocketBase('http://127.0.0.1:8090')
+    
     min = 0
     max = 10
     size = 0
@@ -87,5 +84,9 @@ export class UserTableComponent implements OnInit{
     submit() {
         console.log("Form Submitted")
         console.log(this.pagnationForm.value)
+    }
+
+    viewUser(id: number){
+        console.log("viewUser() ID:" + id)
     }
 }
