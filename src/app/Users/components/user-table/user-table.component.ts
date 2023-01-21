@@ -25,7 +25,7 @@ export class UserTableComponent implements OnInit{
     min = 0
     max = 10
     size = 0
-    page = 0;
+    page = 1
     pages = 0
     pageSizes = [10, 25, 50, 100]
 
@@ -63,15 +63,17 @@ export class UserTableComponent implements OnInit{
     }
 
     updatePage(page: number) {
-        this.pagnationForm.value.page = page
-        this.page = page
-        if(page != 1){
-            this.min = this.max * this.page
+        if(this.page != page){        
+            this.pagnationForm.value.page = page
+            this.page = page
+            if(page != 1){
+                this.min = this.max * this.page
+            }
+            else {
+                this.min = 0
+            }
+            this.getResults()
         }
-        else {
-            this.min = 0
-        }
-        this.getResults()
     }
 
     getPages(): number[]{
@@ -90,5 +92,10 @@ export class UserTableComponent implements OnInit{
     viewUser(id: number){
         console.log("viewUser() ID:" + id)
         this.router.navigate(["users/", id]);
+    }
+
+    createUser(){
+        console.log("createUser()")
+        this.router.navigate(["users/", "0"]);
     }
 }

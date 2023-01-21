@@ -17,8 +17,9 @@ export class UserDetailsComponent  implements OnInit{
   userForm:FormGroup;
   loaded = false
   found = false;
+  create = false;
 
-  constructor(private route: ActivatedRoute, private fb:FormBuilder){
+  constructor(private route: ActivatedRoute, private router: Router, private fb:FormBuilder){
     const param = this.route.snapshot.paramMap.get("userId");
     if(null != param){
       this.userId = param
@@ -28,13 +29,16 @@ export class UserDetailsComponent  implements OnInit{
     }
     console.log(this.userId)
     this.userForm = this.fb.group({
-      username: ""
+      username: "",
+      password: "12345",
+      passwordConfirm: "12345"
     });
     if(this.userId != "0"){
       this.loadUser()
     }
     else{
       this.loaded = true
+      this.create = true
     }
   }
 
@@ -59,12 +63,33 @@ export class UserDetailsComponent  implements OnInit{
   submit() {
     console.log("Form Submitted")
     console.log(this.userForm.value)
-    const myPromise = this.pb.collection('users').update(this.userId, this.userForm.value);
-    myPromise.then((value) => { 
-      console.log("saved")
-    })
-    .catch((error)=>{ 
-      console.log(error)
-    }) 
+
+    if(this.userId != "0"){
+      const myPromise = this.pb.collection('users').update(this.userId, this.userForm.value);
+      myPromise.then((value) => { 
+        console.log("saved")
+      })
+      .catch((error)=>{ 
+        console.log(error)
+      }) 
+    }
+    else{
+      const myPromise = this.pb.collection('users').create(this.userForm.value);
+      myPromise.then((value) => { 
+        console.log("saved")
+        console.log(value)
+
+        this.router.navigate(["users/", value.id]);
+
+        this.userId = value.id
+        this.create = false
+        this.found = true
+        
+      })
+      .catch((error)=>{ 
+        console.log(error)
+      })  
+    }
+
   }
 }
