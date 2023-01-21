@@ -1,9 +1,8 @@
 <main class="userDetails-page">
-    <app-page-header header="User Details"></app-page-header>
+    <app-page-header header="User Details" id="{{userId}}"></app-page-header>
     <h3 *ngIf="!loaded">Loading...</h3>
     <h3 *ngIf="loaded && !found">No Results</h3>
-    <h3 *ngIf="loaded && found">{{userId}}</h3>
-    <div class="form">
+    <div class="form" *ngIf="loaded && found">
         <form [formGroup]="userForm" (ngSubmit)="submit()">
             <div>
                 <label for="username">

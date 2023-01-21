@@ -40,7 +40,6 @@ export class UserDetailsComponent  implements OnInit{
   }
 
   ngOnInit() {
-    console.log(this.userForm.value.username)
   }
 
   loadUser(){

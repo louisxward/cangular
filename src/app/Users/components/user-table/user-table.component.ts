@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import PocketBase from 'pocketbase'
 
 export interface userTableItem {
@@ -28,7 +29,7 @@ export class UserTableComponent implements OnInit{
     pages = 0
     pageSizes = [10, 25, 50, 100]
 
-    constructor(private fb:FormBuilder){
+    constructor(private router: Router, private fb:FormBuilder){
         this.pagnationForm = this.fb.group({
             max: 10,
             page: 1
@@ -88,5 +89,6 @@ export class UserTableComponent implements OnInit{
 
     viewUser(id: number){
         console.log("viewUser() ID:" + id)
+        this.router.navigate(["users/", id]);
     }
 }
