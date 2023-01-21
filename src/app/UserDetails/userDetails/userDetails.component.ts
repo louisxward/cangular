@@ -29,9 +29,9 @@ export class UserDetailsComponent  implements OnInit{
     }
     console.log(this.userId)
     this.userForm = this.fb.group({
-      username: "",
-      password: "12345",
-      passwordConfirm: "12345"
+      username: ""
+      // password: "12345",
+      // passwordConfirm: "12345"
     });
     if(this.userId != "0"){
       this.loadUser()
@@ -65,6 +65,7 @@ export class UserDetailsComponent  implements OnInit{
     console.log(this.userForm.value)
 
     if(this.userId != "0"){
+      console.log(this.userId)
       const myPromise = this.pb.collection('users').update(this.userId, this.userForm.value);
       myPromise.then((value) => { 
         console.log("saved")
