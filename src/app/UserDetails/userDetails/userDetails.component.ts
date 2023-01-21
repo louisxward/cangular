@@ -59,4 +59,18 @@ export class UserDetailsComponent  implements OnInit{
     }) 
   }
 
+  submit() {
+    console.log("Form Submitted")
+    console.log(this.userForm.value)
+
+    const myPromise = this.pb.collection('users').update(this.userId, this.userForm.value);
+    myPromise.then((value) => { 
+      console.log("saved")
+    })
+    .catch((error)=>{ 
+      console.log(error)
+    }) 
+  }
+
+
 }

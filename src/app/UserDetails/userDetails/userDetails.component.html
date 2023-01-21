@@ -4,13 +4,14 @@
     <h3 *ngIf="loaded && !found">No Results</h3>
     <h3 *ngIf="loaded && found">{{userId}}</h3>
     <div class="form">
-        <form [formGroup]="userForm">
+        <form [formGroup]="userForm" (ngSubmit)="submit()">
             <div>
                 <label for="username">
                   Username
                 </label>
                 <input id="username" type="text" formControlName="username" value="{{this.userForm.value.username}}">
-              </div>
+            </div>
+            <button type="submit" >Save</button>
         </form>
     </div>
 </main>
