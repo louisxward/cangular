@@ -12,7 +12,7 @@ export namespace User {
 
     export class UpdateUser {
       static readonly type = "[Login] Update User Initiated"
-      constructor(public payload: { id: string }) {}
+      constructor(public payload: { id: string, avatar: string }) {}
     }
 
     export class LogoutFlowInitiated {

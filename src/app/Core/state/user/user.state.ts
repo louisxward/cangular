@@ -9,6 +9,7 @@ import PocketBase from 'pocketbase';
   name: "user",
   defaults: {
     id: null,
+    avatar: null,
   },
 })
 
@@ -18,7 +19,25 @@ export class UserState {
     pb = new PocketBase('http://127.0.0.1:8090')
     
     constructor(private store: Store){}
-  
+
+    async getAvatarUrl(userId: string, fileName: string): Promise<string> {
+      console.log("getAvatarUrl() start")
+      const myPromise = this.pb.collection('users').getOne(userId)
+      myPromise.then((value) => { 
+        const send = this.pb.getFileUrl(value, fileName, {'thumb': '100x250'})
+        console.log("promise.then")
+        console.log(send)
+        return send
+      })
+     .catch((error)=>{ 
+        console.log("promise.catch")
+        console.log(error)
+        return ""
+      })
+      console.log("getAvatarUrl() finish")
+      return ""
+    }
+
 
     @Action(User.Login.LoginFlowInitiated)
     login(ctx: StateContext<UserStateModel>, action: User.Login.LoginFlowInitiated) {
@@ -28,7 +47,7 @@ export class UserState {
       const myPromise = this.pb.collection('users').authWithPassword(username, password)
       myPromise.then((value) => { 
         console.log("found user")
-        this.store.dispatch(new User.Login.UpdateUser({id: value.record.id}));
+        this.store.dispatch(new User.Login.UpdateUser({id: value.record.id, avatar: value.record.avatar}));
       })
      .catch((error)=>{ 
         console.log(error)
@@ -38,10 +57,26 @@ export class UserState {
     @Action(User.Login.UpdateUser)
     updateUser(ctx: StateContext<UserStateModel>, action: User.Login.UpdateUser) {
       console.log("updateUser()")
-      const id = action.payload.id;
+      const id = action.payload.id
+      const avatarFileName = action.payload.avatar
+      let avatarUrl = ""
+      if(avatarFileName){
+        const myPromise = this.getAvatarUrl(id, avatarFileName)
+        myPromise.then((value) => { 
+          console.log("found user")
+          avatarUrl = value
+        })
+       .catch((error)=>{ 
+          console.log(error)
+        })
+        
+      }
+      console.log("patch")
       ctx.patchState({
-        id: id
+        id: id,
+        avatar: avatarUrl
       })
+      console.log(ctx.getState())
     }
 
     @Action(User.Login.LogoutFlowInitiated)
