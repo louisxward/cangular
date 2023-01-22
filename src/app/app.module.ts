@@ -25,6 +25,8 @@ import { UserTableComponent } from './Users/components/user-table/user-table.com
 import { UsersComponent } from './Users/users/users.component';
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component';
 import { ProfileComponent } from './Profile/profile/profile.component';
+import { LoginComponent } from './Login/login/login.component';
+import { LoginFormComponent } from './Login/components/login-form/login-form.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { ProfileComponent } from './Profile/profile/profile.component';
     UsersComponent,
     UserTableComponent,
     UserDetailsComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoginComponent,
+    LoginFormComponent
   ],
   imports: [
     NgxsReduxDevtoolsPluginModule.forRoot(),

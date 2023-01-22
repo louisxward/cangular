@@ -5,6 +5,7 @@ import { AboutComponent } from 'src/app/About/about/about.component'
 import { UsersComponent } from 'src/app/Users/users/users.component'
 import { UserDetailsComponent } from 'src/app/UserDetails/userDetails/userDetails.component'
 import { ProfileComponent } from 'src/app/Profile/profile/profile.component'
+import { LoginComponent } from 'src/app/Login/login/login.component'
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   }
 ];
 
