@@ -13,6 +13,7 @@ import { UsersComponent } from './Users/users/users.component';
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileComponent } from './Profile/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     PageHeaderComponent,
     UsersComponent,
     UserTableComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
