@@ -23,7 +23,7 @@ export class UserState {
     constructor(){
     }
   
-    @Action(User.AllNavbarActions.LoginFlowInitiated)
+    @Action(User.Login.LoginFlowInitiated)
     login(ctx: StateContext<UserStateModel>) {
       console.log("login()")
       const myPromise = this.pb.collection('users').authWithPassword('louis', '12345')
@@ -41,7 +41,7 @@ export class UserState {
       }) 
     }
   
-    @Action(User.AllNavbarActions.LogoutFlowInitiated)
+    @Action(User.Login.LogoutFlowInitiated)
     logout(ctx: StateContext<UserStateModel>) {
       console.log("logOut()")
       this.pb.authStore.clear();

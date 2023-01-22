@@ -14,15 +14,22 @@ export class ProfileComponent {
   isLoggedIn$ = this.store.select(UserState.isLoggedIn);
   userId$ = this.store.select(UserState.getUserId);
 
-  constructor(private store: Store){
+  constructor(private store: Store) {
     console.log(this.store.select(UserState.getUserId).subscribe(t => console.log('Observer got a next value: ' + t)))
   }
 
+
   login(): void {
-    this.store.dispatch(new User.AllNavbarActions.LoginFlowInitiated());
+    this.store.dispatch(
+      new User.Login.LoginFlowInitiated({
+        username: "louis",
+        password: "12345"
+      })
+    );
   }
 
+
   logout(): void {
-    this.store.dispatch(new User.AllNavbarActions.LogoutFlowInitiated());
+    this.store.dispatch(new User.Login.LogoutFlowInitiated());
   }
 }
