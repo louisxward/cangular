@@ -11,8 +11,8 @@ import { User, UserState } from "src/app/Core/state/user";
 })
 export class ProfileComponent {
 
-  isLoggedIn$ = this.store.selectSnapshot(UserState.isLoggedIn)
-  userId$ = this.store.selectSnapshot(UserState.getUserId)
+  isLoggedIn$ = this.store.select(UserState.isLoggedIn);
+  userId$ = this.store.select(UserState.getUserId);
 
   constructor(private store: Store){
   }

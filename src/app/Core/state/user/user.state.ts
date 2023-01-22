@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UserStateModel } from "./user.model";
 import { State, Action, StateContext, Store, Selector } from "@ngxs/store";
+import { patch, append, removeItem, insertItem, updateItem } from '@ngxs/store/operators';
 import { User } from "./user.actions";
 import PocketBase from 'pocketbase';
 
@@ -19,7 +20,7 @@ import PocketBase from 'pocketbase';
 export class UserState {
     pb = new PocketBase('http://127.0.0.1:8090')
     
-    constructor(private store: Store){
+    constructor(){
     }
   
     @Action(User.AllNavbarActions.LoginFlowInitiated)
@@ -28,11 +29,12 @@ export class UserState {
       const myPromise = this.pb.collection('users').authWithPassword('louis', '12345')
       myPromise.then((value) => { 
         console.log("found user")
-        console.log(value.record.id)
-        ctx.setState({
-          id: value.record.id
-        });
-        console.log(ctx.getState)
+        ctx.setState(
+          patch<UserStateModel>({
+            id: value.record.id
+          })
+        );
+        console.log(ctx.getState())
       })
      .catch((error)=>{ 
         console.log(error)
@@ -46,20 +48,15 @@ export class UserState {
       ctx.patchState({
         id: null
       });
-      console.log(ctx.getState)
     }
 
     @Selector()
     static getUserId(state: UserStateModel) {
-      console.log("getUserId()")
-      console.log(state)
       return state.id;
     }
 
     @Selector()
     static isLoggedIn(state: UserStateModel) {
-      console.log("isLoggedIn()")
-      console.log(state)
       return null != state.id;
     }
 }

@@ -1,11 +1,24 @@
+
 <main class="profile-page">
     <app-page-header header="Profile"></app-page-header>
     <div class="content">
         <h1>Profile</h1>
-        <p>{{isLoggedIn$}}</p>
-        <p>{{userId$}}</p>
-        <button (click)="login()">Login</button>
+
+
+        <p *ngIf="isLoggedIn$">
+            {{ isLoggedIn$ | async }}
+        </p>
+
+        <p *ngIf="userId$">
+            {{ userId$ | async }}
+        </p>
+
+
+
+
+
+        <button *ngIf="!(isLoggedIn$ | async)" (click)="login()">Login</button>
         <br/>
-        <button (click)="logout()">Logout</button>
+        <button *ngIf="isLoggedIn$ | async" (click)="logout()">Logout</button>
     </div>
 </main>
