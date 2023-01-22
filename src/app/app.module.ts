@@ -4,9 +4,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserState } from "./Core/state";
-import { NgxsModule } from "@ngxs/store";
+
+import { NgxsModule } from '@ngxs/store';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+
+
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+
+
+import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 
 
 import { AppComponent } from './app.component';
@@ -32,12 +39,18 @@ import { ProfileComponent } from './Profile/profile/profile.component';
     ProfileComponent
   ],
   imports: [
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+
+    NgxsModule.forRoot([UserState]),
+    NgxsStoragePluginModule.forRoot({key: 'user'}),
+
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule,
     ReactiveFormsModule,
-    NgxsModule.forRoot([UserState])
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]

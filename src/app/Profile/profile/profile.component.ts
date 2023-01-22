@@ -15,6 +15,7 @@ export class ProfileComponent {
   userId$ = this.store.select(UserState.getUserId);
 
   constructor(private store: Store){
+    console.log(this.store.select(UserState.getUserId).subscribe(t => console.log('Observer got a next value: ' + t)))
   }
 
   login(): void {
