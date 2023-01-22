@@ -13,18 +13,24 @@ export class LoginFormComponent implements OnInit{
 
     loginForm:FormGroup;
 
+    favoriteColorControl = new FormControl('');
+
     constructor(private router: Router, private fb:FormBuilder){
         this.loginForm = this.fb.group({
-            username: "",
-            password: ""
+            username: ["", [Validators.required]],
+            password: ["", [Validators.required]]
         });
 
     }
 
+    get name() { return this.loginForm.get('username'); }
+
+    get power() { return this.loginForm.get('password'); }
+
     ngOnInit(): void {
     }
 
-    submit() {
+    submit(): void {
         console.log("Form Submitted")
         console.log(this.loginForm.value)
     }

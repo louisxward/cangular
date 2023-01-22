@@ -1,2 +1,21 @@
-<h1>test</h1>
-dwqqwdqwd
+<form [formGroup]="loginForm" (ngSubmit)="submit()">
+
+    <input id="username" placeholder="Username" formControlName="username">
+    <div *ngIf="loginForm.controls['username'].invalid && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)" class="alert alert-danger">
+        <div *ngIf="loginForm.controls['username'].errors?.required">
+            <h3>username is required</h3>
+        </div>
+    </div>
+
+    <input id="password" placeholder="Password" formControlName="password">
+    <div *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="alert alert-danger">
+        <div *ngIf="loginForm.controls['password'].errors?.required">
+            <h3>password is required</h3>
+        </div>
+    </div>
+    
+    <br/>
+    <button class="button" type="submit" [disabled]="loginForm.status != 'VALID'">Login</button>
+</form>
+<!-- <p>Form value: {{ loginForm.value | json }}</p>
+<p>Form status: {{ loginForm.status | json }}</p> -->
