@@ -31,7 +31,6 @@ export class LoginFormComponent implements OnInit{
         this.login()
     }
 
-
     login(): void {
         this.store.dispatch(
           new User.Login.LoginFlowInitiated({
@@ -40,6 +39,5 @@ export class LoginFormComponent implements OnInit{
           })
         );
       }
-
 
 }

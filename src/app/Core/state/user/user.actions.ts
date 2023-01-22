@@ -18,6 +18,7 @@ export namespace User {
     export class LogoutFlowInitiated {
       static readonly type = "[Login] Logout Flow Initiated";
     }
+    
   }
 
 }

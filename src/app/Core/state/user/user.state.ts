@@ -53,7 +53,6 @@ export class UserState {
       });
     }
 
-
     @Selector()
     static getUserId(state: UserStateModel): string | null{
       return state.id;
