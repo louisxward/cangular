@@ -2,6 +2,10 @@
     <app-page-header header="Profile"></app-page-header>
     <div class="content">
         <h1>Profile</h1>
-        <p>welcome</p>
+        <p>{{isLoggedIn$}}</p>
+        <p>{{userId$}}</p>
+        <button (click)="login()">Login</button>
+        <br/>
+        <button (click)="logout()">Logout</button>
     </div>
 </main>

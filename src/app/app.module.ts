@@ -37,7 +37,7 @@ import { ProfileComponent } from './Profile/profile/profile.component';
     BrowserAnimationsModule,
     NgbModule,
     ReactiveFormsModule,
-    NgxsModule.forRoot([UserState], { developmentMode: true }),
+    NgxsModule.forRoot([UserState])
   ],
   providers: [],
   bootstrap: [AppComponent]

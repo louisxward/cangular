@@ -23,22 +23,43 @@ export class UserState {
     }
   
     @Action(User.AllNavbarActions.LoginFlowInitiated)
-    login() {
-        this.pb.collection('users').authWithPassword('louis', '12345')
+    login(ctx: StateContext<UserStateModel>) {
+      console.log("login()")
+      const myPromise = this.pb.collection('users').authWithPassword('louis', '12345')
+      myPromise.then((value) => { 
+        console.log("found user")
+        console.log(value.record.id)
+        ctx.setState({
+          id: value.record.id
+        });
+        console.log(ctx.getState)
+      })
+     .catch((error)=>{ 
+        console.log(error)
+      }) 
     }
   
     @Action(User.AllNavbarActions.LogoutFlowInitiated)
-    logout() {
+    logout(ctx: StateContext<UserStateModel>) {
+      console.log("logOut()")
       this.pb.authStore.clear();
+      ctx.patchState({
+        id: null
+      });
+      console.log(ctx.getState)
     }
 
     @Selector()
     static getUserId(state: UserStateModel) {
-        return state.id;
+      console.log("getUserId()")
+      console.log(state)
+      return state.id;
     }
 
     @Selector()
     static isLoggedIn(state: UserStateModel) {
+      console.log("isLoggedIn()")
+      console.log(state)
       return null != state.id;
     }
 }
