@@ -14,10 +14,7 @@ export class ProfileComponent {
   isLoggedIn$ = this.store.select(UserState.isLoggedIn);
   userId$ = this.store.select(UserState.getUserId);
 
-  constructor(private store: Store) {
-    console.log(this.store.select(UserState.getUserId).subscribe(t => console.log('Observer got a next value: ' + t)))
-  }
-
+  constructor(private store: Store) {}
 
   login(): void {
     this.store.dispatch(
@@ -27,7 +24,6 @@ export class ProfileComponent {
       })
     );
   }
-
 
   logout(): void {
     this.store.dispatch(new User.Login.LogoutFlowInitiated());

@@ -40,8 +40,9 @@ import { ProfileComponent } from './Profile/profile/profile.component';
   ],
   imports: [
     NgxsReduxDevtoolsPluginModule.forRoot(),
-
-    NgxsModule.forRoot([UserState]),
+    NgxsModule.forRoot([UserState], {
+      developmentMode: true
+    }),
     NgxsStoragePluginModule.forRoot({key: 'user'}),
 
     BrowserModule,
@@ -49,8 +50,6 @@ import { ProfileComponent } from './Profile/profile/profile.component';
     BrowserAnimationsModule,
     NgbModule,
     ReactiveFormsModule,
-
-
   ],
   providers: [],
   bootstrap: [AppComponent]

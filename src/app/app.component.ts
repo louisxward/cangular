@@ -12,7 +12,7 @@ import { User } from "./Core/state/";
 })
 
 export class AppComponent {
-  title = 'frontend';
+  title = 'cangular2.0';
 
   constructor(private store: Store, private appRef: ApplicationRef) {
     this.appRef.isStable.pipe(first((stable) => stable)).subscribe(() => {
