@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component';
+import { Store } from "@ngxs/store";
+import { User, UserState } from "src/app/Core/state/user";
+
 
 @Component({
   selector: 'app-profile',
@@ -8,4 +11,17 @@ import { PageHeaderComponent } from '../../Core/components/page-header/page-head
 })
 export class ProfileComponent {
 
+  isLoggedIn$ = this.store.select(UserState.isLoggedIn);//observable??!??!?!?!?!?!?!?
+  userId$ = this.store.select(UserState.getUserId);
+
+  constructor(private store: Store){
+  }
+
+  login(): void {
+    this.store.dispatch(new User.AllNavbarActions.LoginFlowInitiated());
+  }
+
+  logout(): void {
+    this.store.dispatch(new User.AllNavbarActions.LogoutFlowInitiated());
+  }
 }
