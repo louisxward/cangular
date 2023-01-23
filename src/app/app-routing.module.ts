@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { HomeComponent } from 'src/app/Home/home/home.component'
 import { AboutComponent } from 'src/app/About/about/about.component'
 import { UsersComponent } from 'src/app/Users/users/users.component'
 import { UserDetailsComponent } from 'src/app/UserDetails/userDetails/userDetails.component'
 import { ProfileComponent } from 'src/app/Profile/profile/profile.component'
 import { LoginComponent } from 'src/app/Login/login/login.component'
+import { PageNotFoundComponent } from 'src/app/PageNotFound/pageNotFound/pageNotFound.component'
 
 const routes: Routes = [
   {
@@ -31,6 +33,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  { 
+    path: '**',
+    pathMatch: 'full', 
+    component: PageNotFoundComponent 
   }
 ];
 
