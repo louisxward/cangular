@@ -1,27 +1,14 @@
-# Frontend
+# Cangular2.0
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
+Project version 0.5.0
+Angular version 15.0.4
+Pocketbase version 0.11.13
+
+## Notes
+[Project](https://denim-rocket-cf2.notion.site/86fcc21725c24c0fbdea5a1dde65af1d?v=eacbca05816c4bcb92408274456dfbc0)
+[To Do](https://denim-rocket-cf2.notion.site/b698b5da6d00448c9a7ddac9fa1c4638?v=85060aef98f2458fa5621a2de2e1148e)
 
 ## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Clone then `npm i` to install all the dependencies locally
+Run `ng serve` in `/frontend` to launch dev server. Navigate to `http://localhost:4200/`
+Run `./pocketbase serve` in `/pocketbase` to launch dev database. Navigate to `http://127.0.0.1:8090/_/`
