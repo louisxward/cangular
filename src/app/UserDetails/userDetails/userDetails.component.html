@@ -1,6 +1,14 @@
 <main class="userDetails-page">
     <app-page-header header="User Details" id ="{{userId}}"></app-page-header>
     <div class="content">
-        <app-user-form></app-user-form>
+        <div *ngIf="!loaded">
+            <h3>Loading...</h3>
+        </div>
+        <div *ngIf="loaded && !found">
+            <h3>Not Found</h3>
+        </div>
+        <div *ngIf="loaded && found">
+            <app-user-form [userData]="userData"></app-user-form>
+        </div>
     </div>
 </main>

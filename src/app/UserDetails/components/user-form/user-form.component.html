@@ -2,7 +2,7 @@
     <input id="username" placeholder="Username" formControlName="username"
     [ngClass]="userForm.controls['username'].invalid && (userForm.controls['username'].dirty || userForm.controls['username'].touched) ? 'formError' : ''">
     <br/>
-    <button class="button" type="submit" [disabled]="!userForm.valid">Create/Save</button>
+    <button class="button" type="submit" [disabled]="!userForm.valid">{{userData.id == "0" ? "Create" : "Save"}}</button>
 </form>
 
 <br/>
