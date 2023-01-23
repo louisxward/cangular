@@ -1,15 +1,21 @@
 <form [formGroup]="userForm" (ngSubmit)="submit()">
     <input id="username" placeholder="Username" formControlName="username"
     [ngClass]="userForm.controls['username'].invalid && (userForm.controls['username'].dirty || userForm.controls['username'].touched) ? 'formError' : ''">
+    <input id="email" placeholder="Email" formControlName="email"
+    [ngClass]="userForm.controls['email'].invalid && (userForm.controls['email'].dirty || userForm.controls['email'].touched) ? 'formError' : ''">
+    <input id="password" placeholder="Password" formControlName="password" *ngIf="userForm.controls['password']"
+    [ngClass]="userForm.controls['password'].invalid && (userForm.controls['password'].dirty || userForm.controls['password'].touched) ? 'formError' : ''">
+    <input id="passwordConfirm" placeholder="Confirm Password" formControlName="passwordConfirm" *ngIf="userForm.controls['passwordConfirm']"
+    [ngClass]="userForm.controls['passwordConfirm'].invalid && (userForm.controls['passwordConfirm'].dirty || userForm.controls['passwordConfirm'].touched) ? 'formError' : ''">
     <br/>
     <button class="button" type="submit" [disabled]="!userForm.valid">{{userData.id == "0" ? "Create" : "Save"}}</button>
 </form>
 
-<br/>
+<!-- <br/>
 <p>name invalid: {{ userForm.controls['username'].invalid | json }}</p>
 <p>name dirty: {{ userForm.controls['username'].dirty | json }}</p>
 <p>name touched: {{ userForm.controls['username'].touched | json }}</p>
 
 <br/>
 <p>Form value: {{ userForm.value | json }}</p>
-<p>Form status: {{ userForm.status | json }}</p>
+<p>Form status: {{ userForm.status | json }}</p> -->
