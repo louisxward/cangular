@@ -5,14 +5,17 @@ import { State, Action, StateContext, Store, Selector } from "@ngxs/store";
 import { User } from "./user.actions";
 import PocketBase from 'pocketbase';
 
+const userStateDefaults: UserStateModel = {
+  id: null,
+  avatarUrl: null,
+  username: null,
+  email: null,
+}
+
 @State<UserStateModel>({
   name: "user",
-  defaults: {
-    id: null,
-    avatarUrl: null,
-  },
+  defaults: userStateDefaults,
 })
-
 
 @Injectable()
 export class UserState {
@@ -41,7 +44,7 @@ export class UserState {
       const myPromise = this.pb.collection('users').authWithPassword(username, password)
       myPromise.then((value) => { 
         console.log("found user")
-        this.store.dispatch(new User.Login.UpdateUser({id: value.record.id, avatar: value.record.avatar}));
+        this.store.dispatch(new User.Login.UpdateUser({id: value.record.id, avatar: value.record.avatar, username: value.record.username, email: value.record.email}));
       })
      .catch((error)=>{ 
         console.log(error)
@@ -53,6 +56,8 @@ export class UserState {
       console.log("updateUser()")
       const id = action.payload.id
       const avatarFileName = action.payload.avatar
+      const username = action.payload.username
+      const email = action.payload.email
       let avatarUrl = ""
       if(avatarFileName){
         const myPromise = this.getAvatarUrl(id, avatarFileName)
@@ -65,7 +70,9 @@ export class UserState {
       }
       ctx.patchState({
         id: id,
-        avatarUrl: avatarUrl
+        avatarUrl: avatarUrl,
+        username: username,
+        email: email,
       })
     }
 
@@ -73,10 +80,7 @@ export class UserState {
     logout(ctx: StateContext<UserStateModel>) {
       console.log("logOut()")
       this.pb.authStore.clear();
-      ctx.patchState({
-        id: null,
-        avatarUrl: null
-      });
+      ctx.setState(userStateDefaults)
     }
 
     @Selector()
@@ -87,6 +91,16 @@ export class UserState {
     @Selector()
     static getAvatarUrl(state: UserStateModel): string | null{
       return state.avatarUrl;
+    }
+
+    @Selector()
+    static getUsername(state: UserStateModel): string | null{
+      return state.username;
+    }
+
+    @Selector()
+    static getEmail(state: UserStateModel): string | null{
+      return state.email;
     }
 
     @Selector()

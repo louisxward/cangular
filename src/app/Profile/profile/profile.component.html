@@ -2,6 +2,10 @@
 <main class="profile-page">
     <app-page-header header="Profile" id="{{userId$ | async}}"></app-page-header>
     <div class="content">
+        <div *ngIf="(isLoggedIn$ | async)"> 
+            <h3>{{username$ | async }}</h3>
+            <h3>{{email$ | async }}</h3>
+        </div>
         <div *ngIf="avatarUrl$ | async" class="avatarDisplay">
             <img [src]="avatarUrl$ | async" alt="">
         </div>
