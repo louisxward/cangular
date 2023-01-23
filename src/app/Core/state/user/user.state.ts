@@ -9,7 +9,7 @@ import PocketBase from 'pocketbase';
   name: "user",
   defaults: {
     id: null,
-    avatar: null,
+    avatarUrl: null,
   },
 })
 
@@ -21,21 +21,15 @@ export class UserState {
     constructor(private store: Store){}
 
     async getAvatarUrl(userId: string, fileName: string): Promise<string> {
-      console.log("getAvatarUrl() start")
+      let avatarUrl = ""
       const myPromise = this.pb.collection('users').getOne(userId)
-      myPromise.then((value) => { 
-        const send = this.pb.getFileUrl(value, fileName, {'thumb': '100x250'})
-        console.log("promise.then")
-        console.log(send)
-        return send
+      await myPromise.then((value) => { 
+        avatarUrl = this.pb.getFileUrl(value, fileName, {})
       })
      .catch((error)=>{ 
-        console.log("promise.catch")
         console.log(error)
-        return ""
       })
-      console.log("getAvatarUrl() finish")
-      return ""
+      return avatarUrl
     }
 
 
@@ -55,28 +49,24 @@ export class UserState {
     }
 
     @Action(User.Login.UpdateUser)
-    updateUser(ctx: StateContext<UserStateModel>, action: User.Login.UpdateUser) {
+    async updateUser(ctx: StateContext<UserStateModel>, action: User.Login.UpdateUser) {
       console.log("updateUser()")
       const id = action.payload.id
       const avatarFileName = action.payload.avatar
       let avatarUrl = ""
       if(avatarFileName){
         const myPromise = this.getAvatarUrl(id, avatarFileName)
-        myPromise.then((value) => { 
-          console.log("found user")
+        await myPromise.then((value) => { 
           avatarUrl = value
         })
        .catch((error)=>{ 
           console.log(error)
         })
-        
       }
-      console.log("patch")
       ctx.patchState({
         id: id,
-        avatar: avatarUrl
+        avatarUrl: avatarUrl
       })
-      console.log(ctx.getState())
     }
 
     @Action(User.Login.LogoutFlowInitiated)
@@ -84,13 +74,19 @@ export class UserState {
       console.log("logOut()")
       this.pb.authStore.clear();
       ctx.patchState({
-        id: null
+        id: null,
+        avatarUrl: null
       });
     }
 
     @Selector()
     static getUserId(state: UserStateModel): string | null{
       return state.id;
+    }
+
+    @Selector()
+    static getAvatarUrl(state: UserStateModel): string | null{
+      return state.avatarUrl;
     }
 
     @Selector()

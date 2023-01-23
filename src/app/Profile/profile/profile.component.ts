@@ -13,6 +13,7 @@ export class ProfileComponent {
 
   isLoggedIn$ = this.store.select(UserState.isLoggedIn);
   userId$ = this.store.select(UserState.getUserId);
+  avatarUrl$ = this.store.select(UserState.getAvatarUrl)
 
   constructor(private store: Store) {}
 
