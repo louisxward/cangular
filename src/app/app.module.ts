@@ -48,7 +48,6 @@ import { LoginFormComponent } from './Login/components/login-form/login-form.com
       developmentMode: true
     }),
     NgxsStoragePluginModule.forRoot({key: 'user'}),
-
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

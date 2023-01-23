@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
-import { Store } from "@ngxs/store";
-import { User, UserState } from "src/app/Core/state/user";
+import { Action, StateContext, Store } from "@ngxs/store";
+import { User, UserState, UserStateModel } from "src/app/Core/state/user";
+
 
 @Component({
   selector: 'app-login-form',
@@ -38,6 +39,12 @@ export class LoginFormComponent implements OnInit{
             password: this.loginForm.value.password
           })
         );
+      }
+
+      //not sure why this isnt being called, did seem too good to be true. currently being called from user.state returns windows pop up error but want to show form error 
+      @Action(User.Login.LoginFlowUnsuccessful)
+      loginUnsuccessful() {
+        console.log("loginUnsuccessful()")
       }
 
 }

@@ -2,15 +2,15 @@
 
     <h3>Menu</h3>
     <div class="menu">
-      <a routerLink="/" class="button">
+      <a routerLink="/" class="button" title="Home">
         <span class="material-icons">home</span>
         <span class="text">Home</span>
       </a>
-      <a routerLink="/about" class="button">
+      <a routerLink="/about" class="button" title="About">
         <span class="material-icons">list</span>
         <span class="text">About</span>
       </a>
-      <a routerLink="/users" class="button">
+      <a routerLink="/users" class="button" title="Users">
         <span class="material-icons">group</span>
         <span class="text">Users</span>
       </a>
@@ -19,7 +19,11 @@
     <div class="flex"></div>
 
     <div class="menu">
-      <a routerLink="/profile" class="button">
+      <a *ngIf="!(isLoggedIn$ | async)" routerLink="/login" class="button" title="Login">
+        <span class="material-icons">account_circle</span>
+        <span class="text">Login</span>
+      </a>
+      <a *ngIf="(isLoggedIn$ | async)" routerLink="/profile" class="button" title="Profile">
         <span *ngIf="!(avatarUrl$ | async)" class="material-icons">account_circle</span>
         <img *ngIf="avatarUrl$ | async" [src]="avatarUrl$ | async" alt="" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
         <span class="text">Profile</span>

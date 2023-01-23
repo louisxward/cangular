@@ -10,7 +10,7 @@
     <tbody>
         <h1 *ngIf="!loaded">Loading...</h1>
         <h1 *ngIf="loaded && size == 0">No Results</h1>
-        <tr *ngFor="let userTableItem of results">
+        <tr *ngFor="let userTableItem of results" class="data">
             <td style="width: 10%;">{{userTableItem.id}}</td>
             <td style="width: 20%;">{{userTableItem.username}}</td>
             <td style="width: 40%;">{{userTableItem.email}}</td>

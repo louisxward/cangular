@@ -10,9 +10,17 @@ export namespace User {
       constructor(public payload: { username: string, password: string }) {}
     }
 
+    export class LoginFlowUnsuccessful {
+      static readonly type = "[Login] Login Flow Unsuccessful";
+    }
+
     export class UpdateUser {
       static readonly type = "[Login] Update User Initiated"
       constructor(public payload: { id: string, avatar: string, username: string, email: string }) {}
+    }
+
+    export class LogoutFlowInitiated {
+      static readonly type = "[Login] Logout Flow Initiated";
     }
 
     // want to send whole record instead of just specified fields
@@ -20,10 +28,6 @@ export namespace User {
     //   static readonly type = "[Login] Update User Initiated2"
     //   constructor(public payload: {record: Record<"", any>}) {}
     // }
-
-    export class LogoutFlowInitiated {
-      static readonly type = "[Login] Logout Flow Initiated";
-    }
     
   }
 }

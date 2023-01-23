@@ -20,6 +20,10 @@ th, td, .pagnation {
     padding: 0.5rem;
 }
 
+tr.data{
+    border-bottom:1px solid white;
+}
+
 thead{
   color: black;
   background-color: var(--primary);

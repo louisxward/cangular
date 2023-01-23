@@ -4,6 +4,7 @@ import { State, Action, StateContext, Store, Selector } from "@ngxs/store";
 // import { patch, append, removeItem, insertItem, updateItem } from '@ngxs/store/operators';
 import { User } from "./user.actions";
 import PocketBase from 'pocketbase';
+import { Router } from "@angular/router";
 
 const userStateDefaults: UserStateModel = {
   id: null,
@@ -21,7 +22,7 @@ const userStateDefaults: UserStateModel = {
 export class UserState {
     pb = new PocketBase('http://127.0.0.1:8090')
     
-    constructor(private store: Store){}
+    constructor(private store: Store, private router: Router ){}
 
     async getAvatarUrl(userId: string, fileName: string): Promise<string> {
       let avatarUrl = ""
@@ -36,6 +37,12 @@ export class UserState {
     }
 
 
+    @Action(User.Login.LoginFlowUnsuccessful)
+    loginUnsuccessful() {
+      console.log("loginUnsuccessful()")
+      window.alert("User Not Found");
+    }
+
     @Action(User.Login.LoginFlowInitiated)
     login(ctx: StateContext<UserStateModel>, action: User.Login.LoginFlowInitiated) {
       console.log("login()")
@@ -45,9 +52,13 @@ export class UserState {
       myPromise.then((value) => { 
         console.log("found user")
         this.store.dispatch(new User.Login.UpdateUser({id: value.record.id, avatar: value.record.avatar, username: value.record.username, email: value.record.email}));
+        this.router.navigate(['/profile']);
+
       })
      .catch((error)=>{ 
         console.log(error)
+        console.log("user not found")
+        this.store.dispatch(new User.Login.LoginFlowUnsuccessful())
       }) 
     }
 
@@ -81,6 +92,7 @@ export class UserState {
       console.log("logOut()")
       this.pb.authStore.clear();
       ctx.setState(userStateDefaults)
+      this.router.navigate(['/login']);
     }
 
     @Selector()
