@@ -1,87 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component'
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
-import PocketBase from 'pocketbase'
+import { Component } from '@angular/core';
+import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component';
+import { UserFormComponent } from '../components/user-form/user-form.component'
+
+
 
 @Component({
   selector: 'app-userDetails',
   templateUrl: './userDetails.component.html',
   styleUrls: ['./userDetails.component.scss']
 })
+export class UserDetailsComponent {
+ 
+  constructor() {}
 
-export class UserDetailsComponent  implements OnInit{
-
-  pb = new PocketBase('http://127.0.0.1:8090')
-  
-  userId: string
-  userForm:FormGroup;
-  loaded = false
-  found = false;
-  create = false;
-
-  constructor(private route: ActivatedRoute, private router: Router, private fb:FormBuilder){
-    const param = this.route.snapshot.paramMap.get("userId");
-    if(null != param){
-      this.userId = param
-    }
-    else{
-      this.userId = "0"
-    }
-    console.log(this.userId)
-    this.userForm = this.fb.group({
-      username: ""
-      // password: "12345",
-      // passwordConfirm: "12345"
-    });
-    if(this.userId != "0"){
-      this.loadUser()
-    }
-    else{
-      this.loaded = true
-      this.create = true
-    }
-  }
-
-  ngOnInit() {
-  }
-
-  loadUser(){
-    console.log("loadUser()")
-    const myPromise = this.pb.collection('users').getOne(this.userId, {})
-    myPromise.then((value) => { 
-        this.loaded = true
-        this.found = true;
-        this.userForm.get("username")?.setValue(value.username);
-   })
-   .catch((error)=>{ 
-      console.log(error)
-      this.loaded = true
-    }) 
-  }
-
-  submit() {
-    if(this.userId != "0"){
-      const myPromise = this.pb.collection('users').update(this.userId, this.userForm.value);
-      myPromise.then((value) => { 
-        console.log("user saved")
-      })
-      .catch((error)=>{ 
-        console.log(error)
-      }) 
-    }
-    else{
-      const myPromise = this.pb.collection('users').create(this.userForm.value);
-      myPromise.then((value) => { 
-        console.log("user created")
-        this.userId = value.id
-        this.create = false
-        this.found = true
-        this.router.navigate(["users/", value.id]);
-      })
-      .catch((error)=>{ 
-        console.log(error)
-      })  
-    }
-  }
 }

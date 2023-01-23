@@ -1,0 +1,15 @@
+<form [formGroup]="userForm" (ngSubmit)="submit()">
+    <input id="username" placeholder="Username" formControlName="username"
+    [ngClass]="userForm.controls['username'].invalid && (userForm.controls['username'].dirty || userForm.controls['username'].touched) ? 'formError' : ''">
+    <br/>
+    <button class="button" type="submit" [disabled]="!userForm.valid">Create/Save</button>
+</form>
+
+<br/>
+<p>name invalid: {{ userForm.controls['username'].invalid | json }}</p>
+<p>name dirty: {{ userForm.controls['username'].dirty | json }}</p>
+<p>name touched: {{ userForm.controls['username'].touched | json }}</p>
+
+<br/>
+<p>Form value: {{ userForm.value | json }}</p>
+<p>Form status: {{ userForm.status | json }}</p>
