@@ -24,6 +24,7 @@ import { PageHeaderComponent } from './Core/components/page-header/page-header.c
 import { UserTableComponent } from './Users/components/user-table/user-table.component';
 import { UsersComponent } from './Users/users/users.component';
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component';
+import { UserFormComponent } from './UserDetails/components/user-form/user-form.component';
 import { ProfileComponent } from './Profile/profile/profile.component';
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
@@ -38,6 +39,7 @@ import { LoginFormComponent } from './Login/components/login-form/login-form.com
     UsersComponent,
     UserTableComponent,
     UserDetailsComponent,
+    UserFormComponent,
     ProfileComponent,
     LoginComponent,
     LoginFormComponent

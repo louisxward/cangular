@@ -1,5 +1,4 @@
 <form [formGroup]="loginForm" (ngSubmit)="submit()">
-
     <input id="username" placeholder="Username" formControlName="username"
     [ngClass]="loginForm.controls['username'].invalid && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched) ? 'formError' : ''">
     <!-- maybe could use the pre assigned classes?!?!  -->
