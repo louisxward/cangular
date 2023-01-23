@@ -1,16 +1,10 @@
 
 <main class="profile-page">
-    <app-page-header header="Profile"></app-page-header>
+    <app-page-header header="Profile" id="{{userId$ | async}}"></app-page-header>
     <div class="content">
         <div *ngIf="avatarUrl$ | async" class="avatarDisplay">
             <img [src]="avatarUrl$ | async" alt="">
         </div>
-        <p *ngIf="isLoggedIn$">
-            {{ isLoggedIn$ | async }}
-        </p>
-        <p *ngIf="userId$">
-            {{ userId$ | async }}
-        </p>
         <div *ngIf="!(isLoggedIn$ | async)"> 
             <button (click)="login()">Login</button>
         </div>
