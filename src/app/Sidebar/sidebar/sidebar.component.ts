@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from "@ngxs/store";
+import { User, UserState } from "src/app/Core/state/user";
 
 @Component({
   selector: 'app-sidebar',
@@ -8,5 +10,13 @@ import { Component } from '@angular/core';
 
 
 export class SidebarComponent {
+
+  isLoggedIn$ = this.store.select(UserState.isLoggedIn);
+  userId$ = this.store.select(UserState.getUserId);
+  avatarUrl$ = this.store.select(UserState.getAvatarUrl)
+  username$ = this.store.select(UserState.getUsername)
+  email$ = this.store.select(UserState.getEmail)
+
+  constructor(private store: Store) {}
 
 }
