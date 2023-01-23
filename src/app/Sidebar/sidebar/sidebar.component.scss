@@ -48,6 +48,7 @@ aside {
     h3, .button .text {
         opacity: 0;
         transition: 0.3s ease-out;
+        display: none;
     }
     h3 {
         color: var(--grey);
