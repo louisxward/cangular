@@ -22,7 +22,7 @@ import { ProfileComponent } from './Profile/profile/profile.component';
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component';
-
+import { AuthGuardService } from './Core/auth/auth-guard.service'
 
 
 @NgModule({
@@ -39,7 +39,7 @@ import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.
     ProfileComponent,
     LoginComponent,
     LoginFormComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     NgxsReduxDevtoolsPluginModule.forRoot(),
@@ -53,7 +53,7 @@ import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

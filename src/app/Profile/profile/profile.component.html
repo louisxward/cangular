@@ -15,5 +15,11 @@
         <div *ngIf="isLoggedIn$ | async">
             <button (click)="logout()">Logout</button>
         </div>
+        <div>
+            <button (click)="checkAuth()">Check Auth</button>
+        </div>
+        <div>
+            <button (click)="checkStoreAuth()">Check Store Auth</button>
+        </div>
     </div>
 </main>

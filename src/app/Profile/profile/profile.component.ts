@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component';
 import { Store } from "@ngxs/store";
 import { User, UserState } from "src/app/Core/state/user";
-
+import PocketBase from 'pocketbase';
 
 @Component({
   selector: 'app-profile',
@@ -10,6 +10,8 @@ import { User, UserState } from "src/app/Core/state/user";
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
+  pb = new PocketBase('http://127.0.0.1:8090')
+
 
   isLoggedIn$ = this.store.select(UserState.isLoggedIn);
   userId$ = this.store.select(UserState.getUserId);
@@ -17,7 +19,8 @@ export class ProfileComponent {
   username$ = this.store.select(UserState.getUsername)
   email$ = this.store.select(UserState.getEmail)
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   login(): void {
     this.store.dispatch(
@@ -31,4 +34,18 @@ export class ProfileComponent {
   logout(): void {
     this.store.dispatch(new User.Login.LogoutFlowInitiated());
   }
+
+  checkAuth(): void {
+    console.log(this.pb.authStore.isValid);
+    console.log(this.pb.authStore.token);
+  }
+
+  async checkStoreAuth(): Promise<void> {
+    console.log(this.isLoggedIn$);
+    console.log(this.userId$);
+  }
 }
+
+
+
+
