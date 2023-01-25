@@ -40,9 +40,9 @@ export class ProfileComponent {
     console.log(this.pb.authStore.token);
   }
 
-  async checkStoreAuth(): Promise<void> {
-    console.log(this.isLoggedIn$);
-    console.log(this.userId$);
+  checkStoreAuth(): void {
+    this.isLoggedIn$.subscribe(f => {console.log(f)})
+    this.userId$.subscribe(f => {console.log(f)})
   }
 }
 

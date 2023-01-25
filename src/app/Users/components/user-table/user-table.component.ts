@@ -44,9 +44,6 @@ export class UserTableComponent implements OnInit{
 
     getResults(){
         console.log("getResults()")
-        console.log(this.min)
-        console.log(this.max)
-        console.log(this.page)
         const myPromise = this.pb.collection('users').getList(this.min, this.max, {});
         myPromise.then((value) => { 
             console.log(value)
