@@ -1,4 +1,4 @@
-import { RecordAuthResponse, Record } from "pocketbase";
+import { Record } from "pocketbase";
 
 export namespace User {
 
@@ -20,12 +20,6 @@ export namespace User {
     export class LogoutFlowInitiated {
       static readonly type = "[Login] Logout Flow Initiated";
     }
-
-    // want to send whole record instead of just specified fields
-    // export class UpdateUser2 {
-    //   static readonly type = "[Login] Update User Initiated2"
-    //   constructor(public payload: {record: Record<"", any>}) {}
-    // }
     
   }
 }

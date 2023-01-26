@@ -13,7 +13,6 @@ import { LoginService } from 'src/app/Core/services/login/login.service';
 export class ProfileComponent {
   pb = new PocketBase('http://127.0.0.1:8090')
 
-
   isLoggedIn$ = this.store.select(UserState.isLoggedIn);
   userId$ = this.store.select(UserState.getUserId);
   avatarUrl$ = this.store.select(UserState.getAvatarUrl)
@@ -28,8 +27,13 @@ export class ProfileComponent {
   }
 
   logout(): void {
-    this.store.dispatch(new User.Login.LogoutFlowInitiated());
+    this.loginService.logout()
   }
+
+
+
+
+
 
   checkAuth(): void {
     console.log(this.pb.authStore.isValid);

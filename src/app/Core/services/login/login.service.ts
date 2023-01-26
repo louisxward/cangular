@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Action, StateContext, Store } from "@ngxs/store";
-import { User, UserState, UserStateModel } from "src/app/Core/state/user";
+import { Store } from "@ngxs/store";
+import { User } from "src/app/Core/state/user";
 import PocketBase from 'pocketbase';
-import { RecordAuthResponse, Record } from "pocketbase";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class LoginService {
   
   pb = new PocketBase('http://127.0.0.1:8090')
-
   
-  constructor(private store: Store) { }
+  constructor(private store: Store, private router: Router) { 
+  }
 
   login(username: string, password: string): string {
     const myPromise = this.pb.collection('users').authWithPassword(username, password)
@@ -20,6 +20,8 @@ export class LoginService {
         new User.Login.LoginFlowInitiated({
           record: value.record
         }))
+      this.setLastLoggedIn(value.record.id)
+      this.router.navigate(['/profile']);
       return "user found"
     })
    .catch((error)=>{ 
@@ -28,4 +30,14 @@ export class LoginService {
     })
     return "uset not found" 
   }
+
+  logout(){
+    this.store.dispatch(new User.Login.LogoutFlowInitiated());
+  }
+
+  setLastLoggedIn(id: string){
+    const currentDate = new Date();
+    this.pb.collection('users').update(id, {"lastLoggedIn": currentDate});
+  }
+
 }
