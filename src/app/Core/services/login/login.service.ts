@@ -4,8 +4,6 @@ import { User } from "src/app/Core/state/user";
 import PocketBase from 'pocketbase';
 import { Router } from "@angular/router";
 import { NotificationService } from 'src/app/Core/services/notification/notification.service';
-import { Observable } from 'rxjs/internal/Observable';
-import { from } from 'rxjs';
 
 @Injectable()
 export class LoginService {
@@ -19,7 +17,6 @@ export class LoginService {
     const myPromise = this.pb.collection('users').authWithPassword(username, password)
     myPromise.then((value) => { 
       console.log("found user")
-      value.token
       this.store.dispatch(
         new User.Login.LoginFlowInitiated({
           record: value.record
