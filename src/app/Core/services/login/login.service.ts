@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, StateContext, Store } from "@ngxs/store";
 import { User, UserState, UserStateModel } from "src/app/Core/state/user";
 import PocketBase from 'pocketbase';
+import { RecordAuthResponse, Record } from "pocketbase";
 
 @Injectable()
 export class LoginService {
@@ -17,7 +18,7 @@ export class LoginService {
       console.log("found user")
       this.store.dispatch(
         new User.Login.LoginFlowInitiated({
-          record: value
+          record: value.record
         }))
       return "user found"
     })

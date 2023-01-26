@@ -5,6 +5,7 @@ import { State, Action, StateContext, Store, Selector } from "@ngxs/store";
 import { User } from "./user.actions";
 import PocketBase from 'pocketbase';
 import { Router } from "@angular/router";
+import { RecordAuthResponse, Record } from "pocketbase";
 
 const userStateDefaults: UserStateModel = {
   id: null,
@@ -36,13 +37,6 @@ export class UserState {
         console.log(error)
       })
       return avatarUrl
-    }
-
-
-    @Action(User.Login.LoginFlowUnsuccessful)
-    loginUnsuccessful() {
-      console.log("loginUnsuccessful()")
-      window.alert("User Not Found");
     }
 
     @Action(User.Login.LoginFlowInitiated)

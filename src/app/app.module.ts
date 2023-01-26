@@ -22,7 +22,8 @@ import { ProfileComponent } from './Profile/profile/profile.component';
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component';
-import { AuthGuardService } from './Core/services/auth/auth-guard.service'
+import { AuthGuardService } from './Core/services/auth/auth-guard.service';
+import { LoginService } from './Core/services/login/login.service';
 
 
 @NgModule({
@@ -53,7 +54,7 @@ import { AuthGuardService } from './Core/services/auth/auth-guard.service'
     NgbModule,
     ReactiveFormsModule,
   ],
-  providers: [AuthGuardService],
+  providers: [AuthGuardService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

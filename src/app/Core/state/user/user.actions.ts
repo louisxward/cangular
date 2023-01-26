@@ -1,4 +1,4 @@
-import { RecordAuthResponse } from "pocketbase";
+import { RecordAuthResponse, Record } from "pocketbase";
 
 export namespace User {
 
@@ -9,7 +9,7 @@ export namespace User {
   export namespace Login {
     export class LoginFlowInitiated {
       static readonly type = "[Login] Login Flow Initiated"
-      constructor(public payload: { record: RecordAuthResponse<Record<"", []>>}) {}
+      constructor(public payload: { record: Record}) {}
     }
 
     export class UpdateUser {
