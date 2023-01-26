@@ -1,3 +1,5 @@
+import { Record } from "pocketbase";
+
 export namespace User {
 
   export class AppLoaded {
@@ -7,11 +9,7 @@ export namespace User {
   export namespace Login {
     export class LoginFlowInitiated {
       static readonly type = "[Login] Login Flow Initiated"
-      constructor(public payload: { username: string, password: string }) {}
-    }
-
-    export class LoginFlowUnsuccessful {
-      static readonly type = "[Login] Login Flow Unsuccessful";
+      constructor(public payload: { record: Record}) {}
     }
 
     export class UpdateUser {
@@ -22,12 +20,6 @@ export namespace User {
     export class LogoutFlowInitiated {
       static readonly type = "[Login] Logout Flow Initiated";
     }
-
-    // want to send whole record instead of just specified fields
-    // export class UpdateUser2 {
-    //   static readonly type = "[Login] Update User Initiated2"
-    //   constructor(public payload: {record: Record<"", any>}) {}
-    // }
     
   }
 }

@@ -24,6 +24,7 @@
     "@ngxs/store": "^3.7.6",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
+    "ngx-toastr": "^16.0.2",
     "pocketbase": "^0.9.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

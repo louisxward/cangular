@@ -5,6 +5,7 @@ import { State, Action, StateContext, Store, Selector } from "@ngxs/store";
 import { User } from "./user.actions";
 import PocketBase from 'pocketbase';
 import { Router } from "@angular/router";
+import { RecordAuthResponse, Record } from "pocketbase";
 
 const userStateDefaults: UserStateModel = {
   id: null,
@@ -38,30 +39,11 @@ export class UserState {
       return avatarUrl
     }
 
-
-    @Action(User.Login.LoginFlowUnsuccessful)
-    loginUnsuccessful() {
-      console.log("loginUnsuccessful()")
-      window.alert("User Not Found");
-    }
-
     @Action(User.Login.LoginFlowInitiated)
     login(ctx: StateContext<UserStateModel>, action: User.Login.LoginFlowInitiated) {
       console.log("login()")
-      const username = action.payload.username;
-      const password = action.payload.password;
-      const myPromise = this.pb.collection('users').authWithPassword(username, password)
-      myPromise.then((value) => { 
-        console.log("found user")
-        this.store.dispatch(new User.Login.UpdateUser({id: value.record.id, avatar: value.record.avatar, username: value.record.username, email: value.record.email}));
-        this.router.navigate(['/profile']);
-
-      })
-     .catch((error)=>{ 
-        console.log(error)
-        console.log("user not found")
-        this.store.dispatch(new User.Login.LoginFlowUnsuccessful())
-      }) 
+      const record = action.payload.record
+      this.store.dispatch(new User.Login.UpdateUser({id: record.id, avatar: record.avatar, username: record.username, email: record.email}));
     }
 
     @Action(User.Login.UpdateUser)

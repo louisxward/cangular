@@ -8,7 +8,7 @@ import { UserDetailsComponent } from 'src/app/UserDetails/userDetails/userDetail
 import { ProfileComponent } from 'src/app/Profile/profile/profile.component'
 import { LoginComponent } from 'src/app/Login/login/login.component'
 import { PageNotFoundComponent } from 'src/app/PageNotFound/pageNotFound/pageNotFound.component'
-import { AuthGuardService } from 'src/app/Core/auth/auth-guard.service'
+import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
 
 const routes: Routes = [
   {

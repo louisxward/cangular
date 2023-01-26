@@ -22,7 +22,11 @@ import { ProfileComponent } from './Profile/profile/profile.component';
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component';
-import { AuthGuardService } from './Core/auth/auth-guard.service'
+import { AuthGuardService } from './Core/services/auth/auth-guard.service';
+import { LoginService } from './Core/services/login/login.service';
+import { NotificationService } from './Core/services/notification/notification.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -52,8 +56,9 @@ import { AuthGuardService } from './Core/auth/auth-guard.service'
     BrowserAnimationsModule,
     NgbModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot({})
   ],
-  providers: [AuthGuardService],
+  providers: [AuthGuardService, LoginService, NotificationService, ToastrService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
