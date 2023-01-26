@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 import { Action, StateContext, Store } from "@ngxs/store";
 import { User, UserState, UserStateModel } from "src/app/Core/state/user";
+import { LoginService } from 'src/app/Core/services/login/login.service';
 
 
 @Component({
@@ -14,37 +15,30 @@ import { User, UserState, UserStateModel } from "src/app/Core/state/user";
 export class LoginFormComponent implements OnInit{
 
 
-    loginForm:FormGroup;
+  form: FormGroup;
 
-    constructor(private router: Router, private fb:FormBuilder, private store: Store){
-        this.loginForm = this.fb.group({
-            username: ["", [Validators.required]],
-            password: ["", [Validators.required]]
-        });
-    }
+  constructor(private loginService: LoginService, private formBuilder: FormBuilder,){
+    this.form = this.formBuilder.group({
+      username: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(64)
+      ])],
+      password: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(30)
+      ])]
+    });
+  }
+  
+  ngOnInit(): void {
+  }
 
-    ngOnInit(): void {
-    }
-
-    submit(): void {
-        console.log("Form Submitted")
-        console.log(this.loginForm.value)
-        this.login()
-    }
-
-    login(): void {
-        this.store.dispatch(
-          new User.Login.LoginFlowInitiated({
-            username: this.loginForm.value.username,
-            password: this.loginForm.value.password
-          })
-        );
-      }
-
-      //not sure why this isnt being called, did seem too good to be true. currently being called from user.state returns windows pop up error but want to show form error 
-      @Action(User.Login.LoginFlowUnsuccessful)
-      loginUnsuccessful() {
-        console.log("loginUnsuccessful()")
-      }
+  submit() {
+    const found = this.loginService.login(
+      this.form.get('username')?.value,
+      this.form.get('password')?.value)
+  }
 
 }

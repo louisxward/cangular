@@ -22,7 +22,7 @@ import { ProfileComponent } from './Profile/profile/profile.component';
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component';
-import { AuthGuardService } from './Core/auth/auth-guard.service'
+import { AuthGuardService } from './Core/services/auth/auth-guard.service'
 
 
 @NgModule({

@@ -1,3 +1,5 @@
+import { RecordAuthResponse } from "pocketbase";
+
 export namespace User {
 
   export class AppLoaded {
@@ -7,11 +9,7 @@ export namespace User {
   export namespace Login {
     export class LoginFlowInitiated {
       static readonly type = "[Login] Login Flow Initiated"
-      constructor(public payload: { username: string, password: string }) {}
-    }
-
-    export class LoginFlowUnsuccessful {
-      static readonly type = "[Login] Login Flow Unsuccessful";
+      constructor(public payload: { record: RecordAuthResponse<Record<"", []>>}) {}
     }
 
     export class UpdateUser {

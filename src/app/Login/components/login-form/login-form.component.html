@@ -1,18 +1,17 @@
-<form [formGroup]="loginForm" (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submit()">
     <input id="username" placeholder="Username" formControlName="username"
-    [ngClass]="loginForm.controls['username'].invalid && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched) ? 'formError' : ''">
-    <!-- maybe could use the pre assigned classes?!?!  -->
+    [ngClass]="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched) ? 'formError' : ''">
     <input id="password" placeholder="Password" formControlName="password"
-    [ngClass]="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched) ? 'formError' : ''">
+    [ngClass]="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched) ? 'formError' : ''">
     <br/>
-    <button class="button" type="submit" [disabled]="!loginForm.valid">Login</button>
+    <button class="button" type="submit" [disabled]="!form.valid">Login</button>
 </form>
 
 <br/>
-<p>name invalid: {{ loginForm.controls['username'].invalid | json }}</p>
-<p>name dirty: {{ loginForm.controls['username'].dirty | json }}</p>
-<p>name touched: {{ loginForm.controls['username'].touched | json }}</p>
+<p>name invalid: {{ form.controls['username'].invalid | json }}</p>
+<p>name dirty: {{ form.controls['username'].dirty | json }}</p>
+<p>name touched: {{ form.controls['username'].touched | json }}</p>
 
 <br/>
-<p>Form value: {{ loginForm.value | json }}</p>
-<p>Form status: {{ loginForm.status | json }}</p>
+<p>Form value: {{ form.value | json }}</p>
+<p>Form status: {{ form.status | json }}</p>
