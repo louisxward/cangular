@@ -17,7 +17,7 @@ export class LoginFormComponent implements OnInit{
 
   form: FormGroup;
 
-  constructor(private loginService: LoginService, private formBuilder: FormBuilder,){
+  constructor(private loginService: LoginService, private formBuilder: FormBuilder){
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([
         Validators.required,
