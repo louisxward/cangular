@@ -7,7 +7,7 @@
     <button class="button" type="submit" [disabled]="!form.valid">Login</button>
 </form>
 
-<div class="formMessage" *ngIf="errorMessage != '' && !form.dirty">
+<div class="formMessage" *ngIf="errorMessage != '' && !form.valid">
     <h3 style="color: red;">{{errorMessage}}</h3>
 </div>
 

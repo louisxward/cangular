@@ -23,15 +23,16 @@ export class LoginService {
         }))
       this.setLastLoggedIn(value.record.id)
       this.router.navigate(['/profile']);
-      this.notificationService.info("welcome "+value.record.username)
+      this.notificationService.success("welcome "+value.record.username)
       return ""
     })
    .catch((error)=>{ 
       console.log(error)
       console.log("user not found")
       //this.notificationService.error("incorrect email/password")
+      return "incorrect email/password"
     })
-    return "incorrect email/password"
+    return "incorrect email/password"// doesnt await for and returns this need to make async and promise string
   }
 
   logout(){

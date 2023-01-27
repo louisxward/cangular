@@ -11,12 +11,15 @@ export class NotificationService {
 
   constructor(private toastrService: ToastrService) { }
 
+  success(message: string) {
+    this.toastrService.success(message, '', toastrOptions);
+  }
+
   info(message: string) {
     this.toastrService.info(message, '', toastrOptions);
   }
 
   error(message: string) {
-    console.log("NotificationService - ToastrService")
     this.toastrService.error(message, '', toastrOptions);
   }
 }
