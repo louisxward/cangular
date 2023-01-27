@@ -36,7 +36,6 @@ export class UserTableComponent implements OnInit{
         });
         this.getResults();
         this.pagnationForm.get("max")?.valueChanges.subscribe(f => {this.updateMax(f)})
-
     }
 
     ngOnInit(): void {

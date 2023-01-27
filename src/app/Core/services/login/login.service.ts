@@ -37,6 +37,7 @@ export class LoginService {
 
   logout(){
     this.store.dispatch(new User.Login.LogoutFlowInitiated());
+    this.notificationService.success("logged  out")
   }
 
   setLastLoggedIn(id: string){
