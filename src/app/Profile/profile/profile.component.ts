@@ -4,6 +4,7 @@ import { Store } from "@ngxs/store";
 import { User, UserState } from "src/app/Core/state/user";
 import PocketBase from 'pocketbase';
 import { LoginService } from 'src/app/Core/services/login/login.service';
+import { AvatarUploadComponent } from '../components/avatar-upload/avatar-upload.component';
 
 @Component({
   selector: 'app-profile',
