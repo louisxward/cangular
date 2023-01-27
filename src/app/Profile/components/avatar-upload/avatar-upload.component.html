@@ -1,3 +1,10 @@
-test
 
-<input type="file" id="fileInput" class="fileInput"  (change)="handleFileInput($event.target.files)">
+<div class="text-center">
+    <input class="form-control" type="file" 
+            (change)="onChange($event)">
+  
+    <button (click)="onUpload()" 
+        class="btn btn-success">
+        Upload
+    </button>
+</div>

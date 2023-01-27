@@ -6,6 +6,9 @@ export class UploadService  {
   constructor() {
   }
 
+  upload(data: FormData, id: string){
+    //todo
+  }
   
   
 }

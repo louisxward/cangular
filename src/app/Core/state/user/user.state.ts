@@ -80,8 +80,11 @@ export class UserState {
     }
 
     @Selector()
-    static getUserId(state: UserStateModel): string | null{
-      return state.id;
+    static getUserId(state: UserStateModel): string{
+      if(null != state.id){
+        return state.id;
+      }
+      return ""
     }
 
     @Selector()

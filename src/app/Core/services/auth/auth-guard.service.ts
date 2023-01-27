@@ -6,9 +6,11 @@ import { Store } from "@ngxs/store";
 @Injectable()
 export class AuthGuardService implements CanActivate {
   isLoggedIn = false;
+  userId = ""
 
   constructor(public router: Router, private store: Store) {
     this.store.select(UserState.isLoggedIn).subscribe(f => {this.isLoggedIn = f})
+    this.store.select(UserState.getUserId).subscribe(f => {this.userId = f})
   }
 
   canActivate(): boolean {
@@ -18,5 +20,7 @@ export class AuthGuardService implements CanActivate {
     }
     return true;
   }
+
+
   
 }
