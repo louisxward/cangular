@@ -17,7 +17,12 @@ export class AvatarUploadComponent implements OnInit{
   
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
-    this.formData.append('fileKey', this.fileToUpload, this.fileToUpload?.name);//<<<!<!<!<>!>!>!>!>!>>>!>!>!!>?!?!??!
+    this.upload(this.fileToUpload)
+
+  }
+
+  upload(fileToUpload: File){
+    this.formData.append('fileKey', fileToUpload, fileToUpload.name);//<<<!<!<!<>!>!>!>!>!>>>!>!>!!>?!?!??!
   }
 
   constructor(private uploadService : UploadService){
