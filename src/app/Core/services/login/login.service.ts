@@ -23,7 +23,7 @@ export class LoginService {
         }))
       this.setLastLoggedIn(value.record.id)
       this.router.navigate(['/profile']);
-      this.notificationService.success("welcome "+value.record.username)
+      this.notificationService.success("welcome " + value.record.username)
       return ""
     })
    .catch((error)=>{ 

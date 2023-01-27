@@ -39,10 +39,9 @@ export class LoginFormComponent implements OnInit{
   submit() {
     this.errorMessage = this.loginService.login(
       this.form.get('username')?.value,
-      this.form.get('password')?.value)
+      this.form.get('password')?.value)// this value should be a promise
     if(this.errorMessage != ""){
       this.form.reset()
-
     }
   }
 }
