@@ -28,12 +28,14 @@ export class AvatarUploadComponent implements OnInit{
   }
 
   // OnClick of button Upload
-  onUpload() {
-      this.loading = !this.loading;
+  async onUpload() {
+      this.loading = true;
       console.log(this.file);
       const formData = new FormData();
-      formData.append("thumbnail", this.file);
-      this.uploadService.upload(formData, this.authGuardService.userId)
+      formData.append("avatar", this.file);
+      //this.uploadService.upload(formData, this.authGuardService.userId).then((value: boolean) => this.loading)
+      await this.uploadService.upload(formData, this.authGuardService.userId)
+      this.loading = false
   }
 
 }
