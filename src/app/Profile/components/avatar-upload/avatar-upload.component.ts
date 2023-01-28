@@ -35,7 +35,7 @@ export class AvatarUploadComponent implements OnInit{
     formData.append("avatar", this.file);
     await this.uploadService.upload(formData, this.authGuardService.userId).then((value: string) => fileName = value)
     this.store.dispatch(
-      new User.UpdateAvatar({
+      new User.Update.Avatar({
         id: this.authGuardService.userId,
         fileName: fileName
       }))

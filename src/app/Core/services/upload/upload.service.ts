@@ -12,7 +12,6 @@ export class UploadService  {
 
   async upload(data: FormData, id: string) {
     console.log("upload() start")
-    console.log("ID:" + id)
     let fileName = ""
     const myPromise = this.pb.collection('users').update(id, data);
     await myPromise.then((value) => { 
@@ -23,8 +22,19 @@ export class UploadService  {
       console.log(error)
       this.notificationService.error("upload failed")
     })
-    console.log("fileName: " + fileName)
     console.log("upload() end")
     return fileName
+  }
+
+  async getFileUrl(userId: string, fileName: string): Promise<string> {
+    let avatarUrl = ""
+    const myPromise = this.pb.collection('users').getOne(userId)
+    await myPromise.then((value) => { 
+      avatarUrl = this.pb.getFileUrl(value, fileName, {})
+    })
+   .catch((error)=>{ 
+      console.log(error)
+    })
+    return avatarUrl
   }
 }
