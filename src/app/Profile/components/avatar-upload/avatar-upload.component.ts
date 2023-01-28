@@ -17,7 +17,6 @@ export class AvatarUploadComponent implements OnInit{
   file: File = new File([],"",{});
   avatarFileName$ = this.store.select(UserState.getAvatarFileName)
 
-
   constructor(private store: Store, private uploadService: UploadService, private authGuardService: AuthGuardService) { }
 
   ngOnInit(): void {
