@@ -44,4 +44,5 @@ export class LoginService {
     this.pb.collection('users').update(id, {"lastLoggedIn": new Date()});
   }
 
+
 }

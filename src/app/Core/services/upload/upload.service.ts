@@ -1,5 +1,4 @@
 import {  Injectable } from '@angular/core';
-
 import PocketBase from 'pocketbase';
 import { NotificationService } from '../notification/notification.service';
 
@@ -11,21 +10,21 @@ export class UploadService  {
   constructor(private notificationService: NotificationService) {
   }
 
-  async upload(data: FormData, id: string): Promise<boolean> {
+  async upload(data: FormData, id: string) {
+    console.log("upload() start")
+    console.log("ID:" + id)
+    let fileName = ""
     const myPromise = this.pb.collection('users').update(id, data);
     await myPromise.then((value) => { 
-      console.log("file uploaded")
       this.notificationService.success("file uploaded")
-      return false
+      fileName = value.avatar
     })
     .catch((error)=>{
       console.log(error)
       this.notificationService.error("upload failed")
-      return false
     })
-    return false;
+    console.log("fileName: " + fileName)
+    console.log("upload() end")
+    return fileName
   }
-
-  
-  
 }

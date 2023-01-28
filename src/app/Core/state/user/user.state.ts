@@ -43,11 +43,11 @@ export class UserState {
     login(ctx: StateContext<UserStateModel>, action: User.Login.LoginFlowInitiated) {
       console.log("login()")
       const record = action.payload.record
-      this.store.dispatch(new User.Login.UpdateUser({id: record.id, avatar: record.avatar, username: record.username, email: record.email}));
+      this.store.dispatch(new User.UpdateUser({id: record.id, avatar: record.avatar, username: record.username, email: record.email}));
     }
 
-    @Action(User.Login.UpdateUser)
-    async updateUser(ctx: StateContext<UserStateModel>, action: User.Login.UpdateUser) {
+    @Action(User.UpdateUser)
+    async updateUser(ctx: StateContext<UserStateModel>, action: User.UpdateUser) {
       console.log("updateUser()")
       const id = action.payload.id
       const avatarFileName = action.payload.avatar
@@ -55,13 +55,7 @@ export class UserState {
       const email = action.payload.email
       let avatarUrl = ""
       if(avatarFileName){
-        const myPromise = this.getAvatarUrl(id, avatarFileName)
-        await myPromise.then((value) => { 
-          avatarUrl = value
-        })
-       .catch((error)=>{ 
-          console.log(error)
-        })
+        await this.getAvatarUrl(id, avatarFileName).then((value: string) => avatarUrl = value)
       }
       ctx.patchState({
         id: id,
@@ -71,6 +65,21 @@ export class UserState {
       })
     }
 
+
+
+    async getFile(id: string, fileName: string): Promise<string>{
+      
+      const myPromise = this.getAvatarUrl(id, fileName)
+      await myPromise.then((value) => { 
+        return value
+      })
+      .catch((error)=>{ 
+        console.log(error)
+      })
+      return ""
+    }
+
+
     @Action(User.Login.LogoutFlowInitiated)
     logout(ctx: StateContext<UserStateModel>) {
       console.log("logOut()")
@@ -78,6 +87,29 @@ export class UserState {
       ctx.setState(userStateDefaults)
       this.router.navigate(['/login']);
     }
+
+
+
+    @Action(User.UpdateAvatar)
+    async updateAvatar(ctx: StateContext<UserStateModel>, action: User.UpdateAvatar) {
+      console.log("updateAvatar() start")
+      const id = action.payload.id
+      const fileName = action.payload.fileName
+      console.log(id)
+      console.log(fileName)
+      let avatarUrl = ""
+      await this.getAvatarUrl(id, fileName).then((value: string) => avatarUrl = value)
+      console.log(avatarUrl)
+      ctx.patchState({
+        id: id,
+        avatarUrl: avatarUrl,
+      })
+      console.log("updateAvatar() end")
+    }
+
+
+
+
 
     @Selector()
     static getUserId(state: UserStateModel): string{
