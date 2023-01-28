@@ -15,6 +15,7 @@ export class AvatarUploadComponent implements OnInit{
   loading: boolean = false;
   pending: boolean = false;
   file: File = new File([],"",{});
+  avatarFileName$ = this.store.select(UserState.getAvatarFileName)
 
 
   constructor(private store: Store, private uploadService: UploadService, private authGuardService: AuthGuardService) { }
@@ -38,9 +39,20 @@ export class AvatarUploadComponent implements OnInit{
       new User.Update.Avatar({
         id: this.authGuardService.userId,
         fileName: fileName
-      }))
+    }))
     this.loading = false
     this.pending = false
     this.file = new File([],"",{});
+    }
+
+    delete(){
+      console.log("delete()")
+      this.file = new File([],"",{});
+      this.pending = false
+      this.store.dispatch(
+        new User.Update.Avatar({
+          id: this.authGuardService.userId,
+          fileName: ""
+      }))
     }
 }

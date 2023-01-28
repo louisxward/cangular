@@ -1,3 +1,22 @@
-.formError{
-    background-color: red;
+.fileName {
+    width: 800px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
+
+.chooose{
+    color:var(--primary);
+    cursor:pointer;
+    font-size: 13.333px;
+}
+
+.delete{
+    color: red;
+    cursor:pointer;
+}
+
+.fileUpload label{
+    margin-right: 8px;
+}
+

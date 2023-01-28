@@ -9,6 +9,7 @@ import { UploadService } from "../../services/upload/upload.service";
 const userStateDefaults: UserStateModel = {
   id: null,
   avatarUrl: null,
+  avatarFileName: null,
   username: null,
   email: null,
 }
@@ -55,6 +56,7 @@ export class UserState {
         avatarUrl: avatarUrl,
         username: username,
         email: email,
+        avatarFileName: avatarFileName,
       })
     }
 
@@ -63,11 +65,18 @@ export class UserState {
       const id = action.payload.id
       const fileName = action.payload.fileName
       let avatarUrl = ""
-      await this.uploadService.getFileUrl(id, fileName).then((value: string) => avatarUrl = value)
+      if(fileName != ""){
+        await this.uploadService.getFileUrl(id, fileName).then((value: string) => avatarUrl = value)
+      }
+      else{
+        this.uploadService.deleteFile(id, fileName, "avatar-")
+      }
       ctx.patchState({
         id: id,
         avatarUrl: avatarUrl,
+        avatarFileName: fileName,
       })
+
     }
 
 
@@ -84,6 +93,14 @@ export class UserState {
     static getAvatarUrl(state: UserStateModel): string{
       if(null != state.avatarUrl){
         return state.avatarUrl;
+      }
+      return ""
+    }
+
+    @Selector()
+    static getAvatarFileName(state: UserStateModel): string{
+      if(null != state.avatarFileName){
+        return state.avatarFileName;
       }
       return ""
     }

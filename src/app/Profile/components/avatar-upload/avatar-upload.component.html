@@ -1,7 +1,12 @@
-
 <div class="text-center" *ngIf="!loading">
-    <input class="form-control" type="file" (change)="onChange($event)">
-    <button (click)="onUpload()" class="btn btn-success" [disabled]="!pending">Upload</button>
+    <label style="display: block;">Avatar Upload:</label>
+    <div class="fileUpload">
+        <label for="chooose" class="chooose">Choose</label>
+        <label class="fileName">{{ (file.name != "") ? file.name : ((avatarFileName$ | async) != "") ? (avatarFileName$ | async) : "Please select a file"}}</label>
+        <label (click)="delete()" class="delete" *ngIf="(file.name != '') || ((avatarFileName$ | async) != '')">X</label>
+        <input type="file" id="chooose" (change)="onChange($event)" style="display:none;"/> 
+        <button (click)="onUpload()" [disabled]="!pending"> Upload</button>
+    </div>
 </div>
 <div class="text-center" *ngIf="loading">
     <h3>uploading...</h3>

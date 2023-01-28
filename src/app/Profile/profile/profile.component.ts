@@ -31,11 +31,6 @@ export class ProfileComponent {
     this.loginService.logout()
   }
 
-
-
-
-
-
   checkAuth(): void {
     console.log(this.pb.authStore.isValid);
     console.log(this.pb.authStore.token);
