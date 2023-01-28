@@ -13,10 +13,12 @@ export class LoginService {
   constructor(private store: Store, private router: Router, private notificationService: NotificationService) { 
   }
 
-  login(username: string, password: string): string {
+  async login(username: string, password: string): Promise<string> {
     const myPromise = this.pb.collection('users').authWithPassword(username, password)
-    myPromise.then((value) => { 
-      console.log("found user")
+    let response = ""
+    await myPromise.then((value) => { 
+      console.log("user found")
+      response = "user found"
       this.store.dispatch(
         new User.Login.Login({
           record: value.record
@@ -24,24 +26,22 @@ export class LoginService {
       this.setLastLoggedIn(value.record.id)
       this.router.navigate(['/profile']);
       this.notificationService.success("welcome " + value.record.username)
-      return ""
     })
    .catch((error)=>{ 
+      response =  "incorrect email/password"
       console.log(error)
       console.log("user not found")
-      return "incorrect email/password"
     })
-    return "incorrect email/password"// doesnt await for and returns this need to make async and promise string
+    return response
   }
 
   logout(){
     this.store.dispatch(new User.Login.Logout());
-    this.notificationService.success("logged  out")
+    this.notificationService.success("logged out")
   }
 
   setLastLoggedIn(id: string){
     this.pb.collection('users').update(id, {"lastLoggedIn": new Date()});
   }
-
 
 }

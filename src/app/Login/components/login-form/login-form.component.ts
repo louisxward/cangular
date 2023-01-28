@@ -16,7 +16,7 @@ export class LoginFormComponent implements OnInit{
 
 
   form: FormGroup;
-  errorMessage = ""
+  response = ""
 
   constructor(private loginService: LoginService, private formBuilder: FormBuilder){
     this.form = this.formBuilder.group({
@@ -36,11 +36,11 @@ export class LoginFormComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  submit() {
-    this.errorMessage = this.loginService.login(
+  async submit() {
+    await this.loginService.login(
       this.form.get('username')?.value,
-      this.form.get('password')?.value)// this value should be a promise
-    if(this.errorMessage != ""){
+      this.form.get('password')?.value).then((value: string) => this.response = value)
+    if(this.response != "user found"){
       this.form.reset()
     }
   }
