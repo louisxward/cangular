@@ -38,8 +38,9 @@ export class UploadService  {
     return avatarUrl
   }
 
-
   deleteFile(userId: string, fileName: string, field: string){
-    this.pb.collection('users').update(userId, {field: null});
+    console.log("deleteFile()")
+    this.pb.collection('users').update(userId, {'avatar': null});
+    this.notificationService.success("file deleted")
   }
 }

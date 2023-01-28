@@ -69,7 +69,7 @@ export class UserState {
         await this.uploadService.getFileUrl(id, fileName).then((value: string) => avatarUrl = value)
       }
       else{
-        this.uploadService.deleteFile(id, fileName, "avatar-")
+        this.uploadService.deleteFile(id, fileName, "avatar")
       }
       ctx.patchState({
         id: id,
