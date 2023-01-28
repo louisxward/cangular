@@ -12,9 +12,10 @@ import { User, UserState } from "src/app/Core/state/user";
 
 export class AvatarUploadComponent implements OnInit{
 
-  shortLink: string = "";
   loading: boolean = false;
+  pending: boolean = false;
   file: File = new File([],"",{});
+
 
   constructor(private store: Store, private uploadService: UploadService, private authGuardService: AuthGuardService) { }
 
@@ -23,13 +24,13 @@ export class AvatarUploadComponent implements OnInit{
 
   onChange(event: any) {
       this.file = event.target.files[0];
+      this.pending = true;
   }
 
   async onUpload() {
     console.log("onUpload()")
     this.loading = true;
     let fileName = ""
-    console.log(this.file);
     const formData = new FormData();
     formData.append("avatar", this.file);
     await this.uploadService.upload(formData, this.authGuardService.userId).then((value: string) => fileName = value)
@@ -39,6 +40,7 @@ export class AvatarUploadComponent implements OnInit{
         fileName: fileName
       }))
     this.loading = false
-  }
-
+    this.pending = false
+    this.file = new File([],"",{});
+    }
 }
