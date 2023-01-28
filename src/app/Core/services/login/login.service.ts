@@ -18,7 +18,7 @@ export class LoginService {
     myPromise.then((value) => { 
       console.log("found user")
       this.store.dispatch(
-        new User.Login.LoginFlowInitiated({
+        new User.Login.Login({
           record: value.record
         }))
       this.setLastLoggedIn(value.record.id)
@@ -29,19 +29,19 @@ export class LoginService {
    .catch((error)=>{ 
       console.log(error)
       console.log("user not found")
-      //this.notificationService.error("incorrect email/password")
       return "incorrect email/password"
     })
     return "incorrect email/password"// doesnt await for and returns this need to make async and promise string
   }
 
   logout(){
-    this.store.dispatch(new User.Login.LogoutFlowInitiated());
+    this.store.dispatch(new User.Login.Logout());
     this.notificationService.success("logged  out")
   }
 
   setLastLoggedIn(id: string){
     this.pb.collection('users').update(id, {"lastLoggedIn": new Date()});
   }
+
 
 }

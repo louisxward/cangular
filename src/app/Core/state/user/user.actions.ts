@@ -3,22 +3,29 @@ import { Record } from "pocketbase";
 export namespace User {
 
   export class AppLoaded {
-    static readonly type = "[Login] App Loaded";
+    static readonly type = "[User] App Loaded";
+  }
+
+  export namespace Update {
+    export class Avatar {
+      static readonly type = "[Update] Avatar"
+      constructor(public payload: { id: string, fileName: string }) {}
+    }
+
+    export class User {
+      static readonly type = "[Update] User"
+      constructor(public payload: { id: string, avatar: string, username: string, email: string }) {}
+    }
   }
 
   export namespace Login {
-    export class LoginFlowInitiated {
-      static readonly type = "[Login] Login Flow Initiated"
+    export class Login {
+      static readonly type = "[Login] Login"
       constructor(public payload: { record: Record}) {}
     }
 
-    export class UpdateUser {
-      static readonly type = "[Login] Update User Initiated"
-      constructor(public payload: { id: string, avatar: string, username: string, email: string }) {}
-    }
-
-    export class LogoutFlowInitiated {
-      static readonly type = "[Login] Logout Flow Initiated";
+    export class Logout {
+      static readonly type = "[Login] Logout";
     }
     
   }

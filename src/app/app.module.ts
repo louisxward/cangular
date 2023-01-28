@@ -19,11 +19,13 @@ import { UserTableComponent } from './Users/components/user-table/user-table.com
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component';
 import { UserFormComponent } from './UserDetails/components/user-form/user-form.component';
 import { ProfileComponent } from './Profile/profile/profile.component';
+import { AvatarUploadComponent } from './Profile/components/avatar-upload/avatar-upload.component';
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
+import { LoginService } from './Core/services/login/login.service';
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component';
 import { AuthGuardService } from './Core/services/auth/auth-guard.service';
-import { LoginService } from './Core/services/login/login.service';
+import { UploadService } from './Core/services/upload/upload.service';
 import { NotificationService } from './Core/services/notification/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
@@ -41,6 +43,7 @@ import { ToastrModule } from 'ngx-toastr';
     UserDetailsComponent,
     UserFormComponent,
     ProfileComponent,
+    AvatarUploadComponent,
     LoginComponent,
     LoginFormComponent,
     PageNotFoundComponent,
@@ -58,7 +61,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     ToastrModule.forRoot({})
   ],
-  providers: [AuthGuardService, LoginService, NotificationService, ToastrService],
+  providers: [AuthGuardService, LoginService, NotificationService, ToastrService, UploadService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

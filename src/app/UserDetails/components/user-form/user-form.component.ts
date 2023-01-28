@@ -55,7 +55,7 @@ export class UserFormComponent implements OnInit{
         console.log("user saved")
         this.router.navigate(["users"]);//see below comment, added this so it matches current functionality
       })
-      .catch((error)=>{ 
+      .catch((error)=>{
         console.log(error)
       }) 
     }

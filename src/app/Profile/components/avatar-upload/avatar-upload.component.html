@@ -1,0 +1,8 @@
+
+<div class="text-center" *ngIf="!loading">
+    <input class="form-control" type="file" (change)="onChange($event)">
+    <button (click)="onUpload()" class="btn btn-success" [disabled]="!pending">Upload</button>
+</div>
+<div class="text-center" *ngIf="loading">
+    <h3>uploading...</h3>
+</div>
