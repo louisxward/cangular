@@ -3,11 +3,11 @@
     <span>
       <h3>Menu</h3>
       <div class="menu">
-        <a routerLink="/" class="button" title="Home">
+        <a routerLink="/" class="item" title="Home">
           <span class="material-icons">home</span>
           <span class="text">Home</span>
         </a>
-        <a routerLink="/about" class="button" title="About">
+        <a routerLink="/about" class="item" title="About">
           <span class="material-icons">list</span>
           <span class="text">About</span>
         </a>
@@ -17,7 +17,7 @@
     <span *ngIf="(isLoggedIn$ | async)">
       <h3>Admin</h3>
       <div class="menu">
-        <a routerLink="/users" class="button" title="Users">
+        <a routerLink="/users" class="item" title="Users">
           <span class="material-icons">group</span>
           <span class="text">Users</span>
         </a>
@@ -28,13 +28,13 @@
 
     <span>
       <div class="menu">
-        <a *ngIf="!(isLoggedIn$ | async)" routerLink="/login" class="button" title="Login">
+        <a *ngIf="!(isLoggedIn$ | async)" routerLink="/login" class="item" title="Login">
           <span class="material-icons">account_circle</span>
           <span class="text">Login</span>
         </a>
-        <a *ngIf="(isLoggedIn$ | async)" routerLink="/profile" class="button" title="Profile">
+        <a *ngIf="(isLoggedIn$ | async)" routerLink="/profile" class="item" title="Profile">
           <span *ngIf="!(avatarUrl$ | async)" class="material-icons">account_circle</span>
-          <img *ngIf="avatarUrl$ | async" [src]="avatarUrl$ | async" alt="" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+          <img *ngIf="avatarUrl$ | async" [src]="avatarUrl$ | async" alt="" class="avatar">
           <span class="text">Profile</span>
         </a>
       </div>

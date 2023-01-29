@@ -18,7 +18,6 @@ aside {
         img {
             width: 2rem;
         }
-
     }
     .menu-toggle-wrap {
         display: flex;
@@ -45,7 +44,7 @@ aside {
             }
         }
     }
-    h3, .button .text {
+    h3, .item .text {
         opacity: 0;
         transition: 0.3s ease-out;
         display: none;
@@ -58,7 +57,7 @@ aside {
     }
     .menu {
         margin: 0 -1rem;
-        .button {
+        .item {
             display: flex;
             align-items: center;
             text-decoration: none;
@@ -98,10 +97,10 @@ aside {
                 transform: rotate(-180deg);
             }
         }
-        h3, .button .text {
+        h3, .item .text {
             opacity: 1;
         }
-        .button{
+        .item{
             .material-icons {
                 margin-right: 1rem;
             }
@@ -110,5 +109,12 @@ aside {
     @media (max-width: 768px) {
         position: fixed;
         z-index: 99;
+    }
+    .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid var(--primary);
     }
 }

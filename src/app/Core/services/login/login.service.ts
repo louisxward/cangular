@@ -28,7 +28,7 @@ export class LoginService {
       this.notificationService.success("welcome " + value.record.username)
     })
    .catch((error)=>{ 
-      response =  "incorrect email/password"
+      response =  "incorrect username/password"
       console.log(error)
       console.log("user not found")
     })

@@ -3,19 +3,16 @@
     [ngClass]="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched) ? 'formError' : ''">
     <input id="password" placeholder="Password" formControlName="password"
     [ngClass]="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched) ? 'formError' : ''">
+    <div class="formMessage" *ngIf="!form.valid">
+        <h3 >{{response}}</h3>
+    </div>
     <br/>
     <button class="button" type="submit" [disabled]="!form.valid">Login</button>
 </form>
-
-<div class="formMessage" *ngIf="!form.valid">
-    <h3 style="color: red;">{{response}}</h3>
-</div>
-
-<br/>
-<p>name invalid: {{ form.controls['username'].invalid | json }}</p>
+<!-- <p>name invalid: {{ form.controls['username'].invalid | json }}</p>
 <p>name dirty: {{ form.controls['username'].dirty | json }}</p>
 <p>name touched: {{ form.controls['username'].touched | json }}</p>
 
 <br/>
 <p>Form value: {{ form.value | json }}</p>
-<p>Form status: {{ form.status | json }}</p>
+<p>Form status: {{ form.status | json }}</p> -->

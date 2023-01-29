@@ -15,7 +15,7 @@
             <td style="width: 20%;">{{userTableItem.username}}</td>
             <td style="width: 40%;">{{userTableItem.email}}</td>
             <td>
-                <button (click)="viewUser(userTableItem.id)">View</button>
+                <button class="button" (click)="viewUser(userTableItem.id)">View</button>
             </td>
         </tr>
     </tbody>
@@ -44,6 +44,6 @@
     </form>
 </div>
 
-<div class="actions">
-    <button (click)="createUser()">Create</button>
+<div class="buttons">
+    <button class="button" (click)="createUser()">Create</button>
 </div>
