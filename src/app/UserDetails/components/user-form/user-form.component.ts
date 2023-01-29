@@ -29,12 +29,24 @@ export class UserFormComponent implements OnInit{
     }
 
     ngOnInit(): void {
-      this.userForm.addControl( 'username', new FormControl(this.userData.username, Validators.required))
-      this.userForm.addControl( 'email', new FormControl(this.userData.email, [Validators.required, Validators.email]))//only admins can edit emails, creation still allows anyone to set the email
+      this.userForm.addControl( 'username', new FormControl(this.userData.username, Validators.compose([
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(64)
+      ])))
+      this.userForm.addControl( 'email', new FormControl(this.userData.email, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]))//only admins can edit emails, creation still allows anyone to set the email
       if(this.userData.id == "0"){
         this.userForm.addControl( 'emailVisibility', new FormControl(true, Validators.required))
-        this.userForm.addControl( 'password', new FormControl("", Validators.required))
-        this.userForm.addControl( 'passwordConfirm', new FormControl("", Validators.required))
+        this.userForm.addControl( 'password', new FormControl("", Validators.compose([
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(64)
+        ])))
+        this.userForm.addControl( 'passwordConfirm', new FormControl("", Validators.compose([
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(64)
+        ])))
       }
     }
 

@@ -28,7 +28,7 @@ export class LoginFormComponent implements OnInit{
       password: ['12345', Validators.compose([
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(30)
+        Validators.maxLength(64)
       ])]
     });
   }
