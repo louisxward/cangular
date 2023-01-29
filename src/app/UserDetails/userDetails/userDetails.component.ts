@@ -20,8 +20,8 @@ export class UserDetailsComponent {
   found = false
   userData = {
     id: "0",
-    username: "louis",
-    email: "213123@21313.com",
+    username: "",
+    email: "",
   }
   
   constructor(private route: ActivatedRoute) {

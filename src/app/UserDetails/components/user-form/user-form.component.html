@@ -7,11 +7,11 @@
     [ngClass]="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched) ? 'formError' : ''">
     <input id="passwordConfirm" placeholder="Confirm Password" formControlName="passwordConfirm" *ngIf="form.controls['passwordConfirm']" type="password"
     [ngClass]="form.controls['passwordConfirm'].invalid && (form.controls['passwordConfirm'].dirty || form.controls['passwordConfirm'].touched) ? 'formError' : ''">
-    <div class="formMessage" *ngIf="!form.valid">
-        <h3 >{{response}}</h3>
-    </div>
     <br/>
     <button class="button" type="submit" [disabled]="!form.valid || (form.valid && !form.dirty)">{{userData.id == "0" ? "Create" : "Save"}}</button>
+    <div class="formMessage" *ngIf="!form.valid">
+        <h3 *ngFor="let response of responses">{{response}}</h3>
+    </div>
 </form>
 
 <!-- <br/>
