@@ -11,8 +11,6 @@ import { Record } from "pocketbase";
   styleUrls: ['./user-form.component.scss']
 })
 
-
-
 export class UserFormComponent implements OnInit{
   pb = new PocketBase('http://127.0.0.1:8090')  
   
