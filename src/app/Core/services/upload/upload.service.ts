@@ -41,6 +41,6 @@ export class UploadService  {
   deleteFile(userId: string, fileName: string, field: string){
     console.log("deleteFile()")
     this.pb.collection('users').update(userId, {'avatar': null});
-    this.notificationService.success("file deleted")
+    this.notificationService.success("file deleted") 
   }
 }
