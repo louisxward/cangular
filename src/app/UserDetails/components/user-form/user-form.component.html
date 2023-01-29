@@ -1,22 +1,25 @@
-<form [formGroup]="userForm" (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submit()">
     <input id="username" placeholder="Username" formControlName="username"
-    [ngClass]="userForm.controls['username'].invalid && (userForm.controls['username'].dirty || userForm.controls['username'].touched) ? 'formError' : ''">
+    [ngClass]="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched) ? 'formError' : ''">
     <input id="email" placeholder="Email" formControlName="email" type="email"
-    [ngClass]="userForm.controls['email'].invalid && (userForm.controls['email'].dirty || userForm.controls['email'].touched) ? 'formError' : ''">
-    <input id="password" placeholder="Password" formControlName="password" *ngIf="userForm.controls['password']" type="password"
-    [ngClass]="userForm.controls['password'].invalid && (userForm.controls['password'].dirty || userForm.controls['password'].touched) ? 'formError' : ''">
-    <input id="passwordConfirm" placeholder="Confirm Password" formControlName="passwordConfirm" *ngIf="userForm.controls['passwordConfirm']" type="password"
-    [ngClass]="userForm.controls['passwordConfirm'].invalid && (userForm.controls['passwordConfirm'].dirty || userForm.controls['passwordConfirm'].touched) ? 'formError' : ''">
+    [ngClass]="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched) ? 'formError' : ''">
+    <input id="password" placeholder="Password" formControlName="password" *ngIf="form.controls['password']" type="password"
+    [ngClass]="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched) ? 'formError' : ''">
+    <input id="passwordConfirm" placeholder="Confirm Password" formControlName="passwordConfirm" *ngIf="form.controls['passwordConfirm']" type="password"
+    [ngClass]="form.controls['passwordConfirm'].invalid && (form.controls['passwordConfirm'].dirty || form.controls['passwordConfirm'].touched) ? 'formError' : ''">
     <br/>
-    <button class="button" type="submit" [disabled]="!userForm.valid || (userForm.valid && !userForm.dirty)">{{userData.id == "0" ? "Create" : "Save"}}</button>
+    <button class="button" type="submit" [disabled]="!form.valid || (form.valid && !form.dirty)">{{userData.id == "0" ? "Create" : "Save"}}</button>
+    <div class="formMessage">
+        <h3 *ngFor="let response of responses">{{response}}</h3>
+    </div>
 </form>
 
 <!-- <br/>
-<p>name invalid: {{ userForm.controls['username'].invalid | json }}</p>
-<p>name dirty: {{ userForm.controls['username'].dirty | json }}</p>
-<p>name touched: {{ userForm.controls['username'].touched | json }}</p>
+<p>name invalid: {{ form.controls['username'].invalid | json }}</p>
+<p>name dirty: {{ form.controls['username'].dirty | json }}</p>
+<p>name touched: {{ form.controls['username'].touched | json }}</p>
 
 <br/>
-<p>Form value: {{ userForm.value | json }}</p>
-<p>Form status: {{ userForm.status | json }}</p>
-<p>Form status: {{ userForm.dirty | json }}</p> -->
+<p>Form value: {{ form.value | json }}</p>
+<p>Form status: {{ form.status | json }}</p>
+<p>Form status: {{ form.dirty | json }}</p> -->
