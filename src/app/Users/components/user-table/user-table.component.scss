@@ -4,6 +4,16 @@ table {
     text-align: left;
 }
 
+thead{
+    color: black;
+    background-color: var(--primary);
+    font-size: 20px;
+}
+  
+tbody {
+    font-size: 16px;
+}
+
 table td + td { 
     border-left:1px solid white;
 }
@@ -16,22 +26,16 @@ table, thead, tbody, tr {
     border: none;
 }
 
-th, td, .pagnation {
-    padding: 0.5rem;
-}
-
 tr.data{
     border-bottom:1px solid white;
 }
 
-thead{
-  color: black;
-  background-color: var(--primary);
-  font-size: 20px;
+tr.data:last-child{
+    border-bottom: none;
 }
 
-tbody {
-    font-size: 16px;
+th, td, .pagnation {
+    padding: 0.5rem;
 }
 
 .pagnation {
