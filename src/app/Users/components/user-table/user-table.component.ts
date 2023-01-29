@@ -51,7 +51,7 @@ export class UserTableComponent implements OnInit{
             this.results = value.items
             this.loaded = true
        }); 
-    }    
+    }
 
     updateMax(size: number) {
         this.max = size
