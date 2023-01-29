@@ -1,5 +1,6 @@
-import { ApplicationRef, Component } from '@angular/core';
+import { ApplicationRef, Component, OnInit, isDevMode } from '@angular/core';
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
+import { environment } from '../environment/environment';
 
 import { Store } from "@ngxs/store";
 import { first } from "rxjs/operators";
@@ -15,9 +16,9 @@ export class AppComponent {
   title = 'cangular2.0';
 
   constructor(private store: Store, private appRef: ApplicationRef) {
+    isDevMode() ? console.log("!!!Dev Mode!!!") : console.log("!!!Prod Mode!!!")
     this.appRef.isStable.pipe(first((stable) => stable)).subscribe(() => {
       this.store.dispatch(new User.AppLoaded());
     });
   }
-
 }

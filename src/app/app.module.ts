@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -51,7 +51,7 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsModule.forRoot([UserState], {
-      developmentMode: true
+      developmentMode: isDevMode()
     }),
     NgxsStoragePluginModule.forRoot({key: 'user'}),
     BrowserModule,
