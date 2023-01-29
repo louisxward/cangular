@@ -1,4 +1,4 @@
-import {  Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { UserState } from "src/app/Core/state/user";
 import { Store } from "@ngxs/store";
