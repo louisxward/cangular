@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router'
 import PocketBase from 'pocketbase'
-import { Error, ErrorContainer } from './error'
+import { Error, ErrorContainer, User } from './error'
 import { Record } from "pocketbase";
 
 @Component({
@@ -21,6 +21,11 @@ export class UserFormComponent implements OnInit{
       username: "",
       email: "",
     } 
+
+    userDefault: User = {
+      username: "",
+      email: "",
+    }
 
     form:FormGroup
     responses: string[] = []
@@ -49,6 +54,10 @@ export class UserFormComponent implements OnInit{
           Validators.maxLength(64)
         ])))
       }
+      else{
+        this.userDefault.username = this.userData.username
+        this.userDefault.email = this.userData.email
+      }
     }
 
     submit(): void {
@@ -75,7 +84,7 @@ export class UserFormComponent implements OnInit{
     async handlePromise(myPromise: Promise<Record>, create: boolean){
       await myPromise.then((value) => { 
         create ? console.log("user created") : console.log("user saved")
-        this.router.navigate(["users"]);//should refresh page and show as save instead of redirecting to user list
+        this.router.navigate(["users"]);
       })
       .catch((e)=>{ 
         let errorContainer: ErrorContainer = e.data
@@ -89,11 +98,11 @@ export class UserFormComponent implements OnInit{
         }
         if(error.username){
           errorMessages.push(error.username.message)
-          this.form.controls['username'].setValue("");
+          this.form.controls['username'].setValue(this.userDefault.username);
         }
         if(error.email){
           errorMessages.push(error.email.message)
-          this.form.controls['email'].setValue("");
+          this.form.controls['email'].setValue(this.userDefault.email);
         }
         this.responses = errorMessages
       })

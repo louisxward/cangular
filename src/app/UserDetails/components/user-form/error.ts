@@ -18,3 +18,8 @@ export interface ErrorContainer {
     message: string
     data: Error // in reality just a JSON string containing serialized Items in an Array
 }
+
+export interface User {
+    username: string
+    email: string
+}
