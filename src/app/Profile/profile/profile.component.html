@@ -1,11 +1,11 @@
 
 <main class="profile-page">
     <app-page-header header="Profile" id="{{userId$ | async}}"></app-page-header>
-    <div class="content">
+    <div class="content" *ngIf="(isLoggedIn$ | async)">
         <div *ngIf="avatarUrl$ | async" class="avatarDisplay">
             <img [src]="avatarUrl$ | async" title="Avatar">
         </div>
-        <div *ngIf="(isLoggedIn$ | async)"  class="info"> 
+        <div class="info"> 
             <h3>{{username$ | async }}</h3>
             <br/>
             <h3>{{email$ | async }}</h3>
@@ -14,10 +14,7 @@
         <app-avatar-upload></app-avatar-upload>
         <div class="spacing"></div>
         <div class="buttons">
-            <div *ngIf="!(isLoggedIn$ | async)"> 
-                <button class="button" (click)="login()">Login</button>
-            </div>
-            <div *ngIf="isLoggedIn$ | async">
+            <div>
                 <button class="button" (click)="logout()">Logout</button>
             </div>
             <div>

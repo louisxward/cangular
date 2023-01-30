@@ -25,11 +25,7 @@ export class ProfileComponent {
   constructor(private store: Store, private loginService: LoginService, private apiService: ApiService) {
     this.pb = apiService.pb
   }
-
-  login(): void {
-    this.loginService.login("louis", "12345")
-  }
-
+  
   logout(): void {
     this.loginService.logout()
   }

@@ -4,6 +4,7 @@ import { PageHeaderComponent } from '../../Core/components/page-header/page-head
 import { UserFormComponent } from '../components/user-form/user-form.component'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 
 
@@ -16,6 +17,8 @@ export class UserDetailsComponent {
 
   pb: PocketBase
 
+  loader = this.loadingBarService.useRef();
+
   userId: string
   loaded = false
   found = false
@@ -25,16 +28,21 @@ export class UserDetailsComponent {
     email: "",
   }
   
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private loadingBarService: LoadingBarService) {
+    this.loader.start()
     this.pb = apiService.pb
     const param = this.route.snapshot.paramMap.get("userId")
     this.userId = param ? param : "0"
     if(this.userId != "0"){
-      this.loadUser()
+      setTimeout(()=>{
+        this.loadUser()
+      }, 3000);
+      //this.loadUser()
     }
     else{
       this.loaded = true
       this.found = true
+      this.loader.complete()
     }
   }
 
@@ -58,5 +66,6 @@ export class UserDetailsComponent {
       console.log("User Not Found")
     })
     this.loaded = true
+    this.loader.complete()
   }
 }

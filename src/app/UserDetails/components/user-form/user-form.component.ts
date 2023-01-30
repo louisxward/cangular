@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router'
 import PocketBase from 'pocketbase'
@@ -13,8 +13,9 @@ import { ApiService } from 'src/app/Core/services/api/api.service';
   styleUrls: ['./user-form.component.scss']
 })
 
-export class UserFormComponent implements OnInit{
+export class UserFormComponent{
   pb: PocketBase
+
   
   @Input('userData') userData = {
       id: "",
@@ -59,6 +60,10 @@ export class UserFormComponent implements OnInit{
         this.userDefault.username = this.userData.username
         this.userDefault.email = this.userData.email
       }
+    }
+
+    ngOnDestroy() {
+      this.pb.cancelAllRequests;
     }
 
     submit(): void {
