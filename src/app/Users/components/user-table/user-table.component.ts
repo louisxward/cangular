@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms'
+import { Router } from '@angular/router';
 import PocketBase from 'pocketbase'
+import { ApiService } from 'src/app/Core/services/api/api.service';
 
 export interface userTableItem {
   id: number;
@@ -16,7 +17,7 @@ export interface userTableItem {
 })
 export class UserTableComponent implements OnInit{
 
-    pb = new PocketBase('http://127.0.0.1:8090')
+    pb: PocketBase
 
     pagnationForm:FormGroup;
     results : any[] = []
@@ -29,7 +30,8 @@ export class UserTableComponent implements OnInit{
     pages = 0
     pageSizes = [10, 25, 50, 100]
 
-    constructor(private router: Router, private fb:FormBuilder){
+    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService) { 
+        this.pb = apiService.pb
         this.pagnationForm = this.fb.group({
             max: 10,
             page: 1

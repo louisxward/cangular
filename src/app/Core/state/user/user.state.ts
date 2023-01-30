@@ -5,6 +5,7 @@ import { User } from "./user.actions";
 import PocketBase from 'pocketbase';
 import { Router } from "@angular/router";
 import { UploadService } from "../../services/upload/upload.service";
+import { ApiService } from 'src/app/Core/services/api/api.service';
 
 const userStateDefaults: UserStateModel = {
   id: null,
@@ -21,9 +22,11 @@ const userStateDefaults: UserStateModel = {
 
 @Injectable()
 export class UserState {
-    pb = new PocketBase('http://127.0.0.1:8090')
+    pb: PocketBase
     
-    constructor(private store: Store, private router: Router,private uploadService: UploadService ){}
+    constructor(private store: Store, private router: Router,private uploadService: UploadService, private apiService: ApiService ){
+      this.pb = apiService.pb
+    }
 
 
     //actions

@@ -4,6 +4,8 @@ import { Router } from '@angular/router'
 import PocketBase from 'pocketbase'
 import { Error, ErrorContainer, User } from './error'
 import { Record } from "pocketbase";
+import { ApiService } from 'src/app/Core/services/api/api.service';
+
 
 @Component({
   selector: 'app-user-form',
@@ -12,7 +14,7 @@ import { Record } from "pocketbase";
 })
 
 export class UserFormComponent implements OnInit{
-  pb = new PocketBase('http://127.0.0.1:8090')  
+  pb: PocketBase
   
   @Input('userData') userData = {
       id: "",
@@ -28,7 +30,8 @@ export class UserFormComponent implements OnInit{
     form:FormGroup
     responses: string[] = []
 
-    constructor(private router: Router, private fb:FormBuilder){
+    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService){
+      this.pb = apiService.pb
       this.form = this.fb.group({})
     }
 
