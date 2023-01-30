@@ -4,13 +4,16 @@ import { User } from "src/app/Core/state/user";
 import PocketBase from 'pocketbase';
 import { Router } from "@angular/router";
 import { NotificationService } from 'src/app/Core/services/notification/notification.service';
+import { ApiService } from 'src/app/Core/services/api/api.service';
 
 @Injectable()
 export class LoginService {
   
-  pb = new PocketBase('http://127.0.0.1:8090')
+  pb: PocketBase
+
   
-  constructor(private store: Store, private router: Router, private notificationService: NotificationService) { 
+  constructor(private store: Store, private router: Router, private notificationService: NotificationService, private apiService: ApiService) { 
+    this.pb = apiService.pb
   }
 
   async login(username: string, password: string): Promise<string> {

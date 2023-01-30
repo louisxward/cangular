@@ -1,13 +1,15 @@
 import {  Injectable } from '@angular/core';
 import PocketBase from 'pocketbase';
 import { NotificationService } from '../notification/notification.service';
+import { ApiService } from 'src/app/Core/services/api/api.service';
 
 @Injectable()
 export class UploadService  {
 
-  pb = new PocketBase('http://127.0.0.1:8090')
+  pb: PocketBase
 
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService, private apiService: ApiService) { 
+    this.pb = apiService.pb
   }
 
   async upload(data: FormData, id: string) {

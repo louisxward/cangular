@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component';
 import { UserFormComponent } from '../components/user-form/user-form.component'
 import PocketBase from 'pocketbase'
+import { ApiService } from 'src/app/Core/services/api/api.service';
 
 
 
@@ -13,7 +14,7 @@ import PocketBase from 'pocketbase'
 })
 export class UserDetailsComponent {
 
-  pb = new PocketBase('http://127.0.0.1:8090')
+  pb: PocketBase
 
   userId: string
   loaded = false
@@ -24,7 +25,8 @@ export class UserDetailsComponent {
     email: "",
   }
   
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {
+    this.pb = apiService.pb
     const param = this.route.snapshot.paramMap.get("userId")
     this.userId = param ? param : "0"
     if(this.userId != "0"){

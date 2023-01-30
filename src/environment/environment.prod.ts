@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiKey: 'prodKey'
-  };  
+    apiUrl: 'https://shaggy-analyst.pockethost.io'
+};

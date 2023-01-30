@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
-import { Router, ActivatedRoute, ParamMap } from '@angular/router'
-import { Action, StateContext, Store } from "@ngxs/store";
-import { User, UserState, UserStateModel } from "src/app/Core/state/user";
+import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { LoginService } from 'src/app/Core/services/login/login.service';
 
 
