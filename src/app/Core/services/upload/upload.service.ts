@@ -2,18 +2,22 @@ import {  Injectable } from '@angular/core';
 import PocketBase from 'pocketbase';
 import { NotificationService } from '../notification/notification.service';
 import { ApiService } from 'src/app/Core/services/api/api.service';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Injectable()
 export class UploadService  {
 
   pb: PocketBase
 
-  constructor(private notificationService: NotificationService, private apiService: ApiService) { 
+  loader = this.loadingBarService.useRef();
+
+  constructor(private notificationService: NotificationService, private apiService: ApiService, private loadingBarService: LoadingBarService) { 
     this.pb = apiService.pb
   }
 
   async upload(data: FormData, id: string) {
     console.log("upload() start")
+    this.loader.start()
     let fileName = ""
     const myPromise = this.pb.collection('users').update(id, data);
     await myPromise.then((value) => { 
@@ -25,6 +29,7 @@ export class UploadService  {
       this.notificationService.error("upload failed")
     })
     console.log("upload() end")
+    this.loader.complete()
     return fileName
   }
 

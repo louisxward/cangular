@@ -9,6 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 
+//import { LoadingBarRouterModule } from '@ngx-loading-bar/router'; not inuse as of yet
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component';
@@ -30,7 +33,6 @@ import { UploadService } from './Core/services/upload/upload.service';
 import { NotificationService } from './Core/services/notification/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
-
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     NgbModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot({})
+    ToastrModule.forRoot({}),
+    //LoadingBarRouterModule,
+    LoadingBarModule
   ],
   providers: [ApiService, AuthGuardService, LoginService, NotificationService, ToastrService, UploadService,],
   bootstrap: [AppComponent]

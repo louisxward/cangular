@@ -1,7 +1,5 @@
-import { ApplicationRef, Component, OnInit, isDevMode } from '@angular/core';
+import { ApplicationRef, Component, isDevMode } from '@angular/core';
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
-import { environment } from '../environment/environment';
-
 import { Store } from "@ngxs/store";
 import { first } from "rxjs/operators";
 import { User } from "./Core/state/";
