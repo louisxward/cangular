@@ -1,5 +1,5 @@
 # Cangular
-Project version 0.8.0
+Project version 0.8.1
 <br>
 Angular version 15.0.4
 <br>
