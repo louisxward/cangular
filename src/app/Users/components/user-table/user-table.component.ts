@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router';
 import PocketBase from 'pocketbase'
@@ -16,7 +16,7 @@ export interface userTableItem {
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss']
 })
-export class UserTableComponent implements OnInit{
+export class UserTableComponent{
 
     pb: PocketBase
 
@@ -50,6 +50,11 @@ export class UserTableComponent implements OnInit{
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy() {
+        this.pb.cancelAllRequests();
+        this.loader.complete()
     }
 
     async getResults(){
