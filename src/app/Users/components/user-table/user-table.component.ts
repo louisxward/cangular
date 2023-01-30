@@ -26,7 +26,6 @@ export class UserTableComponent{
     results : any[] = []
     loaded = false
     
-    min = 0
     max = 10
     size = 0
     page = 1
@@ -40,12 +39,7 @@ export class UserTableComponent{
             max: 10,
             page: 1
         });
-
-        setTimeout(()=>{
-            this.getResults();
-        }, 3000);
-
-        //this.getResults();
+        this.getResults();
         this.pagnationForm.get("max")?.valueChanges.subscribe(f => {this.updateMax(f)})
     }
 
@@ -59,7 +53,7 @@ export class UserTableComponent{
 
     async getResults(){
         console.log("getResults()")
-        const myPromise = this.pb.collection('users').getList(this.min, this.max, {});
+        const myPromise = this.pb.collection('users').getList(this.page, this.max, {});
         await myPromise.then((value) => { 
             console.log(value)
             this.size = value.totalItems
@@ -80,12 +74,6 @@ export class UserTableComponent{
         if(this.page != page){        
             this.pagnationForm.value.page = page
             this.page = page
-            if(page != 1){
-                this.min = this.max * this.page
-            }
-            else {
-                this.min = 0
-            }
             this.getResults()
         }
     }

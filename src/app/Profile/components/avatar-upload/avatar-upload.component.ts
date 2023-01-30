@@ -25,6 +25,7 @@ export class AvatarUploadComponent implements OnInit{
   onChange(event: any) {
       this.file = event.target.files[0];
       this.pending = true;
+      this.onUpload()
   }
 
   async onUpload() {
