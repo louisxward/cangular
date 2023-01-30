@@ -5,6 +5,7 @@ import PocketBase from 'pocketbase'
 import { Error, ErrorContainer, User } from './error'
 import { Record } from "pocketbase";
 import { ApiService } from 'src/app/Core/services/api/api.service';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { ApiService } from 'src/app/Core/services/api/api.service';
 export class UserFormComponent{
   pb: PocketBase
 
+  loader = this.loadingBarService.useRef();
   
   @Input('userData') userData = {
       id: "",
@@ -31,7 +33,7 @@ export class UserFormComponent{
     form:FormGroup
     responses: string[] = []
 
-    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService){
+    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService){
       this.pb = apiService.pb
       this.form = this.fb.group({})
     }
@@ -66,25 +68,27 @@ export class UserFormComponent{
       this.pb.cancelAllRequests;
     }
 
-    submit(): void {
-        console.log("Form Submitted")
-        console.log(this.form.value)
-        if(this.userData.id == "0"){
-          this.createUser()
-        }
-        else{
-          this.saveUser()
-        }
+    async submit() {
+      this.loader.start()
+      console.log("Form Submitted")
+      console.log(this.form.value)
+      if(this.userData.id == "0"){
+        await this.createUser()
+      }
+      else{
+        await this.saveUser()
+      }
+      this.loader.complete()
     }
 
-    saveUser(){
+    async saveUser(){
       const myPromise = this.pb.collection('users').update(this.userData.id, this.form.value);
-      this.handlePromise(myPromise, false);
+      await this.handlePromise(myPromise, false);
     }
 
-    createUser(){
+    async createUser(){
       const myPromise = this.pb.collection('users').create(this.form.value);
-      this.handlePromise(myPromise, true);
+      await this.handlePromise(myPromise, true);
     }
 
     async handlePromise(myPromise: Promise<Record>, create: boolean){
