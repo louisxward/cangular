@@ -1,4 +1,4 @@
-# Cangular2.0
+# Cangular
 Project version 0.8.0
 <br>
 Angular version 15.0.4
