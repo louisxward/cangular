@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router';
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 export interface userTableItem {
   id: number;
@@ -19,6 +20,8 @@ export class UserTableComponent implements OnInit{
 
     pb: PocketBase
 
+    loader = this.loadingBarService.useRef();
+
     pagnationForm:FormGroup;
     results : any[] = []
     loaded = false
@@ -30,29 +33,37 @@ export class UserTableComponent implements OnInit{
     pages = 0
     pageSizes = [10, 25, 50, 100]
 
-    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService) { 
+    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService) { 
+        this.loader.start()
         this.pb = apiService.pb
         this.pagnationForm = this.fb.group({
             max: 10,
             page: 1
         });
-        this.getResults();
+
+        setTimeout(()=>{
+            this.getResults();
+        }, 3000);
+
+        //this.getResults();
         this.pagnationForm.get("max")?.valueChanges.subscribe(f => {this.updateMax(f)})
     }
 
     ngOnInit(): void {
     }
 
-    getResults(){
+    async getResults(){
         console.log("getResults()")
         const myPromise = this.pb.collection('users').getList(this.min, this.max, {});
-        myPromise.then((value) => { 
+        await myPromise.then((value) => { 
             console.log(value)
             this.size = value.totalItems
             this.pages = value.totalPages
             this.results = value.items
-            this.loaded = true
-       }); 
+            console.log(this.results.length > 0)
+       });
+       this.loaded = true
+       this.loader.complete()
     }
 
     updateMax(size: number) {

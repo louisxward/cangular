@@ -15,6 +15,7 @@ import { ApiService } from 'src/app/Core/services/api/api.service';
 
 export class UserFormComponent implements OnInit{
   pb: PocketBase
+
   
   @Input('userData') userData = {
       id: "",
