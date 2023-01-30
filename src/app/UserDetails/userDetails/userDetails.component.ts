@@ -34,10 +34,7 @@ export class UserDetailsComponent {
     const param = this.route.snapshot.paramMap.get("userId")
     this.userId = param ? param : "0"
     if(this.userId != "0"){
-      setTimeout(()=>{
-        this.loadUser()
-      }, 3000);
-      //this.loadUser()
+      this.loadUser()
     }
     else{
       this.loaded = true
@@ -47,6 +44,11 @@ export class UserDetailsComponent {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.pb.cancelAllRequests();
+    this.loader.complete()
   }
 
   async loadUser(){
