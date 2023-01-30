@@ -9,10 +9,7 @@ export class ApiService {
     pb: PocketBase
 
     constructor() {
-        console.log("ApiService - Constuctor - Start")
-        console.log("ApiService - Url: " + environment.apiUrl)
         this.pb = new PocketBase(environment.apiUrl)
-        console.log("ApiService - Constuctor - End")
     }
 
 }
