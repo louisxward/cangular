@@ -4,9 +4,10 @@ import { PageHeaderComponent } from '../../Core/components/page-header/page-head
 import { UserFormComponent } from '../components/user-form/user-form.component'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service';
+import { SocialService } from 'src/app/Core/services/social/social.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { UploadService } from 'src/app/Core/services/upload/upload.service';
-
+import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service';
 
 
 @Component({
@@ -20,26 +21,30 @@ export class UserDetailsComponent {
 
   loader = this.loadingBarService.useRef();
 
-  userId: string
+  followPending: boolean
+
+  detailsUserId: string
   avatarUrl: string
   lastLoggedIn: string
+  followingId: string
   loaded = false
   found = false
   userData = {
     id: "0",
     username: "",
     email: "",
-    avatar: "",
   }
   
-  constructor(private route: ActivatedRoute, private apiService: ApiService, private loadingBarService: LoadingBarService, private uploadService: UploadService ) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private loadingBarService: LoadingBarService, private uploadService: UploadService, private socialService: SocialService, private authGuardService: AuthGuardService ) {
     this.loader.start()
     this.pb = apiService.pb
     const param = this.route.snapshot.paramMap.get("userId")
-    this.userId = param ? param : "0"
+    this.detailsUserId = param ? param : "0"
     this.avatarUrl = ""
     this.lastLoggedIn = ""
-    if(this.userId != "0"){
+    this.followingId = ""
+    this.followPending = false
+    if(this.detailsUserId != "0"){
       this.loadUser()
     }
     else{
@@ -52,7 +57,7 @@ export class UserDetailsComponent {
   async getAvatarUrl(fileName: string | null): Promise<string>{
     if(null == fileName ||fileName == "") return ""
     let url = ""
-    await this.uploadService.getFileUrl(this.userId, fileName).then(foundUrl => {url = foundUrl}).catch()
+    await this.uploadService.getFileUrl(this.detailsUserId, fileName).then(foundUrl => {url = foundUrl}).catch()
     return url
   }
 
@@ -66,17 +71,19 @@ export class UserDetailsComponent {
 
   async loadUser(){
     console.log("loadUser()")
-    const myPromise = this.pb.collection('users').getOne(this.userId, {})
+    const myPromise = this.pb.collection('users').getOne(this.detailsUserId, {})
     await myPromise.then((value) => { 
       console.log("User Found")
+      console.log(value)
       this.userData = {
         id: value.id,
         username: value.username,
         email: value.email,
-        avatar: value.avatar,
       }
       this.lastLoggedIn = value.lastLoggedIn
       this.found = true
+      this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+      console.log(this.followingId)
       this.getAvatarUrl(value.avatar).then(url => {this.avatarUrl = url})
     })
    .catch((error)=>{ 
@@ -84,6 +91,22 @@ export class UserDetailsComponent {
       console.log("User Not Found")
     })
     this.loaded = true
+    this.loader.complete()
+  }
+
+  async follow(){
+    this.loader.start()
+    this.followPending = true
+    await this.socialService.follow(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+    this.followPending = false
+    this.loader.complete()
+  }
+
+  async unfollow(){
+    this.loader.start()
+    this.followPending = true
+    await this.socialService.unfollow(this.followingId).then(followingId => {this.followingId = followingId})
+    this.followPending = false
     this.loader.complete()
   }
 }

@@ -1,5 +1,5 @@
 <main class="userDetails-page">
-    <app-page-header header="User Details" id ="{{userId}}"></app-page-header>
+    <app-page-header header="User Details" id ="{{detailsUserId}}"></app-page-header>
     <div class="content">
         <div *ngIf="!loaded">
             <h3>Loading...</h3>
@@ -14,6 +14,12 @@
             </div>
             <div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
                 <h2>{{lastLoggedIn | date:'short':'UTC'}}</h2>
+            </div>
+            <div class="buttons">
+                
+                <button class="button" *ngIf="followingId == ''" (click)="follow()" [disabled]="followPending">Follow</button>
+                <button class="button" *ngIf="followingId != ''" (click)="unfollow()" [disabled]="followPending">Unfollow</button>
+
             </div>
         </div>
     </div>
