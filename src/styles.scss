@@ -60,6 +60,15 @@ body {
 }
 
 
+.dataTimeDisplay{
+    display: inline-block;
+    float: right;
+    clear: right;
+}
+.dataTimeDisplay h2{
+    font-size: 13.333px;
+}
+
 // Buttons
 button{
 	cursor: pointer;

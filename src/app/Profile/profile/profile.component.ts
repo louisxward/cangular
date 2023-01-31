@@ -22,8 +22,13 @@ export class ProfileComponent {
   username$ = this.store.select(UserState.getUsername)
   email$ = this.store.select(UserState.getEmail)
 
-  constructor(private store: Store, private loginService: LoginService, private apiService: ApiService) {
+  time = new Date();
+
+  constructor(private store: Store, private loginService: LoginService, private apiService: ApiService,) {
     this.pb = apiService.pb
+    setInterval(() => {
+      this.time = new Date();
+    }, 1);
   }
   
   logout(): void {
