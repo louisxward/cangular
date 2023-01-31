@@ -15,7 +15,8 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component';
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component';
-import { DataTableComponent } from './Core/components/data-table/data-table.component';
+import { DataTableComponent } from './Core/components/data-table/OLD/data-table.component';
+import { DataTableWrapperComponent } from './Core/components/data-table/data-table-wrapper.component';
 import { HomeComponent } from './Home/home/home.component';
 import { AboutComponent } from './About/about/about.component';
 import { UsersComponent } from './Users/users/users.component';
@@ -52,6 +53,7 @@ import { ToastrModule } from 'ngx-toastr';
     LoginFormComponent,
     PageNotFoundComponent,
     DataTableComponent,
+    DataTableWrapperComponent,
   ],
   imports: [
     NgxsReduxDevtoolsPluginModule.forRoot(),
