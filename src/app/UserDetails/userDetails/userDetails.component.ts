@@ -27,6 +27,7 @@ export class UserDetailsComponent {
   avatarUrl: string
   lastLoggedIn: string
   followingId: string
+  mutualFollowing: boolean
   loaded = false
   found = false
   userData = {
@@ -44,6 +45,7 @@ export class UserDetailsComponent {
     this.lastLoggedIn = ""
     this.followingId = ""
     this.followPending = false
+    this.mutualFollowing = false;
     if(this.detailsUserId != "0"){
       this.loadUser()
     }
@@ -59,6 +61,10 @@ export class UserDetailsComponent {
     let url = ""
     await this.uploadService.getFileUrl(this.detailsUserId, fileName).then(foundUrl => {url = foundUrl}).catch()
     return url
+  }
+
+  notCurrentUser(){
+    return this.authGuardService.userId != this.detailsUserId
   }
 
   ngOnInit() {
@@ -83,6 +89,7 @@ export class UserDetailsComponent {
       this.lastLoggedIn = value.lastLoggedIn
       this.found = true
       this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+      this.mutuallyFollowing().then(mutualFollowing => {this.mutualFollowing = mutualFollowing})
       console.log(this.followingId)
       this.getAvatarUrl(value.avatar).then(url => {this.avatarUrl = url})
     })
@@ -99,6 +106,7 @@ export class UserDetailsComponent {
     this.followPending = true
     await this.socialService.follow(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
     this.followPending = false
+    this.mutuallyFollowing().then(mutualFollowing => {this.mutualFollowing = mutualFollowing})
     this.loader.complete()
   }
 
@@ -107,6 +115,17 @@ export class UserDetailsComponent {
     this.followPending = true
     await this.socialService.unfollow(this.followingId).then(followingId => {this.followingId = followingId})
     this.followPending = false
+    this.mutuallyFollowing().then(mutualFollowing => {this.mutualFollowing = mutualFollowing})
     this.loader.complete()
+  }
+
+  async mutuallyFollowing(){
+    const userIdA = this.authGuardService.userId
+    const userIdB = this.detailsUserId
+    let userAFollows = ""
+    let userBFollows = ""
+    await this.socialService.checkFollowing(userIdA, userIdB).then(followingId => {userAFollows = followingId})
+    await this.socialService.checkFollowing(userIdB, userIdA).then(followingId => {userBFollows = followingId})
+    return (userAFollows != "" && userBFollows != "")
   }
 }

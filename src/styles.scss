@@ -60,12 +60,14 @@ body {
 }
 
 
-.dataTimeDisplay{
+.dataTimeDisplay, .statusDisplay{
     display: inline-block;
     float: right;
+}
+.dataTimeDisplay{
     clear: right;
 }
-.dataTimeDisplay h2{
+.dataTimeDisplay.statusDisplay, h2{
     font-size: 13.333px;
 }
 
@@ -109,6 +111,13 @@ input{
 
 input:focus {
 	box-shadow: inset 0 0 5px black
+}
+
+input:disabled {
+    cursor: text;
+    background-color: white;
+    color: blakc;
+    border: none;
 }
 
 .formError{
