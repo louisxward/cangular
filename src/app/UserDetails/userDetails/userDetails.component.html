@@ -9,6 +9,12 @@
         </div>
         <div *ngIf="loaded && found">
             <app-user-form [userData]="userData"></app-user-form>
+            <div *ngIf="avatarUrl != ''" class="avatarDisplay">
+                <img [src]="avatarUrl" title="Avatar">
+            </div>
+            <div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
+                <h2>{{lastLoggedIn | date:'short':'UTC'}}</h2>
+            </div>
         </div>
     </div>
 </main>

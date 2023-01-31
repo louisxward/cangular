@@ -60,6 +60,15 @@ body {
 }
 
 
+.dataTimeDisplay{
+    display: inline-block;
+    float: right;
+    clear: right;
+}
+.dataTimeDisplay h2{
+    font-size: 13.333px;
+}
+
 // Buttons
 button{
 	cursor: pointer;
@@ -88,6 +97,10 @@ button{
 }
 
 // Forms
+.form{
+	display: inline-block;
+}
+
 input{
 	outline:none;
 	border: none;
@@ -108,4 +121,17 @@ input:focus {
     font-size: 13.333px;
     margin-left: 5px;
 	position: absolute;
+}
+
+// Images
+.avatarDisplay{
+    display: inline;
+}
+
+.avatarDisplay img{
+    float: right;
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border: 1px solid var(--primary);
 }
