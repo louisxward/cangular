@@ -5,6 +5,9 @@
         <div *ngIf="avatarUrl$ | async" class="avatarDisplay">
             <img [src]="avatarUrl$ | async" title="Avatar">
         </div>
+        <div class="dataTimeDisplay">
+            <h2>{{time | date:'short':'UTC'}}</h2>
+        </div>
         <div class="info"> 
             <h3>{{username$ | async }}</h3>
             <br/>

@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submit()" class="form">
     <input id="username" placeholder="Username" formControlName="username"
     [ngClass]="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched) ? 'formError' : ''">
     <input id="email" placeholder="Email" formControlName="email" type="email"

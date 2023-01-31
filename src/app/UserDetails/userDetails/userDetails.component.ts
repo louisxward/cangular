@@ -5,6 +5,7 @@ import { UserFormComponent } from '../components/user-form/user-form.component'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { UploadService } from 'src/app/Core/services/upload/upload.service';
 
 
 
@@ -20,19 +21,24 @@ export class UserDetailsComponent {
   loader = this.loadingBarService.useRef();
 
   userId: string
+  avatarUrl: string
+  lastLoggedIn: string
   loaded = false
   found = false
   userData = {
     id: "0",
     username: "",
     email: "",
+    avatar: "",
   }
   
-  constructor(private route: ActivatedRoute, private apiService: ApiService, private loadingBarService: LoadingBarService) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private loadingBarService: LoadingBarService, private uploadService: UploadService ) {
     this.loader.start()
     this.pb = apiService.pb
     const param = this.route.snapshot.paramMap.get("userId")
     this.userId = param ? param : "0"
+    this.avatarUrl = ""
+    this.lastLoggedIn = ""
     if(this.userId != "0"){
       this.loadUser()
     }
@@ -41,6 +47,13 @@ export class UserDetailsComponent {
       this.found = true
       this.loader.complete()
     }
+  }
+
+  async getAvatarUrl(fileName: string | null): Promise<string>{
+    if(null == fileName ||fileName == "") return ""
+    let url = ""
+    await this.uploadService.getFileUrl(this.userId, fileName).then(foundUrl => {url = foundUrl}).catch()
+    return url
   }
 
   ngOnInit() {
@@ -60,8 +73,11 @@ export class UserDetailsComponent {
         id: value.id,
         username: value.username,
         email: value.email,
+        avatar: value.avatar,
       }
+      this.lastLoggedIn = value.lastLoggedIn
       this.found = true
+      this.getAvatarUrl(value.avatar).then(url => {this.avatarUrl = url})
     })
    .catch((error)=>{ 
       console.log(error)
