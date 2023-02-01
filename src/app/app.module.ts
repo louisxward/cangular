@@ -26,6 +26,7 @@ import { AvatarUploadComponent } from './Profile/components/avatar-upload/avatar
 import { LoginComponent } from './Login/login/login.component';
 import { LoginFormComponent } from './Login/components/login-form/login-form.component';
 import { ApiService } from './Core/services/api/api.service';
+import { SocialService } from './Core/services/social/social.service';
 import { LoginService } from './Core/services/login/login.service';
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component';
 import { AuthGuardService } from './Core/services/auth/auth-guard.service';
@@ -66,7 +67,7 @@ import { ToastrModule } from 'ngx-toastr';
     //LoadingBarRouterModule,
     LoadingBarModule
   ],
-  providers: [ApiService, AuthGuardService, LoginService, NotificationService, ToastrService, UploadService,],
+  providers: [ApiService, AuthGuardService, LoginService, NotificationService, ToastrService, UploadService, SocialService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
