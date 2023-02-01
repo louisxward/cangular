@@ -8,7 +8,7 @@
     <input id="passwordConfirm" placeholder="Confirm Password" formControlName="passwordConfirm" *ngIf="form.controls['passwordConfirm']" type="password"
     [ngClass]="form.controls['passwordConfirm'].invalid && (form.controls['passwordConfirm'].dirty || form.controls['passwordConfirm'].touched) ? 'formError' : ''">
     <br/>
-    <button class="button" type="submit" [disabled]="!form.valid || (form.valid && !form.dirty)">{{userData.id == "0" ? "Create" : "Save"}}</button>
+    <button class="button" type="submit" *ngIf="form.status != 'DISABLED'" [disabled]="!form.valid || (form.valid && !form.dirty)">{{userData.id == "0" ? "Create" : "Save"}}</button>
     <div class="formMessage">
         <h3 *ngFor="let response of responses">{{response}}</h3>
     </div>
