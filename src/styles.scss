@@ -61,14 +61,37 @@ body {
 
 
 .dataTimeDisplay, .statusDisplay{
-    display: inline-block;
+    display: inline-flex;
     float: right;
 }
 .dataTimeDisplay{
     clear: right;
 }
-.dataTimeDisplay.statusDisplay, h2{
+.dataTimeDisplay h2, .statusDisplay h2{
     font-size: 13.333px;
+}
+.statusDisplay h2, .statusDisplay .material-icons{
+	line-height: 2rem;
+}
+.statusDisplay .material-icons{
+	color: var(--primary)
+}
+
+.statusDisplay .material-icons{
+	margin: 0px 5px;
+}
+
+	// Images
+.avatarDisplay{
+    display: inline;
+}
+
+.avatarDisplay img{
+    float: right;
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border: 1px solid var(--primary);
 }
 
 // Buttons
@@ -130,17 +153,4 @@ input:disabled {
     font-size: 13.333px;
     margin-left: 5px;
 	position: absolute;
-}
-
-// Images
-.avatarDisplay{
-    display: inline;
-}
-
-.avatarDisplay img{
-    float: right;
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-    border: 1px solid var(--primary);
 }

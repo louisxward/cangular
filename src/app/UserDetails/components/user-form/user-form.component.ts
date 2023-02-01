@@ -41,7 +41,6 @@ export class UserFormComponent{
   }
 
   ngOnInit(): void {
-    console.log(this.editable)
     this.form.addControl( 'username', new FormControl(this.userData.username, Validators.compose([
       Validators.required,
       Validators.minLength(3),

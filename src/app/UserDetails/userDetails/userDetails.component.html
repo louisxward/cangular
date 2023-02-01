@@ -8,7 +8,7 @@
             <h3>User not Found</h3>
         </div>
         <div *ngIf="loaded && found">
-            <app-user-form [userData]="userData" [editable]="!notCurrentUser() || detailsUserId == '0'"></app-user-form>
+            <app-user-form [userData]="userData" [editable]="currentUser || detailsUserId == '0'"></app-user-form>
             <div *ngIf="avatarUrl != ''" class="avatarDisplay">
                 <img [src]="avatarUrl" title="Avatar">
             </div>
@@ -19,7 +19,7 @@
             <div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
                 <h2>{{lastLoggedIn | date:'short':'UTC'}}</h2>
             </div>
-            <div class="social buttons" *ngIf="notCurrentUser()">
+            <div class="social buttons" *ngIf="!currentUser && !create">
                 <button class="button" *ngIf="followingId == ''" (click)="follow()" [disabled]="followPending">Follow</button>
                 <button class="button" *ngIf="followingId != ''" (click)="unfollow()" [disabled]="followPending">Unfollow</button>
             </div>

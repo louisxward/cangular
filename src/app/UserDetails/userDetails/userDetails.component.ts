@@ -20,16 +20,20 @@ export class UserDetailsComponent {
   pb: PocketBase
 
   loader = this.loadingBarService.useRef();
+  
+  followingId: string = ""
+  mutualFollowing: boolean = false
+  followPending: boolean = false
 
-  followPending: boolean
+  detailsUserId: string = ""
+  avatarUrl: string = ""
+  lastLoggedIn: string = ""
 
-  detailsUserId: string
-  avatarUrl: string
-  lastLoggedIn: string
-  followingId: string
-  mutualFollowing: boolean
-  loaded = false
-  found = false
+  currentUser: boolean = false
+  loaded: boolean = false
+  found: boolean = false
+  create: boolean = false
+
   userData = {
     id: "0",
     username: "",
@@ -41,33 +45,23 @@ export class UserDetailsComponent {
     this.pb = apiService.pb
     const param = this.route.snapshot.paramMap.get("userId")
     this.detailsUserId = param ? param : "0"
-    this.avatarUrl = ""
-    this.lastLoggedIn = ""
-    this.followingId = ""
-    this.followPending = false
-    this.mutualFollowing = false;
+  }
+
+  async ngOnInit() {
     if(this.detailsUserId != "0"){
-      this.loadUser()
+      await this.loadUser()
     }
     else{
       this.loaded = true
       this.found = true
+      this.create = true
       this.loader.complete()
     }
-  }
-
-  async getAvatarUrl(fileName: string | null): Promise<string>{
-    if(null == fileName ||fileName == "") return ""
-    let url = ""
-    await this.uploadService.getFileUrl(this.detailsUserId, fileName).then(foundUrl => {url = foundUrl}).catch()
-    return url
-  }
-
-  notCurrentUser(){
-    return this.authGuardService.userId != this.detailsUserId
-  }
-
-  ngOnInit() {
+    this.currentUser = (this.authGuardService.userId == this.detailsUserId)
+    await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+    if(this.followingId != ""){
+      await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = (followingId != "") })
+    }
   }
 
   ngOnDestroy() {
@@ -88,9 +82,6 @@ export class UserDetailsComponent {
       }
       this.lastLoggedIn = value.lastLoggedIn
       this.found = true
-      this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
-      this.mutuallyFollowing().then(mutualFollowing => {this.mutualFollowing = mutualFollowing})
-      console.log(this.followingId)
       this.getAvatarUrl(value.avatar).then(url => {this.avatarUrl = url})
     })
    .catch((error)=>{ 
@@ -105,8 +96,8 @@ export class UserDetailsComponent {
     this.loader.start()
     this.followPending = true
     await this.socialService.follow(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+    await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = (followingId != "") })
     this.followPending = false
-    this.mutuallyFollowing().then(mutualFollowing => {this.mutualFollowing = mutualFollowing})
     this.loader.complete()
   }
 
@@ -114,18 +105,15 @@ export class UserDetailsComponent {
     this.loader.start()
     this.followPending = true
     await this.socialService.unfollow(this.followingId).then(followingId => {this.followingId = followingId})
+    this.mutualFollowing = false
     this.followPending = false
-    this.mutuallyFollowing().then(mutualFollowing => {this.mutualFollowing = mutualFollowing})
     this.loader.complete()
   }
 
-  async mutuallyFollowing(){
-    const userIdA = this.authGuardService.userId
-    const userIdB = this.detailsUserId
-    let userAFollows = ""
-    let userBFollows = ""
-    await this.socialService.checkFollowing(userIdA, userIdB).then(followingId => {userAFollows = followingId})
-    await this.socialService.checkFollowing(userIdB, userIdA).then(followingId => {userBFollows = followingId})
-    return (userAFollows != "" && userBFollows != "")
+  async getAvatarUrl(fileName: string | null): Promise<string>{
+    if(null == fileName ||fileName == "") return ""
+    let url = ""
+    await this.uploadService.getFileUrl(this.detailsUserId, fileName).then(foundUrl => {url = foundUrl}).catch()
+    return url
   }
 }
