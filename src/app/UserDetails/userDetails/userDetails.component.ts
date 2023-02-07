@@ -41,7 +41,6 @@ export class UserDetailsComponent {
   }
   
   constructor(private route: ActivatedRoute, private apiService: ApiService, private loadingBarService: LoadingBarService, private uploadService: UploadService, private socialService: SocialService, private authGuardService: AuthGuardService ) {
-    this.loader.start()
     this.pb = apiService.pb
     const param = this.route.snapshot.paramMap.get("userId")
     this.detailsUserId = param ? param : "0"
@@ -55,7 +54,6 @@ export class UserDetailsComponent {
       this.loaded = true
       this.found = true
       this.create = true
-      this.loader.complete()
     }
     this.currentUser = (this.authGuardService.userId == this.detailsUserId)
     await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
@@ -70,6 +68,7 @@ export class UserDetailsComponent {
   }
 
   async loadUser(){
+    this.loader.start()
     console.log("loadUser()")
     const myPromise = this.pb.collection('users').getOne(this.detailsUserId, {})
     await myPromise.then((value) => { 

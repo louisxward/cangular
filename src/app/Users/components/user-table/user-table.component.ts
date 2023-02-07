@@ -36,7 +36,6 @@ export class UserTableComponent{
     pageSizes = [10, 25, 50, 100]
 
     constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService, private queryService: QueryService) { 
-        this.loader.start()
         this.pb = apiService.pb
         this.pagnationForm = this.fb.group({
             max: 10,
@@ -77,6 +76,7 @@ export class UserTableComponent{
     };
 
     async getResults(){
+        this.loader.start()
         console.log("getResults()")
         const myPromise = this.pb.collection('users').getList(this.page, this.max, {filter: this.query});
         await myPromise.then((value) => { 
