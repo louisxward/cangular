@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
     <input id="username" placeholder="Username" formControlName="username"
     [ngClass]="form.controls['username'].invalid && (form.controls['username'].dirty || form.controls['username'].touched) ? 'formError' : ''">
-    <input id="password" placeholder="Password" formControlName="password"
+    <input id="password" placeholder="Password" formControlName="password" type="password"
     [ngClass]="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched) ? 'formError' : ''">
     <br/>
     <button class="button" type="submit" [disabled]="!form.valid">Login</button>

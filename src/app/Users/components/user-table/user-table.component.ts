@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { QueryService } from 'src/app/Core/services/query/query.service';
 
 export interface userTableItem {
   id: number;
@@ -23,22 +24,28 @@ export class UserTableComponent{
     loader = this.loadingBarService.useRef();
 
     pagnationForm:FormGroup;
+    searchForm:FormGroup;
     results : any[] = []
     loaded = false
     
+    query = ""
     max = 10
     size = 0
     page = 1
     pages = 0
     pageSizes = [10, 25, 50, 100]
 
-    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService) { 
-        this.loader.start()
+    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService, private queryService: QueryService) { 
         this.pb = apiService.pb
         this.pagnationForm = this.fb.group({
             max: 10,
             page: 1
         });
+        this.searchForm = this.fb.group({
+            id: "",
+            username: "",
+        });
+        this.searchForm.setValidators(this.atLeastOneValidator())
         this.getResults();
         this.pagnationForm.get("max")?.valueChanges.subscribe(f => {this.updateMax(f)})
     }
@@ -51,9 +58,27 @@ export class UserTableComponent{
         this.loader.complete()
     }
 
+    private atLeastOneValidator = () => {
+        return (controlGroup: any) => {
+            let controls = controlGroup.controls;
+            if ( controls ) {
+                let theOne = Object.keys(controls).find(key=> controls[key].value!=='');
+                if ( !theOne ) {
+                    return {
+                        atLeastOneRequired : {
+                            text : 'At least one should be selected'
+                        }
+                    }
+                }
+            }
+            return null;
+        };
+    };
+
     async getResults(){
+        this.loader.start()
         console.log("getResults()")
-        const myPromise = this.pb.collection('users').getList(this.page, this.max, {});
+        const myPromise = this.pb.collection('users').getList(this.page, this.max, {filter: this.query});
         await myPromise.then((value) => { 
             console.log(value)
             this.size = value.totalItems
@@ -86,9 +111,27 @@ export class UserTableComponent{
         return pages
     }
 
+    
+
     submit() {
         console.log("Form Submitted")
         console.log(this.pagnationForm.value)
+    }
+
+    searchSubmit() {
+        console.log("Search Submitted")
+        this.query = this.queryService.formatQuery(JSON.stringify(this.searchForm.value))
+        this.getResults()
+    }
+
+    searchReset() {
+        console.log("Search Reset")
+        this.query = ""
+        this.searchForm.reset()
+        let obj = {id: "",
+        username: "",}
+        this.searchForm.patchValue(obj);
+        this.getResults()
     }
 
     viewUser(id: number){

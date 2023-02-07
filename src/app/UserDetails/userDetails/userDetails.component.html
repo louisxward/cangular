@@ -19,7 +19,7 @@
             <div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
                 <h2>{{lastLoggedIn | date:'short':'UTC'}}</h2>
             </div>
-            <div class="social buttons" *ngIf="!currentUser && !create">
+            <div class="social buttons" *ngIf="loaded && !currentUser && !create">
                 <button class="button" *ngIf="followingId == ''" (click)="follow()" [disabled]="followPending">Follow</button>
                 <button class="button" *ngIf="followingId != ''" (click)="unfollow()" [disabled]="followPending">Unfollow</button>
             </div>

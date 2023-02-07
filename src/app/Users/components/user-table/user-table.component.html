@@ -44,6 +44,15 @@
     </form>
 </div>
 
-<div class="buttons">
+<div class="search">
+    <form [formGroup]="searchForm" (ngSubmit)="searchSubmit()">
+        <input id="id" placeholder="Id" formControlName="id">
+        <input id="username" placeholder="Username" formControlName="username">
+        <button class="button" type="submit" [disabled]="!searchForm.valid">Search</button>
+        <button class="button" type="button" (click)="searchReset()" [disabled]="!searchForm.dirty">Reset</button>
+    </form>
+</div>
+
+<div class="buttons-right">
     <button class="button" (click)="createUser()">Create</button>
 </div>

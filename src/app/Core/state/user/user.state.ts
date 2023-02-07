@@ -13,6 +13,7 @@ const userStateDefaults: UserStateModel = {
   avatarFileName: null,
   username: null,
   email: null,
+  sidebarExpanded: false,
 }
 
 @State<UserStateModel>({
@@ -27,7 +28,6 @@ export class UserState {
     constructor(private store: Store, private router: Router,private uploadService: UploadService, private apiService: ApiService ){
       this.pb = apiService.pb
     }
-
 
     //actions
     @Action(User.Login.Login)
@@ -79,9 +79,16 @@ export class UserState {
         avatarUrl: avatarUrl,
         avatarFileName: fileName,
       })
-
     }
 
+    
+    @Action(User.Update.Sidebar)
+    updateSidebarState(ctx: StateContext<UserStateModel>) {
+      console.log("updateSidebarState()")
+      ctx.patchState({
+        sidebarExpanded: !ctx.getState().sidebarExpanded
+      })
+    }
 
     //selectors
     @Selector()
@@ -127,5 +134,10 @@ export class UserState {
     @Selector()
     static isLoggedIn(state: UserStateModel): boolean{
       return null != state.id;
+    }
+
+    @Selector()
+    static getSidebarExpanded(state: UserStateModel): boolean{
+      return state.sidebarExpanded
     }
 }

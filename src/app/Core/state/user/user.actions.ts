@@ -16,6 +16,10 @@ export namespace User {
       static readonly type = "[Update] User"
       constructor(public payload: { id: string, avatar: string, username: string, email: string }) {}
     }
+
+    export class Sidebar {
+      static readonly type = "[Update] Sidebar State"
+    }
   }
 
   export namespace Login {
