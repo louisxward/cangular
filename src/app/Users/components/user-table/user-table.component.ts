@@ -28,6 +28,7 @@ export class UserTableComponent{
     results : any[] = []
     loaded = false
     
+    query = ""
     max = 10
     size = 0
     page = 1
@@ -45,6 +46,7 @@ export class UserTableComponent{
             id: "",
             username: "",
         });
+        this.searchForm.setValidators(this.atLeastOneValidator())
         this.getResults();
         this.pagnationForm.get("max")?.valueChanges.subscribe(f => {this.updateMax(f)})
     }
@@ -57,9 +59,26 @@ export class UserTableComponent{
         this.loader.complete()
     }
 
+    private atLeastOneValidator = () => {
+        return (controlGroup: any) => {
+            let controls = controlGroup.controls;
+            if ( controls ) {
+                let theOne = Object.keys(controls).find(key=> controls[key].value!=='');
+                if ( !theOne ) {
+                    return {
+                        atLeastOneRequired : {
+                            text : 'At least one should be selected'
+                        }
+                    }
+                }
+            }
+            return null;
+        };
+    };
+
     async getResults(){
         console.log("getResults()")
-        const myPromise = this.pb.collection('users').getList(this.page, this.max, {});
+        const myPromise = this.pb.collection('users').getList(this.page, this.max, {filter: this.query});
         await myPromise.then((value) => { 
             console.log(value)
             this.size = value.totalItems
@@ -101,7 +120,18 @@ export class UserTableComponent{
 
     searchSubmit() {
         console.log("Search Submitted")
-        console.log(JSON.stringify(this.searchForm.value))
+        this.query = this.queryService.formatQuery(JSON.stringify(this.searchForm.value))
+        this.getResults()
+    }
+
+    searchReset() {
+        console.log("Search Reset")
+        this.query = ""
+        this.searchForm.reset()
+        let obj = {id: "",
+        username: "",}
+        this.searchForm.patchValue(obj);
+        this.getResults()
     }
 
     viewUser(id: number){

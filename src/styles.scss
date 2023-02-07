@@ -120,6 +120,10 @@ button{
 .buttons {
 	display: flex;
 }
+.buttons-right {
+	display: inline-block;
+	float: right;
+}
 
 // Forms
 .form{
