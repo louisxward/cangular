@@ -44,6 +44,12 @@
     </form>
 </div>
 
+<div class="search">
+    <form [formGroup]="searchForm" (ngSubmit)="searchSubmit()">
+        <input id="id" placeholder="Id" formControlName="id">
+    </form>
+</div>
+
 <div class="buttons">
     <button class="button" (click)="createUser()">Create</button>
 </div>

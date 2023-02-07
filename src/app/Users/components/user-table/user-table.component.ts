@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { QueryService } from 'src/app/Core/services/query/query.service';
 
 export interface userTableItem {
   id: number;
@@ -23,6 +24,7 @@ export class UserTableComponent{
     loader = this.loadingBarService.useRef();
 
     pagnationForm:FormGroup;
+    searchForm:FormGroup;
     results : any[] = []
     loaded = false
     
@@ -32,12 +34,16 @@ export class UserTableComponent{
     pages = 0
     pageSizes = [10, 25, 50, 100]
 
-    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService) { 
+    constructor(private router: Router, private fb:FormBuilder, private apiService: ApiService, private loadingBarService: LoadingBarService, private queryService: QueryService) { 
         this.loader.start()
         this.pb = apiService.pb
         this.pagnationForm = this.fb.group({
             max: 10,
             page: 1
+        });
+        this.searchForm = this.fb.group({
+            id: "",
+            username: "",
         });
         this.getResults();
         this.pagnationForm.get("max")?.valueChanges.subscribe(f => {this.updateMax(f)})
@@ -86,9 +92,16 @@ export class UserTableComponent{
         return pages
     }
 
+    
+
     submit() {
         console.log("Form Submitted")
         console.log(this.pagnationForm.value)
+    }
+
+    searchSubmit() {
+        console.log("Search Submitted")
+        console.log(JSON.stringify(this.searchForm.value))
     }
 
     viewUser(id: number){
