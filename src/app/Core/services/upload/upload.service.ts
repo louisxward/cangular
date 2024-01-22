@@ -33,11 +33,13 @@ export class UploadService  {
     return fileName
   }
 
-  async getFileUrl(userId: string, fileName: string): Promise<string> {
+  async getFileUrl(userId: string, fileName: string, thumbSize2: string | null): Promise<string> {
     let avatarUrl = ""
+    let thumbSize = thumbSize2 ?? '';
     const myPromise = this.pb.collection('users').getOne(userId)
+    //const url = pb.files.getUrl(record, firstFilename, {'thumb': '100x250'});
     await myPromise.then((value) => { 
-      avatarUrl = this.pb.getFileUrl(value, fileName, {})
+      avatarUrl = this.pb.getFileUrl(value, fileName, {'thumb': thumbSize})
     })
    .catch((error)=>{ 
       console.log(error)
