@@ -52,7 +52,7 @@ export class UserState {
       const email = action.payload.email
       let avatarUrl = ""
       if(avatarFileName){
-        await this.uploadService.getFileUrl(id, avatarFileName, "200x200").then((value: string) => avatarUrl = value)
+        await this.uploadService.getFileUrl(id, avatarFileName, null).then((value: string) => avatarUrl = value)
       }
       ctx.patchState({
         id: id,
