@@ -81,7 +81,7 @@ export class UserDetailsComponent {
       }
       this.lastLoggedIn = value.lastLoggedIn
       this.found = true
-      this.getAvatarUrl(value.avatar, null).then(url => {this.avatarUrl = url})
+      this.getAvatarUrl(value.avatar, "200x200").then(url => {this.avatarUrl = url})
     })
    .catch((error)=>{ 
       console.log(error)
