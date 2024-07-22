@@ -1,9 +1,9 @@
 # Cangular
-Project version 0.8.4
+Project version 0.8.5
 <br>
 Angular version 15.0.4
 <br>
-Pocketbase version 0.12.01
+Pocketbase version 0.22.17
 
 ## Notes
 [Project](https://denim-rocket-cf2.notion.site/86fcc21725c24c0fbdea5a1dde65af1d?v=eacbca05816c4bcb92408274456dfbc0)
