@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.4",
-    "@angular/cli": "~15.0.4",
+    "@angular/cli": "^15.2.11",
     "@angular/compiler-cli": "^15.0.0",
     "@angular/localize": "^15.0.0",
     "@ngxs/devtools-plugin": "^3.7.6",
