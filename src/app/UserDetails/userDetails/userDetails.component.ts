@@ -21,11 +21,11 @@ export class UserDetailsComponent {
 
   loader = this.loadingBarService.useRef();
   
-  followingId: string = ""
+  followingId: string | null = null
   mutualFollowing: boolean = false
   followPending: boolean = false
 
-  detailsUserId: string = ""
+  detailsUserId: string
   avatarUrl: string = ""
   lastLoggedIn: string = ""
 
@@ -55,11 +55,6 @@ export class UserDetailsComponent {
       this.found = true
       this.create = true
     }
-    this.currentUser = (this.authGuardService.userId == this.detailsUserId)
-    await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
-    if(this.followingId != ""){
-      await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = (followingId != "") })
-    }
   }
 
   ngOnDestroy() {
@@ -87,6 +82,11 @@ export class UserDetailsComponent {
       console.log(error)
       console.log("User Not Found")
     })
+    this.currentUser = (this.authGuardService.userId == this.detailsUserId)
+    if(!this.currentUser){
+      //await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+      this.mutualFollowing = this.followingId != null; 
+    }
     this.loaded = true
     this.loader.complete()
   }
@@ -95,7 +95,11 @@ export class UserDetailsComponent {
     this.loader.start()
     this.followPending = true
     await this.socialService.follow(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
-    await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = (followingId != "") })
+    console.log("this.followingId")
+    console.log(this.followingId)
+    console.log("this.detailsUserId")
+    console.log(this.detailsUserId)
+    //await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = followingId != null })
     this.followPending = false
     this.loader.complete()
   }
@@ -103,7 +107,9 @@ export class UserDetailsComponent {
   async unfollow(){
     this.loader.start()
     this.followPending = true
-    await this.socialService.unfollow(this.followingId).then(followingId => {this.followingId = followingId})
+    if(null != this.followingId){
+      await this.socialService.unfollow(this.followingId)
+    }
     this.mutualFollowing = false
     this.followPending = false
     this.loader.complete()

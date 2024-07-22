@@ -6,7 +6,7 @@ import { Store } from "@ngxs/store";
 @Injectable()
 export class AuthGuardService implements CanActivate {
   isLoggedIn = false;
-  userId = ""
+  userId!: string;
 
   constructor(public router: Router, private store: Store) {
     this.store.select(UserState.isLoggedIn).subscribe(f => {this.isLoggedIn = f})
