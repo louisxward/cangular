@@ -13,6 +13,7 @@ const userStateDefaults: UserStateModel = {
   avatarFileName: null,
   username: null,
   email: null,
+  sidebarExpanded: false,
 }
 
 @State<UserStateModel>({
@@ -27,7 +28,6 @@ export class UserState {
     constructor(private store: Store, private router: Router,private uploadService: UploadService, private apiService: ApiService ){
       this.pb = apiService.pb
     }
-
 
     //actions
     @Action(User.Login.Login)
@@ -52,7 +52,7 @@ export class UserState {
       const email = action.payload.email
       let avatarUrl = ""
       if(avatarFileName){
-        await this.uploadService.getFileUrl(id, avatarFileName).then((value: string) => avatarUrl = value)
+        await this.uploadService.getFileUrl(id, avatarFileName, null).then((value: string) => avatarUrl = value)
       }
       ctx.patchState({
         id: id,
@@ -69,7 +69,7 @@ export class UserState {
       const fileName = action.payload.fileName
       let avatarUrl = ""
       if(fileName != ""){
-        await this.uploadService.getFileUrl(id, fileName).then((value: string) => avatarUrl = value)
+        await this.uploadService.getFileUrl(id, fileName, null).then((value: string) => avatarUrl = value)
       }
       else{
         this.uploadService.deleteFile(id, fileName, "avatar")
@@ -79,9 +79,16 @@ export class UserState {
         avatarUrl: avatarUrl,
         avatarFileName: fileName,
       })
-
     }
 
+    
+    @Action(User.Update.Sidebar)
+    updateSidebarState(ctx: StateContext<UserStateModel>) {
+      console.log("updateSidebarState()")
+      ctx.patchState({
+        sidebarExpanded: !ctx.getState().sidebarExpanded
+      })
+    }
 
     //selectors
     @Selector()
@@ -127,5 +134,10 @@ export class UserState {
     @Selector()
     static isLoggedIn(state: UserStateModel): boolean{
       return null != state.id;
+    }
+
+    @Selector()
+    static getSidebarExpanded(state: UserStateModel): boolean{
+      return state.sidebarExpanded
     }
 }

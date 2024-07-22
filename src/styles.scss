@@ -60,6 +60,40 @@ body {
 }
 
 
+.dataTimeDisplay, .statusDisplay{
+    display: inline-flex;
+    float: right;
+}
+.dataTimeDisplay{
+    clear: right;
+}
+.dataTimeDisplay h2, .statusDisplay h2{
+    font-size: 13.333px;
+}
+.statusDisplay h2, .statusDisplay .material-icons{
+	line-height: 2rem;
+}
+.statusDisplay .material-icons{
+	color: var(--primary)
+}
+
+.statusDisplay .material-icons{
+	margin: 0px 5px;
+}
+
+	// Images
+.avatarDisplay{
+    display: inline;
+}
+
+.avatarDisplay img{
+    float: right;
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border: 1px solid var(--primary);
+}
+
 // Buttons
 button{
 	cursor: pointer;
@@ -86,8 +120,16 @@ button{
 .buttons {
 	display: flex;
 }
+.buttons-right {
+	display: inline-block;
+	float: right;
+}
 
 // Forms
+.form{
+	display: inline-block;
+}
+
 input{
 	outline:none;
 	border: none;
@@ -96,6 +138,13 @@ input{
 
 input:focus {
 	box-shadow: inset 0 0 5px black
+}
+
+input:disabled {
+    cursor: text;
+    background-color: white;
+    color: blakc;
+    border: none;
 }
 
 .formError{

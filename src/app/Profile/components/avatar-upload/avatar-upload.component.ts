@@ -43,16 +43,16 @@ export class AvatarUploadComponent implements OnInit{
     this.loading = false
     this.pending = false
     this.file = new File([],"",{});
-    }
+  }
 
-    delete(){
-      console.log("delete()")
-      this.file = new File([],"",{});
-      this.pending = false
-      this.store.dispatch(
-        new User.Update.Avatar({
-          id: this.authGuardService.userId,
-          fileName: ""
-      }))
-    }
+  delete(){
+    console.log("delete()")
+    this.file = new File([],"",{});
+    this.pending = false
+    this.store.dispatch(
+      new User.Update.Avatar({
+        id: this.authGuardService.userId,
+        fileName: ""
+    }))
+  }
 }

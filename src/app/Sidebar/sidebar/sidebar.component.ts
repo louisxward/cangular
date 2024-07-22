@@ -16,7 +16,13 @@ export class SidebarComponent {
   avatarUrl$ = this.store.select(UserState.getAvatarUrl)
   username$ = this.store.select(UserState.getUsername)
   email$ = this.store.select(UserState.getEmail)
+  sidebarExpanded$ = this.store.select(UserState.getSidebarExpanded)
 
   constructor(private store: Store) {}
 
+
+  updateSidebarState(){
+    this.store.dispatch(
+      new User.Update.Sidebar())
+  }
 }

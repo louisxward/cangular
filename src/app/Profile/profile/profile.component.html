@@ -3,7 +3,10 @@
     <app-page-header header="Profile" id="{{userId$ | async}}"></app-page-header>
     <div class="content" *ngIf="(isLoggedIn$ | async)">
         <div *ngIf="avatarUrl$ | async" class="avatarDisplay">
-            <img [src]="avatarUrl$ | async" title="Avatar">
+            <img [src]="(avatarUrl$ | async) + '200x200'" title="Avatar">
+        </div>
+        <div class="dataTimeDisplay">
+            <h2>{{time | date:'short':'UTC'}}</h2>
         </div>
         <div class="info"> 
             <h3>{{username$ | async }}</h3>

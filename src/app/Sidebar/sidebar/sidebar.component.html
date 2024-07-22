@@ -1,43 +1,48 @@
-<aside>
+<aside [ngClass]="{'is-expanded' : (sidebarExpanded$ | async)}">
+  <div class="menu-toggle-wrap">
+    <button class="menu-toggle" (click)="updateSidebarState()">
+        <span class="material-icons">keyboard_double_arrow_right</span>
+    </button>
+  </div>
 
-    <span>
-      <h3>Menu</h3>
-      <div class="menu">
-        <a routerLink="/" class="item" title="Home">
-          <span class="material-icons">home</span>
-          <span class="text">Home</span>
-        </a>
-        <a routerLink="/about" class="item" title="About">
-          <span class="material-icons">list</span>
-          <span class="text">About</span>
-        </a>
-      </div>
-    </span>
+  <span>
+    <!-- <h3>Menu</h3> -->
+    <div class="menu">
+      <a routerLink="/home" class="item" title="Home" routerLinkActive="router-link-exact-active">
+        <span class="material-icons">home</span>
+        <span class="text">Home</span>
+      </a>
+      <a routerLink="/about" class="item" title="About" routerLinkActive="router-link-exact-active">
+        <span class="material-icons">list</span>
+        <span class="text">About</span>
+      </a>
+    </div>
+  </span>
 
-    <span *ngIf="(isLoggedIn$ | async)">
-      <h3>Admin</h3>
-      <div class="menu">
-        <a routerLink="/users" class="item" title="Users">
-          <span class="material-icons">group</span>
-          <span class="text">Users</span>
-        </a>
-      </div>
-    </span>
+  <span *ngIf="(isLoggedIn$ | async)">
+    <!-- <h3>Admin</h3> -->
+    <div class="menu">
+      <a routerLink="/users" class="item" title="Users" routerLinkActive="router-link-exact-active">
+        <span class="material-icons">group</span>
+        <span class="text">Users</span>
+      </a>
+    </div>
+  </span>
 
-    <div class="flex"></div>
+  <div class="flex"></div>
 
-    <span>
-      <div class="menu">
-        <a *ngIf="!(isLoggedIn$ | async)" routerLink="/login" class="item" title="Login">
-          <span class="material-icons">account_circle</span>
-          <span class="text">Login</span>
-        </a>
-        <a *ngIf="(isLoggedIn$ | async)" routerLink="/profile" class="item" title="Profile">
-          <span *ngIf="!(avatarUrl$ | async)" class="material-icons">account_circle</span>
-          <img *ngIf="avatarUrl$ | async" [src]="avatarUrl$ | async" alt="" class="avatar">
-          <span class="text">Profile</span>
-        </a>
-      </div>
-    </span>
+  <span>
+    <div class="menu">
+      <a *ngIf="!(isLoggedIn$ | async)" routerLink="/login" class="item" title="Login" routerLinkActive="router-link-exact-active">
+        <span class="material-icons">account_circle</span>
+        <span class="text">Login</span>
+      </a>
+      <a *ngIf="(isLoggedIn$ | async)" routerLink="/profile" class="item" title="Profile" routerLinkActive="router-link-exact-active">
+        <span *ngIf="!(avatarUrl$ | async)" class="material-icons">account_circle</span>
+        <img *ngIf="(avatarUrl$ | async)" [src]="(avatarUrl$ | async) + '30x30'" alt="" class="avatar">
+        <span class="text">Profile</span>
+      </a>
+    </div>
+  </span>
 
 </aside>

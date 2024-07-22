@@ -1,9 +1,9 @@
 # Cangular
-Project version 0.8.1
+Project version 0.8.4
 <br>
 Angular version 15.0.4
 <br>
-Pocketbase version 0.11.13
+Pocketbase version 0.12.01
 
 ## Notes
 [Project](https://denim-rocket-cf2.notion.site/86fcc21725c24c0fbdea5a1dde65af1d?v=eacbca05816c4bcb92408274456dfbc0)
@@ -15,4 +15,6 @@ Clone then `npm i` to install all the dependencies locally
 <br>
 Run `ng serve` in `/frontend` to launch dev server. Navigate to `http://localhost:4200/`
 <br>
-Run `./pocketbase serve` in `/pocketbase` to launch dev database. Navigate to `http://127.0.0.1:8090/_/`
+Navigate to `https://pocketbase.io/` and set up a database.
+<br>
+See `migration.config` in `src/assets/` for import template
