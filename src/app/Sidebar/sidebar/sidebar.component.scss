@@ -67,9 +67,9 @@ aside {
             .avatar {
                 width: 30px;
                 height: 30px;
-                border-radius: 50%;
-                object-fit: cover;
+                //border-radius: 50%;
                 margin-right: 1rem;
+                flex-shrink: 0;
             }
             .material-icons {
                 font-size: 2rem;

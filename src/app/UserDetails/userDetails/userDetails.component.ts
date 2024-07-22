@@ -81,7 +81,7 @@ export class UserDetailsComponent {
       }
       this.lastLoggedIn = value.lastLoggedIn
       this.found = true
-      this.getAvatarUrl(value.avatar).then(url => {this.avatarUrl = url})
+      this.getAvatarUrl(value.avatar, "200x200").then(url => {this.avatarUrl = url})
     })
    .catch((error)=>{ 
       console.log(error)
@@ -109,10 +109,10 @@ export class UserDetailsComponent {
     this.loader.complete()
   }
 
-  async getAvatarUrl(fileName: string | null): Promise<string>{
+  async getAvatarUrl(fileName: string | null, thumbSize: string | null): Promise<string>{
     if(null == fileName ||fileName == "") return ""
     let url = ""
-    await this.uploadService.getFileUrl(this.detailsUserId, fileName).then(foundUrl => {url = foundUrl}).catch()
+    await this.uploadService.getFileUrl(this.detailsUserId, fileName, thumbSize).then(foundUrl => {url = foundUrl}).catch()
     return url
   }
 }
