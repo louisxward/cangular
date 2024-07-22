@@ -39,8 +39,8 @@
       </a>
       <a *ngIf="(isLoggedIn$ | async)" routerLink="/profile" class="item" title="Profile" routerLinkActive="router-link-exact-active">
         <span *ngIf="!(avatarUrl$ | async)" class="material-icons">account_circle</span>
-        <img *ngIf="avatarUrl$ | async" [src]="avatarUrl$ | async" alt="" class="avatar">
-        <span class="text" style="line-height: 0px;">Profile</span>
+        <img *ngIf="(avatarUrl$ | async)" [src]="(avatarUrl$ | async) + '30x30'" alt="" class="avatar">
+        <span class="text">Profile</span>
       </a>
     </div>
   </span>
