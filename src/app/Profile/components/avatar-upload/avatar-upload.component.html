@@ -2,10 +2,11 @@
     <label style="display: block;">Avatar Upload:</label>
     <div class="fileUpload">
         <label for="chooose" class="chooose">Choose</label>
-        <label class="fileName">{{ (file.name != "") ? file.name : ((avatarFileName$ | async) != "") ? (avatarFileName$ | async) : "Please select a file"}}</label>
-        <label (click)="delete()" class="delete" *ngIf="((avatarFileName$ | async) != '')">X</label>
+        <label class="fileName">
+            {{(avatarFileName$ | async) || "Please select a file"}}
+        </label>
+        <label (click)="delete()" class="delete" *ngIf="avatarFileName$ | async">X</label>
         <input type="file" id="chooose" (change)="onChange($event)" style="display:none;"/> 
-        <!-- <button class="button" (click)="onUpload()" [disabled]="!pending"> Upload</button> -->
     </div>
 </div>
 <div class="text-center" *ngIf="loading">
