@@ -17,8 +17,6 @@ export class SocialService {
         let temp = null
         const myPromise = this.pb.collection('user_follows').create({user: userId, follows_user: followUserId});
         await myPromise.then((value) => { 
-            console.log("followed!")
-            console.log(value.id)
             temp = value.id
         })
         .catch((error)=>{
@@ -31,7 +29,6 @@ export class SocialService {
         const myPromise = this.pb.collection('user_follows').delete(followingId);
         let temp = null
         await myPromise.then(() => { 
-            console.log("unfollowed!")
             return null
         })
         .catch((error)=>{
@@ -42,7 +39,6 @@ export class SocialService {
     }
 
     async checkFollowing(userId: string, followUserId: string | null){
-        console.log("checkFollow()")
         let temp = null
         if(!followUserId) return followUserId
         const query = "user='".concat(userId+"' && follows_user='").concat(followUserId+"'")
@@ -53,6 +49,14 @@ export class SocialService {
         .catch((error: 404)=>{
         })
         return temp
+    }
+
+    async checkMutuals(aId: string, bId: string){
+        
+        
+        
+        
+        return false
     }
 
 }

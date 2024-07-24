@@ -82,10 +82,21 @@ export class UserDetailsComponent {
       console.log(error)
       console.log("User Not Found")
     })
+    // Check if current user is viewing profile
     this.currentUser = (this.authGuardService.userId == this.detailsUserId)
+    // Social setup
     if(!this.currentUser){
-      await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
-      this.mutualFollowing = this.followingId != null; 
+      await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId)
+      .then(followingId => {
+        this.followingId = followingId
+      })
+      if(null != this.followingId){
+        // If user follows profile. check profile follows user
+        await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId)
+        .then(followingId => {
+          this.mutualFollowing = null != followingId
+        })
+      }
     }
     this.loaded = true
     this.loader.complete()
@@ -95,7 +106,10 @@ export class UserDetailsComponent {
     this.loader.start()
     this.followPending = true
     await this.socialService.follow(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
-    await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = followingId != null })
+    await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId)
+    .then(followingId => {
+      this.mutualFollowing = null != followingId
+    })
     this.followPending = false
     this.loader.complete()
   }
