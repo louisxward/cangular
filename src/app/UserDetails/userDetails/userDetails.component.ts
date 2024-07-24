@@ -84,7 +84,7 @@ export class UserDetailsComponent {
     })
     this.currentUser = (this.authGuardService.userId == this.detailsUserId)
     if(!this.currentUser){
-      //await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
+      await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
       this.mutualFollowing = this.followingId != null; 
     }
     this.loaded = true
@@ -95,11 +95,7 @@ export class UserDetailsComponent {
     this.loader.start()
     this.followPending = true
     await this.socialService.follow(this.authGuardService.userId, this.detailsUserId).then(followingId => {this.followingId = followingId})
-    console.log("this.followingId")
-    console.log(this.followingId)
-    console.log("this.detailsUserId")
-    console.log(this.detailsUserId)
-    //await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = followingId != null })
+    await this.socialService.checkFollowing(this.detailsUserId, this.authGuardService.userId).then(followingId => { this.mutualFollowing = followingId != null })
     this.followPending = false
     this.loader.complete()
   }
@@ -108,7 +104,7 @@ export class UserDetailsComponent {
     this.loader.start()
     this.followPending = true
     if(null != this.followingId){
-      await this.socialService.unfollow(this.followingId)
+      await this.socialService.unfollow(this.followingId).then(followingId => {this.followingId = followingId})
     }
     this.mutualFollowing = false
     this.followPending = false
@@ -116,9 +112,9 @@ export class UserDetailsComponent {
   }
 
   async getAvatarUrl(fileName: string | null, thumbSize: string | null): Promise<string>{
-    if(null == fileName ||fileName == "") return ""
+    if(null == fileName || fileName == "") return ""
     let url = ""
-    await this.uploadService.getFileUrl(this.detailsUserId, fileName, thumbSize).then(foundUrl => {url = foundUrl}).catch()
+    await this.uploadService.getFileUrl(this.detailsUserId, fileName, thumbSize).then(foundUrl => {url = foundUrl})
     return url
   }
 }
