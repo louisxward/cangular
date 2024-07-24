@@ -84,7 +84,6 @@ export class UserState {
     
     @Action(User.Update.Sidebar)
     updateSidebarState(ctx: StateContext<UserStateModel>) {
-      console.log("updateSidebarState()")
       ctx.patchState({
         sidebarExpanded: !ctx.getState().sidebarExpanded
       })

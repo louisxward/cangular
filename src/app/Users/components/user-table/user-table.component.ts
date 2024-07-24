@@ -77,14 +77,11 @@ export class UserTableComponent{
 
     async getResults(){
         this.loader.start()
-        console.log("getResults()")
         const myPromise = this.pb.collection('users').getList(this.page, this.max, {filter: this.query});
         await myPromise.then((value) => { 
-            console.log(value)
             this.size = value.totalItems
             this.pages = value.totalPages
             this.results = value.items
-            console.log(this.results.length > 0)
        });
        this.loaded = true
        this.loader.complete()
@@ -114,18 +111,14 @@ export class UserTableComponent{
     
 
     submit() {
-        console.log("Form Submitted")
-        console.log(this.pagnationForm.value)
     }
 
     searchSubmit() {
-        console.log("Search Submitted")
         this.query = this.queryService.formatQuery(JSON.stringify(this.searchForm.value))
         this.getResults()
     }
 
     searchReset() {
-        console.log("Search Reset")
         this.query = ""
         this.searchForm.reset()
         let obj = {id: "",
@@ -135,12 +128,10 @@ export class UserTableComponent{
     }
 
     viewUser(id: number){
-        console.log("viewUser() ID:" + id)
         this.router.navigate(["users/", id]);
     }
 
     createUser(){
-        console.log("createUser()")
         this.router.navigate(["users/", "0"]);
     }
 }

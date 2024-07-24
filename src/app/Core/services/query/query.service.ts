@@ -6,7 +6,6 @@ export class QueryService {
   constructor() {}
 
   formatQuery(data: string): string {
-    console.log("formatQuery()")
     let query = ""
     const dataParsed = data.replace(/[!^"{}]+/g, "")
     const split = dataParsed.split(',')
@@ -23,7 +22,6 @@ export class QueryService {
         query = query.concat(split2[0] + '~"' +  split2[1] + '"')
       }
     }
-    console.log(query)
     return query
   }
 

@@ -25,6 +25,7 @@ export class SocialService {
         return temp
     }
 
+    // ToDo - Good place to start with returning nulls instead of errors.
     async unfollow(followingId: string){
         const myPromise = this.pb.collection('user_follows').delete(followingId);
         let temp = null
@@ -53,7 +54,7 @@ export class SocialService {
 
     async checkMutuals(aId: string, bId: string){
         
-        
+        await this.checkFollowing(aId, bId)
         
         
         return false

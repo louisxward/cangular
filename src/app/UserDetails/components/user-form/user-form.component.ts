@@ -46,7 +46,8 @@ export class UserFormComponent{
       Validators.minLength(3),
       Validators.maxLength(64)
     ])))
-    this.form.addControl( 'email', new FormControl(this.userData.email, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]))//only admins can edit emails, creation still allows anyone to set the email
+    //only admins can edit emails, creation still allows anyone to set the email
+    this.form.addControl( 'email', new FormControl(this.userData.email, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]))
     if(this.userData.id == "0"){
       this.form.addControl( 'emailVisibility', new FormControl(true, Validators.required))
       this.form.addControl( 'password', new FormControl("", Validators.compose([
@@ -63,9 +64,9 @@ export class UserFormComponent{
     else{
       this.userDefault.username = this.userData.username
       this.userDefault.email = this.userData.email
+      this.form.controls['email'].disable()
     }
     if(!this.editable){
-      console.log("disable form")
       this.form.disable()
     }
   }
@@ -77,7 +78,7 @@ export class UserFormComponent{
   async submit() {
     this.loader.start()
     console.log("Form Submitted")
-    console.log(this.form.value)
+    //console.log(this.form.value)
     if(this.userData.id == "0"){
       await this.createUser()
     }

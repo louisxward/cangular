@@ -34,7 +34,6 @@ export class UploadService  {
   }
 
   async getFileUrl(userId: string, fileName: string, thumbSize2: string | null): Promise<string> {
-    console.log("getFileUrl()")
     let avatarUrl = ""
     let thumbSize = thumbSize2 ?? '';
     const myPromise = this.pb.collection('users').getOne(userId)

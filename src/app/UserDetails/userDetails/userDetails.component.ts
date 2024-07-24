@@ -63,12 +63,11 @@ export class UserDetailsComponent {
   }
 
   async loadUser(){
+    console.log("loadUser() start")
     this.loader.start()
-    console.log("loadUser()")
     const myPromise = this.pb.collection('users').getOne(this.detailsUserId, {})
     await myPromise.then((value) => { 
       console.log("User Found")
-      console.log(value)
       this.userData = {
         id: value.id,
         username: value.username,
@@ -84,6 +83,7 @@ export class UserDetailsComponent {
     })
     // Check if current user is viewing profile
     this.currentUser = (this.authGuardService.userId == this.detailsUserId)
+    if(this.currentUser) console.log("Current User")
     // Social setup
     if(!this.currentUser){
       await this.socialService.checkFollowing(this.authGuardService.userId, this.detailsUserId)
@@ -100,6 +100,7 @@ export class UserDetailsComponent {
     }
     this.loaded = true
     this.loader.complete()
+    console.log("loadUser() end")
   }
 
   async follow(){

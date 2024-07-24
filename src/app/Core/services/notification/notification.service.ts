@@ -12,8 +12,6 @@ export class NotificationService {
   constructor(private toastrService: ToastrService) { }
 
   success(message: string) {
-    console.log("success()")
-    console.log(message)
     this.toastrService.success(message, '', toastrOptions);
   }
 
