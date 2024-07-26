@@ -1,58 +1,66 @@
- <table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <h1 *ngIf="!loaded">Loading...</h1>
-        <h1 *ngIf="loaded && size == 0">No Results</h1>
-        <tr *ngFor="let userTableItem of results" class="data">
-            <td style="width: 10%;">{{userTableItem.id}}</td>
-            <td style="width: 20%;">{{userTableItem.username}}</td>
-            <td style="width: 40%;">{{userTableItem.email}}</td>
-            <td>
-                <button class="button" (click)="viewUser(userTableItem.id)">View</button>
-            </td>
-        </tr>
-    </tbody>
+<table>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<h1 *ngIf="!loaded">Loading...</h1>
+		<h1 *ngIf="loaded && size == 0">No Results</h1>
+		<tr *ngFor="let userTableItem of results" class="data">
+			<td style="width: 10%">{{ userTableItem.id }}</td>
+			<td style="width: 20%">{{ userTableItem.username }}</td>
+			<td style="width: 40%">{{ userTableItem.email }}</td>
+			<td>
+				<button class="button" (click)="viewUser(userTableItem.id)">View</button>
+			</td>
+		</tr>
+	</tbody>
 </table>
 
 <div class="pagnation">
-    <form [formGroup]="pagnationForm">
-        <div  class="filter">
-            <h3>Size</h3>
-            <select formControlName="max">
-                <option *ngFor="let size of pageSizes" [value]="size">{{size}}</option>
-            </select>
-        </div>
-        <div  class="filter">
-            <h3>Page</h3>
-            <ul>
-                <li *ngFor="let page of getPages()">
-                    <button (click)="updatePage(page)">{{page}}</button>
-                </li>
-            </ul>
-        </div>
-        <div  class="filter">
-            <h3>Results</h3>
-            {{size}}
-        </div>
-    </form>
+	<form [formGroup]="pagnationForm">
+		<div class="filter">
+			<h3>Size</h3>
+			<select formControlName="max">
+				<option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+			</select>
+		</div>
+		<div class="filter">
+			<h3>Page</h3>
+			<ul>
+				<li *ngFor="let page of getPages()">
+					<button (click)="updatePage(page)">{{ page }}</button>
+				</li>
+			</ul>
+		</div>
+		<div class="filter">
+			<h3>Results</h3>
+			{{ size }}
+		</div>
+	</form>
 </div>
 
 <div class="search">
-    <form [formGroup]="searchForm" (ngSubmit)="searchSubmit()">
-        <input id="id" placeholder="Id" formControlName="id">
-        <input id="username" placeholder="Username" formControlName="username">
-        <button class="button" type="submit" [disabled]="!searchForm.valid">Search</button>
-        <button class="button" type="button" (click)="searchReset()" [disabled]="!searchForm.dirty">Reset</button>
-    </form>
+	<form [formGroup]="searchForm" (ngSubmit)="searchSubmit()">
+		<input id="id" placeholder="Id" formControlName="id" />
+		<input id="username" placeholder="Username" formControlName="username" />
+		<button class="button" type="submit" [disabled]="!searchForm.valid">
+			Search
+		</button>
+		<button
+			class="button"
+			type="button"
+			(click)="searchReset()"
+			[disabled]="!searchForm.dirty">
+			Reset
+		</button>
+	</form>
 </div>
 
 <div class="buttons-right">
-    <button class="button" (click)="createUser()">Create</button>
+	<button class="button" (click)="createUser()">Create</button>
 </div>
