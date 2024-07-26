@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core'
 
 @Component({
-  selector: 'app-page-header',
-  templateUrl: './page-header.component.html',
-  styleUrls: ['./page-header.component.scss']
+	selector: 'app-page-header',
+	templateUrl: './page-header.component.html',
+	styleUrls: ['./page-header.component.scss'],
 })
 export class PageHeaderComponent {
-  @Input('header') header = '';
-  @Input('id') id = '';
+	@Input('header') header = ''
+	@Input('id') id = ''
 }
