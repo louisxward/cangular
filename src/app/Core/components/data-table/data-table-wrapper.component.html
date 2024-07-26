@@ -1,0 +1,22 @@
+<table>
+  <thead>
+  <tr>
+    <th *ngFor="let columnHead of tableConfig.columns">{{ columnHead.title }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let columnData of tableContent">
+    <td *ngFor="let columnHead of tableConfig.columns">
+      <div *ngIf="columnHead.dataField !== 'ROW_ACTIONS';else action_content">{{ columnData[columnHead.dataField] }}</div>
+      <ng-template #action_content>
+        <div *ngFor="let action of tableConfig.rowActions">
+          <img src="{{ action.logoImageUrl }}"
+               alt="{{ action.actionDescription }}"
+               *ngIf="action.showOption(columnData)"
+               (click)="onRowActionClicked(action.actionToPerform, columnData)"/>
+        </div>
+      </ng-template>
+    </td>
+  </tr>
+  </tbody>
+</table>

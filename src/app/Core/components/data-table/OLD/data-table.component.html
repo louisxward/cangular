@@ -1,0 +1,21 @@
+<table>
+    
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr *ngFor="let result of results" class="data">
+            <td style="width: 10%;">{{result.id}}</td>
+            <td style="width: 20%;">{{result.username}}</td>
+            <td style="width: 40%;">{{result.email}}</td>
+            <td></td>
+        </tr>
+    </tbody>
+
+</table>
