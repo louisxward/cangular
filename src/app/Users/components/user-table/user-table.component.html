@@ -22,26 +22,27 @@
 </table>
 
 <div class="pagnation">
-	<form [formGroup]="pagnationForm">
-		<div class="filter">
-			<h3>Size</h3>
-			<select formControlName="max">
-				<option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
-			</select>
-		</div>
-		<div class="filter">
-			<h3>Page</h3>
-			<ul>
-				<li *ngFor="let page of getPages()">
-					<button (click)="updatePage(page)">{{ page }}</button>
-				</li>
-			</ul>
-		</div>
-		<div class="filter">
-			<h3>Results</h3>
-			{{ size }}
-		</div>
-	</form>
+
+    <form [formGroup]="pagnationForm">
+        <div  class="filter">
+            <h3>Size</h3>
+            <select formControlName="max">
+                <option *ngFor="let size of pageSizes" [value]="size">{{size}}</option>
+            </select>
+        </div>
+        <div  class="filter">
+            <h3>Page</h3>
+            <ul>
+                <li *ngFor="let page of getPages()">
+                    <button (click)="updatePage(page)">{{page}}</button>
+                </li>
+            </ul>
+        </div>
+        <div  class="filter">
+            <h3>Results</h3>
+            <h3 class="results">{{size}}</h3>
+        </div>
+    </form>
 </div>
 
 <div class="search">

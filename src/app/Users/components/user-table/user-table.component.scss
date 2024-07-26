@@ -54,12 +54,13 @@ td,
 	margin-right: 0.75rem;
 }
 
-.filter,
-select,
-ul,
-li,
-h3 {
-	display: inline-block;
+
+.filter .results{
+    font-weight: normal;
+}
+
+.filter, select, ul, li, h3{
+    display: inline-block;
 }
 
 .pagnation h3 {
