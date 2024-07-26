@@ -1,70 +1,79 @@
 table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
 }
 
-thead{
-    color: black;
-    background-color: var(--primary);
-    font-size: 20px;
+thead {
+	color: black;
+	background-color: var(--primary);
+	font-size: 20px;
 }
-  
+
 tbody {
-    font-size: 16px;
+	font-size: 16px;
 }
 
-table td + td { 
-    border-left:1px solid white;
+table td + td {
+	border-left: 1px solid white;
 }
 
-table th + th { 
-    border-left:1px solid black;
+table th + th {
+	border-left: 1px solid black;
 }
 
-table, thead, tbody, tr {
-    border: none;
+table,
+thead,
+tbody,
+tr {
+	border: none;
 }
 
-tr.data{
-    border-bottom:1px solid white;
+tr.data {
+	border-bottom: 1px solid white;
 }
 
-tr.data:last-child{
-    border-bottom: none;
+tr.data:last-child {
+	border-bottom: none;
 }
 
-th, td, .pagnation {
-    padding: 0.5rem;
+th,
+td,
+.pagnation {
+	padding: 0.5rem;
 }
 
 .pagnation {
-    width: 100%;
-    color: black;
-    background-color: var(--primary);
-    height: 21%;
+	width: 100%;
+	color: black;
+	background-color: var(--primary);
+	height: 21%;
 }
 
-.filter{
-    margin-right: 0.75rem;
+.filter {
+	margin-right: 0.75rem;
 }
 
-.filter, select, ul, li, h3{
-    display: inline-block;
+.filter,
+select,
+ul,
+li,
+h3 {
+	display: inline-block;
 }
 
 .pagnation h3 {
-    font-size: 16px;
-    margin-right: 0.75rem;
+	font-size: 16px;
+	margin-right: 0.75rem;
 }
 
 .pagnation button {
-    font-size: 16px;
-    margin-right: 0.75rem;
-    color: black;
-    text-decoration: underline;
+	font-size: 16px;
+	margin-right: 0.75rem;
+	color: black;
+	text-decoration: underline;
 }
 
-.search{
-    display: inline-block;
+.search {
+	display: inline-block;
 }

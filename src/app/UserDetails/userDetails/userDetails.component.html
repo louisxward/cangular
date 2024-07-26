@@ -1,28 +1,44 @@
 <main class="userDetails-page">
-    <app-page-header header="User Details" id ="{{detailsUserId}}"></app-page-header>
-    <div class="content">
-        <div *ngIf="!loaded">
-            <h3>Loading...</h3>
-        </div>
-        <div *ngIf="loaded && !found">
-            <h3>User not Found</h3>
-        </div>
-        <div *ngIf="loaded && found">
-            <app-user-form [userData]="userData" [editable]="currentUser || detailsUserId == '0'"></app-user-form>
-            <div *ngIf="avatarUrl != ''" class="avatarDisplay">
-                <img [src]="avatarUrl" title="Avatar">
-            </div>
-            <div class="statusDisplay" *ngIf="mutualFollowing">
-                <h2>Mutuals</h2>
-                <span class="material-icons">swap_horiz</span>
-            </div>
-            <div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
-                <h2>{{lastLoggedIn | date:'short':'UTC'}}</h2>
-            </div>
-            <div class="social buttons" *ngIf="loaded && !currentUser && !create">
-                <button class="button" *ngIf="followingId == ''" (click)="follow()" [disabled]="followPending">Follow</button>
-                <button class="button" *ngIf="followingId != ''" (click)="unfollow()" [disabled]="followPending">Unfollow</button>
-            </div>
-        </div>
-    </div>
+	<app-page-header
+		header="User Details"
+		id="{{ detailsUserId }}"></app-page-header>
+	<div class="content">
+		<div *ngIf="!loaded">
+			<h3>Loading...</h3>
+		</div>
+		<div *ngIf="loaded && !found">
+			<h3>User not Found</h3>
+		</div>
+		<div *ngIf="loaded && found">
+			<app-user-form
+				[userData]="userData"
+				[editable]="currentUser || detailsUserId == '0'"></app-user-form>
+			<div *ngIf="avatarUrl != ''" class="avatarDisplay">
+				<img [src]="avatarUrl" title="Avatar" />
+			</div>
+			<div class="statusDisplay" *ngIf="mutualFollowing">
+				<h2>Mutuals</h2>
+				<span class="material-icons">swap_horiz</span>
+			</div>
+			<div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
+				<h2>{{ lastLoggedIn | date: 'short' : 'UTC' }}</h2>
+			</div>
+			<div class="social buttons" *ngIf="loaded && !currentUser && !create">
+				<button
+					class="button"
+					*ngIf="!followingId"
+					(click)="follow()"
+					[disabled]="followPending">
+					Follow
+				</button>
+				<button
+					class="button"
+					*ngIf="followingId"
+					(click)="unfollow()"
+					[disabled]="followPending">
+					Unfollow
+				</button>
+			</div>
+		</div>
+	</div>
 </main>

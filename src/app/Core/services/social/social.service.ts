@@ -1,57 +1,70 @@
-import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Injectable } from '@angular/core'
+import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
-import { environment } from 'src/environment/environment';
-import { ApiService } from 'src/app/Core/services/api/api.service';
+import { environment } from 'src/environment/environment'
+import { ApiService } from 'src/app/Core/services/api/api.service'
 
 @Injectable()
 export class SocialService {
+	pb: PocketBase
 
-    pb: PocketBase
+	constructor(
+		private store: Store,
+		private apiService: ApiService
+	) {
+		this.pb = apiService.pb
+	}
 
-    constructor(private store: Store,  private apiService: ApiService,) { 
-        this.pb = apiService.pb
-    }
+	async follow(userId: string, followUserId: string) {
+		let temp = null
+		const myPromise = this.pb
+			.collection('user_follows')
+			.create({ user: userId, follows_user: followUserId })
+		await myPromise
+			.then((value) => {
+				temp = value.id
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+		return temp
+	}
 
-    async follow(userId: string, followUserId: string){
-        let followingId = ""
-        if(userId == "" || followUserId == "") return followingId
-        const myPromise = this.pb.collection('user_follows').create({user: userId, follows_user: followUserId});
-        await myPromise.then((value) => { 
-            console.log("followed!")
-            followingId = value.id
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-        return followingId
-    }
+	// ToDo - Good place to start with returning nulls instead of errors.
+	async unfollow(followingId: string) {
+		const myPromise = this.pb.collection('user_follows').delete(followingId)
+		let temp = null
+		await myPromise
+			.then(() => {
+				return null
+			})
+			.catch((error) => {
+				console.log(error)
+				temp = followingId
+			})
+		return temp
+	}
 
-    async unfollow(followingId: string){
-        if(followingId == "") return followingId
-        const myPromise = this.pb.collection('user_follows').delete(followingId);
-        await myPromise.then((value) => { 
-            console.log("unfollowed!")
-            followingId = ""
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-        return followingId
-    }
+	async checkFollowing(userId: string, followUserId: string | null) {
+		let temp = null
+		if (!followUserId) return followUserId
+		const query = "user='"
+			.concat(userId + "' && follows_user='")
+			.concat(followUserId + "'")
+		const myPromise = this.pb
+			.collection('user_follows')
+			.getFirstListItem(query, {})
+		await myPromise
+			.then((value) => {
+				temp = value.id
+			})
+			.catch((error: 404) => {})
+		return temp
+	}
 
-    async checkFollowing(userId: string, followUserId: string){
-        let followingId = ""
-        if(userId == "" || followUserId == "") return followingId
-        const query = "user='".concat(userId+"' && follows_user='").concat(followUserId+"'")
-        const myPromise = this.pb.collection('user_follows').getFirstListItem(query, {});
-        await myPromise.then((value) => { 
-            followingId = value.id
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-        return followingId
-    }
+	async checkMutuals(aId: string, bId: string) {
+		await this.checkFollowing(aId, bId)
 
+		return false
+	}
 }
