@@ -19,4 +19,4 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Deploy to server
-      run: ssh -o StrictHostKeyChecking=no deploy@github.com 'bash -s' < /opt/scripts/deploy-cangular
+      run: ssh -o StrictHostKeyChecking=no deploy@github.com 'bash -s' < /opt/scripts/deploy-cangular.sh
