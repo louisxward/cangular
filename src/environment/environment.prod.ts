@@ -1,4 +1,4 @@
 export const environment = {
 	production: true,
-	apiUrl: 'https://shaggy-analyst.pockethost.io',
+	apiUrl: 'http://95.141.241.226/db/'
 }
