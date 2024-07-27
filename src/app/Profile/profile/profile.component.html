@@ -1,31 +1,38 @@
-
 <main class="profile-page">
-    <app-page-header header="Profile" id="{{userId$ | async}}"></app-page-header>
-    <div class="content" *ngIf="(isLoggedIn$ | async)">
-        <div *ngIf="avatarUrl$ | async" class="avatarDisplay">
-            <img [src]="(avatarUrl$ | async) + '200x200'" title="Avatar">
-        </div>
-        <div class="dataTimeDisplay">
-            <h2>{{time | date:'short':'UTC'}}</h2>
-        </div>
-        <div class="info"> 
-            <h3>{{username$ | async }}</h3>
-            <br/>
-            <h3>{{email$ | async }}</h3>
-        </div>
-        <div class="spacing"></div>
-        <app-avatar-upload></app-avatar-upload>
-        <div class="spacing"></div>
-        <div class="buttons">
-            <div>
-                <button class="button" (click)="logout()">Logout</button>
-            </div>
-            <div>
-                <button class="button" (click)="checkAuth()">Check Auth</button>
-            </div>
-            <div>
-                <button class="button" (click)="checkStoreAuth()">Check Store Auth</button>
-            </div>
-        </div>
-    </div>
+	<app-page-header header="Profile" id="{{ userId$ | async }}"></app-page-header>
+	<div class="content">
+		<div *ngIf="!(isLoggedIn$ | async)">
+			<h3>Loading...</h3>
+		</div>
+		<div *ngIf="isLoggedIn$ | async">
+			<div *ngIf="avatarUrl$ | async as avatarUrl" class="avatarDisplay">
+				<img [src]="avatarUrl + '200x200'" title="Avatar" />
+			</div>
+			<div class="dataTimeDisplay">
+				<h2>{{ time | date: 'short' : 'UTC' }}</h2>
+			</div>
+			<div class="info">
+				<div *ngIf="username$ | async as username">
+					<h3>{{ username }}</h3>
+				</div>
+				<div *ngIf="email$ | async as email">
+					<h5>{{ email }}</h5>
+				</div>
+			</div>
+			<div class="spacing"></div>
+			<app-avatar-upload></app-avatar-upload>
+			<div class="spacing"></div>
+			<div class="buttons">
+				<div>
+					<button class="button" (click)="logout()">Logout</button>
+				</div>
+				<div>
+					<button class="button" (click)="checkAuth()">Check Auth</button>
+				</div>
+				<div>
+					<button class="button" (click)="checkStoreAuth()">Check Store Auth</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
