@@ -26,5 +26,10 @@ jobs:
         hosts="$(dig +short "$host" | grep -v '\.$' | sed -z 's|\n|,|g')$host"
         ssh-keyscan -H "$hosts" > ~/.ssh/known_hosts
 
+    - name: Enable SSH keys
+      run: |
+        eval $(ssh-agent -s)
+        ssh-add ~/.ssh/id_rsa
+
     - name: Deploy to server
-      run: ssh -i ~/.ssh/id_rsa root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
+      run: ssh root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
