@@ -30,6 +30,7 @@ jobs:
       run: |
         eval $(ssh-agent -s)
         ssh-add ~/.ssh/id_rsa
+        ssh-add -L
 
     - name: Deploy to server
       run: ssh root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
