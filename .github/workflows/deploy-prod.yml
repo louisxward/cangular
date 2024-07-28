@@ -27,4 +27,4 @@ jobs:
         ssh-keyscan -H "$hosts" > ~/.ssh/known_hosts
 
     - name: Deploy to server
-      run: ssh root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
+      run: ssh -i ~/.ssh/id_rsa root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
