@@ -107,8 +107,8 @@ export class UserState {
 
 	// Secelectors
 	@Selector()
-	static getId(state: UserStateModel): string | null{
-		return state.id;
+	static getId(state: UserStateModel): string{
+		return null != state.id ? state.id : '';
 	}
 
 	@Selector()

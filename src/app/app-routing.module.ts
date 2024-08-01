@@ -9,6 +9,7 @@ import { ProfileComponent } from 'src/app/Profile/profile/profile.component'
 import { LoginComponent } from 'src/app/Login/login/login.component'
 import { PageNotFoundComponent } from 'src/app/PageNotFound/pageNotFound/pageNotFound.component'
 import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
 
 const routes: Routes = [
 	{

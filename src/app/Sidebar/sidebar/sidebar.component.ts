@@ -9,7 +9,6 @@ import { User, UserState } from 'src/app/Core/state/user'
 })
 export class SidebarComponent {
 	isLoggedIn$ = this.store.select(UserState.isLoggedIn)
-	userId$ = this.store.select(UserState.getUserId)
 	avatarUrl$ = this.store.select(UserState.getAvatarUrl)
 	username$ = this.store.select(UserState.getUsername)
 	email$ = this.store.select(UserState.getEmail)

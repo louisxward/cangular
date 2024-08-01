@@ -6,6 +6,7 @@ import { Router } from '@angular/router'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
+import { AuthState } from 'src/app/Core/state/auth/auth.state';
 
 @Injectable()
 export class LoginService {
@@ -23,6 +24,13 @@ export class LoginService {
 		this.pb = apiService.pb
 	}
 
+
+	// ToDo - Look into this vvv
+	// login(event: Event) {
+	// 	event.preventDefault();
+	// 	this.store.dispatch(new Login({ username: this.username, password: this.password }));
+	// }
+	
 	async login(username: string, password: string): Promise<string> {
 		this.loader.start()
 		const myPromise = this.pb
