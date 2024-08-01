@@ -20,6 +20,7 @@ const userStateDefaults: UserStateModel = {
 	name: 'user',
 	defaults: userStateDefaults,
 })
+
 @Injectable()
 export class UserState {
 	pb: PocketBase
@@ -33,7 +34,7 @@ export class UserState {
 		this.pb = apiService.pb
 	}
 
-	//actions
+	// Actions
 	@Action(User.Login.Login)
 	login(ctx: StateContext<UserStateModel>, action: User.Login.Login) {
 		const record = action.payload.record
@@ -52,7 +53,6 @@ export class UserState {
 		console.log('logOut()')
 		this.pb.authStore.clear()
 		ctx.setState(userStateDefaults)
-		this.router.navigate(['/login'])
 	}
 
 	@Action(User.Update.User)
@@ -105,45 +105,30 @@ export class UserState {
 		})
 	}
 
-	//selectors
+	// Secelectors
 	@Selector()
-	static getUserId(state: UserStateModel): string {
-		if (null != state.id) {
-			return state.id
-		}
-		return ''
+	static getId(state: UserStateModel): string | null{
+		return state.id;
 	}
 
 	@Selector()
-	static getAvatarUrl(state: UserStateModel): string {
-		if (null != state.avatarUrl) {
-			return state.avatarUrl
-		}
-		return ''
+	static getAvatarUrl(state: UserStateModel): string | null {
+		return state.avatarUrl
 	}
 
 	@Selector()
-	static getAvatarFileName(state: UserStateModel): string {
-		if (null != state.avatarFileName) {
-			return state.avatarFileName
-		}
-		return ''
+	static getAvatarFileName(state: UserStateModel): string | null{
+		return state.avatarFileName
 	}
 
 	@Selector()
-	static getUsername(state: UserStateModel): string {
-		if (null != state.username) {
-			return state.username
-		}
-		return ''
+	static getUsername(state: UserStateModel): string | null{
+		return state.username
 	}
 
 	@Selector()
-	static getEmail(state: UserStateModel): string {
-		if (null != state.email) {
-			return state.email
-		}
-		return ''
+	static getEmail(state: UserStateModel): string | null{
+		return state.email
 	}
 
 	@Selector()
