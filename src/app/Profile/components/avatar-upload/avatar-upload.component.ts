@@ -21,7 +21,7 @@ export class AvatarUploadComponent implements OnInit {
 	constructor(
 		private store: Store,
 		private uploadService: UploadService,
-		private authGuardService: AuthGuardService,
+		private authGuardService: AuthGuardService
 	) {}
 
 	ngOnInit(): void {}
@@ -39,21 +39,21 @@ export class AvatarUploadComponent implements OnInit {
 		const formData = new FormData()
 		formData.append('avatar', this.file)
 		this.userId$
-		.pipe(
-			filter(e => e !== null), // Filter out null values
-			map(e => e as string) // Type assertion here
-		  )
-		.subscribe((e) => {
-			this.uploadService
-				.upload(formData, e)
-				.then((value: string) => (fileName = value))
-			this.store.dispatch(
-				new User.Update.Avatar({
-					id: e,
-					fileName: fileName,
-				})
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
 			)
-		})
+			.subscribe((e) => {
+				this.uploadService
+					.upload(formData, e)
+					.then((value: string) => (fileName = value))
+				this.store.dispatch(
+					new User.Update.Avatar({
+						id: e,
+						fileName: fileName,
+					})
+				)
+			})
 		this.loading = false
 		this.pending = false
 		this.file = new File([], '', {})
@@ -65,17 +65,17 @@ export class AvatarUploadComponent implements OnInit {
 		this.pending = false
 
 		this.userId$
-		.pipe(
-			filter(e => e !== null), // Filter out null values
-			map(e => e as string) // Type assertion here
-		  )
-		.subscribe((e) => {
-			this.store.dispatch(
-				new User.Update.Avatar({
-					id: e,
-					fileName: '',
-				})
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
 			)
-		})
+			.subscribe((e) => {
+				this.store.dispatch(
+					new User.Update.Avatar({
+						id: e,
+						fileName: '',
+					})
+				)
+			})
 	}
 }

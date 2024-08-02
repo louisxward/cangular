@@ -58,13 +58,13 @@ export class UserDetailsComponent {
 		const param = this.route.snapshot.paramMap.get('userId')
 		this.detailsUserId = param ? param : '0'
 		this.id$
-		.pipe(
-			filter(e => e !== null), // Filter out null values
-			map(e => e as string) // Type assertion here
-		  )
-		.subscribe((e) => {
-			this.currentUser = e == this.detailsUserId
-		})
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
+				this.currentUser = e == this.detailsUserId
+			})
 	}
 
 	async ngOnInit() {
@@ -110,17 +110,17 @@ export class UserDetailsComponent {
 		// Social setup
 		if (!this.currentUser) {
 			this.id$
-			.pipe(
-				filter(e => e !== null), // Filter out null values
-				map(e => e as string) // Type assertion here
-			)
-			.subscribe((e) => {
-				this.socialService
-					.checkFollowing(e, this.detailsUserId)
-					.then((followingId) => {
-						this.followingId = followingId
-					})
-			})
+				.pipe(
+					filter((e) => e !== null), // Filter out null values
+					map((e) => e as string) // Type assertion here
+				)
+				.subscribe((e) => {
+					this.socialService
+						.checkFollowing(e, this.detailsUserId)
+						.then((followingId) => {
+							this.followingId = followingId
+						})
+				})
 
 			if (null != this.followingId) {
 				// If user follows profile. check profile follows user
@@ -143,20 +143,20 @@ export class UserDetailsComponent {
 		this.loader.start()
 		this.followPending = true
 		this.id$
-		.pipe(
-			filter(e => e !== null), // Filter out null values
-			map(e => e as string) // Type assertion here
-		)
-		.subscribe((e) => {
-			this.socialService.follow(e, this.detailsUserId).then((followingId) => {
-				this.followingId = followingId
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
+				this.socialService.follow(e, this.detailsUserId).then((followingId) => {
+					this.followingId = followingId
+				})
+				this.socialService
+					.checkFollowing(this.detailsUserId, e)
+					.then((followingId) => {
+						this.mutualFollowing = null != followingId
+					})
 			})
-			this.socialService
-				.checkFollowing(this.detailsUserId, e)
-				.then((followingId) => {
-					this.mutualFollowing = null != followingId
-			})
-		})
 		this.followPending = false
 		this.loader.complete()
 	}

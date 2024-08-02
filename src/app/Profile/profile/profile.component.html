@@ -1,11 +1,10 @@
 <main class="profile-page">
 	<app-page-header header="Profile" id="{{ userId$ | async }}"></app-page-header>
 	<div class="content">
-		<!-- <div *ngIf="!(isLoggedIn$ | async)">
+		<div *ngIf="!(isLoggedIn$ | async)">
 			<h3>Loading...</h3>
-		</div> -->
-		<!-- *ngIf="isLoggedIn$ | async" -->
-		<div >
+		</div>
+		<div *ngIf="isLoggedIn$ | async">
 			<div *ngIf="avatarUrl$ | async as avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl + '200x200'" title="Avatar" />
 			</div>

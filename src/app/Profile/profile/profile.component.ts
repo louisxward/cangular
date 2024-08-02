@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component'
 import { Store } from '@ngxs/store'
-import { UserState , AuthState} from 'src/app/Core/state/index'
+import { UserState, AuthState } from 'src/app/Core/state/index'
 import PocketBase from 'pocketbase'
 import { LoginService } from 'src/app/Core/services/login/login.service'
 import { AvatarUploadComponent } from '../components/avatar-upload/avatar-upload.component'

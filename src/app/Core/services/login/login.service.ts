@@ -22,7 +22,7 @@ export class LoginService {
 	) {
 		this.pb = apiService.pb
 	}
-	
+
 	async login(username: string, password: string): Promise<string> {
 		this.loader.start()
 		const myPromise = this.pb
@@ -56,7 +56,7 @@ export class LoginService {
 	}
 
 	logout() {
-		console.log("logout()")
+		console.log('logout()')
 		this.store.dispatch(new User.Login.Logout())
 		this.store.dispatch(new Logout())
 		this.notificationService.success('logged out')

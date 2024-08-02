@@ -11,7 +11,6 @@ import { map } from 'rxjs/operators'
 })
 
 // For Routes atm
-
 export class AuthGuardService implements CanActivate {
 	constructor(
 		private store: Store,
