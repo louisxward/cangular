@@ -11,7 +11,6 @@ import { map, filter } from 'rxjs/operators'
 	styleUrls: ['./avatar-upload.component.scss'],
 })
 export class AvatarUploadComponent implements OnInit {
-	loading: boolean = false
 	pending: boolean = false
 	id: string
 	uploadedFileName: string | null = null;
@@ -35,20 +34,28 @@ export class AvatarUploadComponent implements OnInit {
 
 	onChange(event: any) {
 		console.log('onChange()')
-		this.pending = true
-		this.upload(event.target.files[0])// ToDo - Do remove or upload change here?
+		this.upload(event.target.files[0])
 	}
 
 	async upload(file: File) {
 		console.log('onUpload()')
-		this.uploadService.upload(file, this.id, 'users', 'avatar').then((e)=>{
+		this.pending = true
+		await this.uploadService.upload(file, this.id, 'users', 'avatar').then((e)=>{
 			if(e){
 				this.uploadedFileName = file.name
 			}
 		})
+		this.pending = false
 	}
 
 	async delete() {
 		console.log('delete()')
+		this.pending = true
+		await this.uploadService.delete(this.id, 'users', 'avatar').then((e)=>{
+			if(e){
+				this.uploadedFileName = null
+			}
+		})
+		this.pending = false
 	}
 }

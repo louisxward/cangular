@@ -19,23 +19,43 @@ export class UploadService {
 
 	async upload(file: File, id: string, collection: string, column: string) {
 		console.log('upload()')
+		this.loader.start()
 		const value = new FormData()
 		value.append(column, file)
 		return this.pb.collection(collection).update(id, value)
 		.then(()=>{
+			this.loader.complete()
 			return true
 		})
 		.catch((error)=>{
 			console.error(error)
+			this.loader.stop()
+			return false
+		})
+		
+	}
+
+
+	async delete(id: string, collection: string, column: string) {
+		console.log('deleteFile()')
+		this.loader.start()
+		const value = new FormData()
+		value.append(column, '')
+		return this.pb.collection(collection).update(id, value)
+		.then(()=>{
+			this.loader.complete()
+			return true
+		})
+		.catch((error)=>{
+			console.error(error)
+			this.loader.stop()
 			return false
 		})
 	}
+
 
 	async getFileUrl(userId: string, fileName: string, thumbSize2: string | null){
 		console.log('getFileUrl()')
 	}
 
-	deleteFile(userId: string, fileName: string, field: string) {
-		console.log('deleteFile()')
-	}
 }

@@ -84,7 +84,7 @@ export class UserState {
 			// 	.getFileUrl(id, fileName, null)
 			// 	.then((value: string) => (avatarUrl = value))
 		} else {
-			this.uploadService.deleteFile(id, fileName, 'avatar')
+			// this.uploadService.deleteFile(id, fileName, 'avatar') xxx
 		}
 		ctx.patchState({
 			avatarUrl: avatarUrl,
