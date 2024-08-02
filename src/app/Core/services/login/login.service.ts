@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Store } from '@ngxs/store'
-import { User, Login , Logout } from 'src/app/Core/state/index'// Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import { User, Login, Logout } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
 import PocketBase from 'pocketbase'
 import { Router } from '@angular/router'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
@@ -23,13 +23,12 @@ export class LoginService {
 		this.pb = apiService.pb
 	}
 
-
 	// ToDo - Look into this vvv
 	// login(event: Event) {
 	// 	event.preventDefault();
 	// 	this.store.dispatch(new Login({ username: this.username, password: this.password }));
 	// }
-	
+
 	async login(username: string, password: string): Promise<string> {
 		this.loader.start()
 		const myPromise = this.pb

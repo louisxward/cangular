@@ -1,40 +1,38 @@
 name: Deploy Prod
 
 on:
-  push:
-    branches:
-      - main
+ push:
+  branches:
+   - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+ deploy:
+  runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+  steps:
+   - name: Checkout code
+     uses: actions/checkout@v4
 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+   - name: Setup SSH
+     uses: webfactory/ssh-agent@v0.9.0
+     with:
+      ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Run script on server
-      run: ssh -o StrictHostKeyChecking=no root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
+   - name: Run script on server
+     run: ssh -o StrictHostKeyChecking=no root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
 
-    # - name: Write SSH keys
-    #   run: |
-    #     install -m 600 -D /dev/null ~/.ssh/id_rsa
-    #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-    #     host='95.141.241.226'
-    #     hosts="$(dig +short "$host" | grep -v '\.$' | sed -z 's|\n|,|g')$host"
-    #     ssh-keyscan -H "$hosts" > ~/.ssh/known_hosts
+  # - name: Write SSH keys
+  #   run: |
+  #     install -m 600 -D /dev/null ~/.ssh/id_rsa
+  #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+  #     host='95.141.241.226'
+  #     hosts="$(dig +short "$host" | grep -v '\.$' | sed -z 's|\n|,|g')$host"
+  #     ssh-keyscan -H "$hosts" > ~/.ssh/known_hosts
 
-    # - name: Enable SSH keys
-    #   run: |
-    #     eval $(ssh-agent -s)
-    #     ssh-add ~/.ssh/id_rsa
-    #     ssh-add -L
-    # - name: Deploy to server
-    #   run: ssh root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'
-
-
+  # - name: Enable SSH keys
+  #   run: |
+  #     eval $(ssh-agent -s)
+  #     ssh-add ~/.ssh/id_rsa
+  #     ssh-add -L
+  # - name: Deploy to server
+  #   run: ssh root@95.141.241.226 'bash -s < /opt/scripts/deploy-cangular.sh'

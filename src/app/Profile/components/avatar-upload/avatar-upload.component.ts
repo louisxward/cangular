@@ -40,8 +40,8 @@ export class AvatarUploadComponent implements OnInit {
 		formData.append('avatar', this.file)
 		this.userId$.subscribe((e) => {
 			this.uploadService
-			.upload(formData, e)
-			.then((value: string) => (fileName = value))
+				.upload(formData, e)
+				.then((value: string) => (fileName = value))
 			this.store.dispatch(
 				new User.Update.Avatar({
 					id: e,
@@ -58,7 +58,7 @@ export class AvatarUploadComponent implements OnInit {
 		console.log('delete()')
 		this.file = new File([], '', {})
 		this.pending = false
-		
+
 		this.userId$.subscribe((e) => {
 			this.store.dispatch(
 				new User.Update.Avatar({
@@ -67,7 +67,5 @@ export class AvatarUploadComponent implements OnInit {
 				})
 			)
 		})
-		
-
 	}
 }

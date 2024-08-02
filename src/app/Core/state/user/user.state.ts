@@ -20,7 +20,6 @@ const userStateDefaults: UserStateModel = {
 	name: 'user',
 	defaults: userStateDefaults,
 })
-
 @Injectable()
 export class UserState {
 	pb: PocketBase
@@ -105,8 +104,8 @@ export class UserState {
 
 	// Secelectors
 	@Selector()
-	static getId(state: UserStateModel): string{
-		return null != state.id ? state.id : '';
+	static getId(state: UserStateModel): string {
+		return null != state.id ? state.id : ''
 	}
 
 	@Selector()
@@ -115,22 +114,23 @@ export class UserState {
 	}
 
 	@Selector()
-	static getAvatarFileName(state: UserStateModel): string | null{
+	static getAvatarFileName(state: UserStateModel): string | null {
 		return state.avatarFileName
 	}
 
 	@Selector()
-	static getUsername(state: UserStateModel): string | null{
+	static getUsername(state: UserStateModel): string | null {
 		return state.username
 	}
 
 	@Selector()
-	static getEmail(state: UserStateModel): string | null{
+	static getEmail(state: UserStateModel): string | null {
 		return state.email
 	}
 
 	@Selector()
-	static isLoggedIn(state: UserStateModel): boolean { // ToDo - Remove and swtich to auth service
+	static isLoggedIn(state: UserStateModel): boolean {
+		// ToDo - Remove and swtich to auth service
 		return null != state.id
 	}
 

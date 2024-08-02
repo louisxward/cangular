@@ -9,10 +9,10 @@ import { LoadingBarService } from '@ngx-loading-bar/core'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
 import { UserService } from 'src/app/Core/services/user/user.service'
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { UserState } from 'src/app/Core/state/index';
-import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { UserState } from 'src/app/Core/state/index'
+import { Store } from '@ngxs/store'
 
 @Component({
 	selector: 'app-userDetails',
@@ -37,7 +37,7 @@ export class UserDetailsComponent {
 	found: boolean = false
 	create: boolean = false
 
-	id$: Observable<string>;
+	id$: Observable<string>
 
 	userData = {
 		id: '0',
@@ -52,9 +52,8 @@ export class UserDetailsComponent {
 		private uploadService: UploadService,
 		private socialService: SocialService,
 		private authGuardService: AuthGuardService,
-private userService: UserService,
-private store: Store
-
+		private userService: UserService,
+		private store: Store
 	) {
 		this.id$ = this.store.select(UserState.getId)
 		this.pb = apiService.pb
@@ -62,8 +61,7 @@ private store: Store
 		this.detailsUserId = param ? param : '0'
 		this.id$.subscribe((e) => {
 			this.currentUser = e == this.detailsUserId
-		});
-
+		})
 	}
 
 	async ngOnInit() {
@@ -108,31 +106,24 @@ private store: Store
 		if (this.currentUser) console.log('Current User')
 		// Social setup
 		if (!this.currentUser) {
-			
 			this.id$.subscribe((e) => {
 				this.socialService
-				.checkFollowing(e, this.detailsUserId)
-				.then((followingId) => {
-					this.followingId = followingId
-				})
-			});
-			
-
-
+					.checkFollowing(e, this.detailsUserId)
+					.then((followingId) => {
+						this.followingId = followingId
+					})
+			})
 
 			if (null != this.followingId) {
 				// If user follows profile. check profile follows user
 
 				this.id$.subscribe((e) => {
 					this.socialService
-					.checkFollowing(this.detailsUserId, e)
-					.then((followingId) => {
-						this.mutualFollowing = null != followingId
+						.checkFollowing(this.detailsUserId, e)
+						.then((followingId) => {
+							this.mutualFollowing = null != followingId
+						})
 				})
-				});
-
-
-
 			}
 		}
 		this.loaded = true
@@ -145,19 +136,15 @@ private store: Store
 		this.followPending = true
 
 		this.id$.subscribe((e) => {
-			this.socialService
-			.follow(e, this.detailsUserId)
-			.then((followingId) => {
+			this.socialService.follow(e, this.detailsUserId).then((followingId) => {
 				this.followingId = followingId
 			})
 			this.socialService
-			.checkFollowing(this.detailsUserId, e)
-			.then((followingId) => {
-				this.mutualFollowing = null != followingId
-			})
-		});
-
-
+				.checkFollowing(this.detailsUserId, e)
+				.then((followingId) => {
+					this.mutualFollowing = null != followingId
+				})
+		})
 
 		this.followPending = false
 		this.loader.complete()
