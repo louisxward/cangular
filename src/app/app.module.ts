@@ -60,7 +60,7 @@ import { ToastrModule } from 'ngx-toastr'
 		NgxsModule.forRoot([UserState, AuthState], {
 			developmentMode: isDevMode(),
 		}),
-		NgxsStoragePluginModule.forRoot({ key: 'user' }),
+		NgxsStoragePluginModule.forRoot({ key: ['user', 'auth'] }),
 		BrowserModule,
 		AppRoutingModule,
 		BrowserAnimationsModule,

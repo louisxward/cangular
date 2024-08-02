@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component'
 import { Store } from '@ngxs/store'
-import { UserState } from 'src/app/Core/state/index'
+import { UserState , AuthState} from 'src/app/Core/state/index'
 import PocketBase from 'pocketbase'
 import { LoginService } from 'src/app/Core/services/login/login.service'
 import { AvatarUploadComponent } from '../components/avatar-upload/avatar-upload.component'
@@ -15,7 +15,7 @@ import { ApiService } from 'src/app/Core/services/api/api.service'
 export class ProfileComponent {
 	pb: PocketBase
 
-	isLoggedIn$ = this.store.select(UserState.isLoggedIn) // ToDo - Auth should check this instead
+	isLoggedIn$ = this.store.select(AuthState.isAuthenticated) // ToDo - Auth should check this instead
 	userId$ = this.store.select(UserState.getId)
 	avatarUrl$ = this.store.select(UserState.getAvatarUrl)
 	username$ = this.store.select(UserState.getUsername)
@@ -39,16 +39,16 @@ export class ProfileComponent {
 	}
 
 	checkAuth(): void {
-		console.log(this.pb.authStore.isValid)
-		console.log(this.pb.authStore.token)
+		console.log('ISVALID: ' + this.pb.authStore.isValid)
+		console.log('TOKEN: ' + this.pb.authStore.token)
 	}
 
 	checkStoreAuth(): void {
 		this.isLoggedIn$.subscribe((f) => {
-			console.log(f)
+			console.log('LOGGEDIN: ' + f)
 		})
 		this.userId$.subscribe((f) => {
-			console.log(f)
+			console.log('USERID: ' + f)
 		})
 	}
 }

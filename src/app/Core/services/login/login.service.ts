@@ -22,13 +22,7 @@ export class LoginService {
 	) {
 		this.pb = apiService.pb
 	}
-
-	// ToDo - Look into this vvv
-	// login(event: Event) {
-	// 	event.preventDefault();
-	// 	this.store.dispatch(new Login({ username: this.username, password: this.password }));
-	// }
-
+	
 	async login(username: string, password: string): Promise<string> {
 		this.loader.start()
 		const myPromise = this.pb
@@ -62,9 +56,11 @@ export class LoginService {
 	}
 
 	logout() {
+		console.log("logout()")
 		this.store.dispatch(new User.Login.Logout())
 		this.store.dispatch(new Logout())
 		this.notificationService.success('logged out')
+		this.router.navigate(['/login'])
 	}
 
 	setLastLoggedIn(id: string) {
