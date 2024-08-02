@@ -2,7 +2,9 @@ import { NgModule, isDevMode } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { UserState } from './Core/state'
+// States
+import { UserState, AuthState } from './Core/state'
+
 import { NgxsModule } from '@ngxs/store'
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin'
 import { AppRoutingModule } from './app-routing.module'
@@ -55,10 +57,10 @@ import { ToastrModule } from 'ngx-toastr'
 	],
 	imports: [
 		NgxsReduxDevtoolsPluginModule.forRoot(),
-		NgxsModule.forRoot([UserState], {
+		NgxsModule.forRoot([UserState, AuthState], {
 			developmentMode: isDevMode(),
 		}),
-		NgxsStoragePluginModule.forRoot({ key: 'user' }),
+		NgxsStoragePluginModule.forRoot({ key: ['user', 'auth'] }),
 		BrowserModule,
 		AppRoutingModule,
 		BrowserAnimationsModule,

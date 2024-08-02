@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Store } from '@ngxs/store'
-import { User } from 'src/app/Core/state/user'
+import { User, Login, Logout } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
 import PocketBase from 'pocketbase'
 import { Router } from '@angular/router'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
@@ -38,13 +38,17 @@ export class LoginService {
 						record: value.record,
 					})
 				)
+				this.store.dispatch(
+					new Login({
+						record: value,
+					})
+				)
 				this.setLastLoggedIn(value.record.id)
 				this.router.navigate(['/profile'])
 				this.notificationService.success('welcome ' + value.record.username)
 			})
 			.catch((error) => {
 				response = 'incorrect username/password'
-				console.log(error)
 				console.log('user not found')
 			})
 		this.loader.complete()
@@ -52,8 +56,11 @@ export class LoginService {
 	}
 
 	logout() {
+		console.log('logout()')
 		this.store.dispatch(new User.Login.Logout())
+		this.store.dispatch(new Logout())
 		this.notificationService.success('logged out')
+		this.router.navigate(['/login'])
 	}
 
 	setLastLoggedIn(id: string) {

@@ -8,6 +8,10 @@ import { SocialService } from 'src/app/Core/services/social/social.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
+import { Observable } from 'rxjs'
+import { map, filter } from 'rxjs/operators'
+import { UserState, AuthState } from 'src/app/Core/state/index'
+import { Store } from '@ngxs/store'
 
 @Component({
 	selector: 'app-userDetails',
@@ -32,6 +36,8 @@ export class UserDetailsComponent {
 	found: boolean = false
 	create: boolean = false
 
+	id$: Observable<string | null>
+
 	userData = {
 		id: '0',
 		username: '',
@@ -44,11 +50,21 @@ export class UserDetailsComponent {
 		private loadingBarService: LoadingBarService,
 		private uploadService: UploadService,
 		private socialService: SocialService,
-		private authGuardService: AuthGuardService
+		private authGuardService: AuthGuardService,
+		private store: Store
 	) {
+		this.id$ = this.store.select(AuthState.getId)
 		this.pb = apiService.pb
 		const param = this.route.snapshot.paramMap.get('userId')
 		this.detailsUserId = param ? param : '0'
+		this.id$
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
+				this.currentUser = e == this.detailsUserId
+			})
 	}
 
 	async ngOnInit() {
@@ -89,22 +105,33 @@ export class UserDetailsComponent {
 				console.log('User Not Found')
 			})
 		// Check if current user is viewing profile
-		this.currentUser = this.authGuardService.userId == this.detailsUserId
+		//this.currentUser = this.id$ == this.detailsUserId
 		if (this.currentUser) console.log('Current User')
 		// Social setup
 		if (!this.currentUser) {
-			await this.socialService
-				.checkFollowing(this.authGuardService.userId, this.detailsUserId)
-				.then((followingId) => {
-					this.followingId = followingId
+			this.id$
+				.pipe(
+					filter((e) => e !== null), // Filter out null values
+					map((e) => e as string) // Type assertion here
+				)
+				.subscribe((e) => {
+					this.socialService
+						.checkFollowing(e, this.detailsUserId)
+						.then((followingId) => {
+							this.followingId = followingId
+						})
 				})
+
 			if (null != this.followingId) {
 				// If user follows profile. check profile follows user
-				await this.socialService
-					.checkFollowing(this.detailsUserId, this.authGuardService.userId)
-					.then((followingId) => {
-						this.mutualFollowing = null != followingId
-					})
+
+				this.id$.subscribe((e) => {
+					this.socialService
+						.checkFollowing(this.detailsUserId, e)
+						.then((followingId) => {
+							this.mutualFollowing = null != followingId
+						})
+				})
 			}
 		}
 		this.loaded = true
@@ -115,15 +142,20 @@ export class UserDetailsComponent {
 	async follow() {
 		this.loader.start()
 		this.followPending = true
-		await this.socialService
-			.follow(this.authGuardService.userId, this.detailsUserId)
-			.then((followingId) => {
-				this.followingId = followingId
-			})
-		await this.socialService
-			.checkFollowing(this.detailsUserId, this.authGuardService.userId)
-			.then((followingId) => {
-				this.mutualFollowing = null != followingId
+		this.id$
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
+				this.socialService.follow(e, this.detailsUserId).then((followingId) => {
+					this.followingId = followingId
+				})
+				this.socialService
+					.checkFollowing(this.detailsUserId, e)
+					.then((followingId) => {
+						this.mutualFollowing = null != followingId
+					})
 			})
 		this.followPending = false
 		this.loader.complete()

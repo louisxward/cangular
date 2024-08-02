@@ -37,12 +37,10 @@ export class LoginFormComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	async submit() {
-		await this.loginService
-			.login(this.form.get('username')?.value, this.form.get('password')?.value)
-			.then((value: string) => (this.response = value))
-		if (this.response != 'user found') {
-			this.form.reset()
-		}
+	login(event: Event) {
+		event.preventDefault() // Hmm not sure what the use of this is
+		const username = this.form.get('username')?.value
+		const password = this.form.get('password')?.value
+		this.loginService.login(username, password)
 	}
 }

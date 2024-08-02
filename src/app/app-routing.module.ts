@@ -14,14 +14,17 @@ const routes: Routes = [
 	{
 		path: '',
 		component: HomeComponent,
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'home',
 		component: HomeComponent,
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'about',
 		component: AboutComponent,
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'users',
@@ -36,7 +39,7 @@ const routes: Routes = [
 	{
 		path: 'profile',
 		component: ProfileComponent,
-		//canActivate: [AuthGuard],ehhhh
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'login',
@@ -46,6 +49,7 @@ const routes: Routes = [
 		path: '**',
 		pathMatch: 'full',
 		component: PageNotFoundComponent,
+		canActivate: [AuthGuardService],
 	},
 ]
 

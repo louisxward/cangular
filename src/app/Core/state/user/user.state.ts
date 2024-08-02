@@ -8,7 +8,6 @@ import { UploadService } from '../../services/upload/upload.service'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 
 const userStateDefaults: UserStateModel = {
-	id: null,
 	avatarUrl: null,
 	avatarFileName: null,
 	username: null,
@@ -33,7 +32,7 @@ export class UserState {
 		this.pb = apiService.pb
 	}
 
-	//actions
+	// Actions
 	@Action(User.Login.Login)
 	login(ctx: StateContext<UserStateModel>, action: User.Login.Login) {
 		const record = action.payload.record
@@ -49,10 +48,7 @@ export class UserState {
 
 	@Action(User.Login.Logout)
 	logout(ctx: StateContext<UserStateModel>) {
-		console.log('logOut()')
-		this.pb.authStore.clear()
 		ctx.setState(userStateDefaults)
-		this.router.navigate(['/login'])
 	}
 
 	@Action(User.Update.User)
@@ -68,7 +64,6 @@ export class UserState {
 				.then((value: string) => (avatarUrl = value))
 		}
 		ctx.patchState({
-			id: id,
 			avatarUrl: avatarUrl,
 			username: username,
 			email: email,
@@ -92,7 +87,6 @@ export class UserState {
 			this.uploadService.deleteFile(id, fileName, 'avatar')
 		}
 		ctx.patchState({
-			id: id,
 			avatarUrl: avatarUrl,
 			avatarFileName: fileName,
 		})
@@ -105,50 +99,26 @@ export class UserState {
 		})
 	}
 
-	//selectors
+	// Secelectors
+
 	@Selector()
-	static getUserId(state: UserStateModel): string {
-		if (null != state.id) {
-			return state.id
-		}
-		return ''
+	static getAvatarUrl(state: UserStateModel): string | null {
+		return state.avatarUrl
 	}
 
 	@Selector()
-	static getAvatarUrl(state: UserStateModel): string {
-		if (null != state.avatarUrl) {
-			return state.avatarUrl
-		}
-		return ''
+	static getAvatarFileName(state: UserStateModel): string | null {
+		return state.avatarFileName
 	}
 
 	@Selector()
-	static getAvatarFileName(state: UserStateModel): string {
-		if (null != state.avatarFileName) {
-			return state.avatarFileName
-		}
-		return ''
+	static getUsername(state: UserStateModel): string | null {
+		return state.username
 	}
 
 	@Selector()
-	static getUsername(state: UserStateModel): string {
-		if (null != state.username) {
-			return state.username
-		}
-		return ''
-	}
-
-	@Selector()
-	static getEmail(state: UserStateModel): string {
-		if (null != state.email) {
-			return state.email
-		}
-		return ''
-	}
-
-	@Selector()
-	static isLoggedIn(state: UserStateModel): boolean {
-		return null != state.id
+	static getEmail(state: UserStateModel): string | null {
+		return state.email
 	}
 
 	@Selector()
