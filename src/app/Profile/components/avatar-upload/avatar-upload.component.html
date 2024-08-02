@@ -3,9 +3,9 @@
 	<div class="fileUpload">
 		<label for="chooose" class="chooose">Choose</label>
 		<label class="fileName">
-			{{ (avatarFileName$ | async) || 'Please select a file' }}
+			{{ uploadedFileName || 'Please select a file' }}
 		</label>
-		<label (click)="delete()" class="delete" *ngIf="avatarFileName$ | async"
+		<label (click)="delete()" class="delete" *ngIf="uploadedFileName"
 			>X</label
 		>
 		<input

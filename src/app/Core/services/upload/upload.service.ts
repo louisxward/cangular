@@ -17,14 +17,25 @@ export class UploadService {
 		this.pb = apiService.pb
 	}
 
-	async upload(data: FormData, id: string) {
+	async upload(file: File, id: string, collection: string, column: string) {
+		console.log('upload()')
+		const value = new FormData()
+		value.append(column, file)
+		return this.pb.collection(collection).update(id, value)
+		.then(()=>{
+			return true
+		})
+		.catch((error)=>{
+			console.error(error)
+			return false
+		})
 	}
 
 	async getFileUrl(userId: string, fileName: string, thumbSize2: string | null){
-
+		console.log('getFileUrl()')
 	}
 
 	deleteFile(userId: string, fileName: string, field: string) {
-		
+		console.log('deleteFile()')
 	}
 }
