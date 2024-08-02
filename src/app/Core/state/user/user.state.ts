@@ -59,9 +59,9 @@ export class UserState {
 		const email = action.payload.email
 		let avatarUrl = ''
 		if (avatarFileName) {
-			await this.uploadService
-				.getFileUrl(id, avatarFileName, null)
-				.then((value: string) => (avatarUrl = value))
+			// await this.uploadService xxx
+			// 	.getFileUrl(id, avatarFileName, null)
+			// 	.then((value: string) => (avatarUrl = value))
 		}
 		ctx.patchState({
 			avatarUrl: avatarUrl,
@@ -80,9 +80,9 @@ export class UserState {
 		const fileName = action.payload.fileName
 		let avatarUrl = ''
 		if (fileName != '') {
-			await this.uploadService
-				.getFileUrl(id, fileName, null)
-				.then((value: string) => (avatarUrl = value))
+			// await this.uploadService xxx
+			// 	.getFileUrl(id, fileName, null)
+			// 	.then((value: string) => (avatarUrl = value))
 		} else {
 			this.uploadService.deleteFile(id, fileName, 'avatar')
 		}

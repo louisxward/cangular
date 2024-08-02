@@ -180,11 +180,11 @@ export class UserDetailsComponent {
 	): Promise<string> {
 		if (null == fileName || fileName == '') return ''
 		let url = ''
-		await this.uploadService
-			.getFileUrl(this.detailsUserId, fileName, thumbSize)
-			.then((foundUrl) => {
-				url = foundUrl
-			})
+		// await this.uploadService xxx
+		// 	.getFileUrl(this.detailsUserId, fileName, thumbSize)
+		// 	.then((foundUrl) => {
+		// 		url = foundUrl
+		// 	})
 		return url
 	}
 }

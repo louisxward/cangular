@@ -44,9 +44,9 @@ export class AvatarUploadComponent implements OnInit {
 				map((e) => e as string) // Type assertion here
 			)
 			.subscribe((e) => {
-				this.uploadService
-					.upload(formData, e)
-					.then((value: string) => (fileName = value))
+				// this.uploadService xxx
+				// 	.upload(formData, e)
+				// 	.then((value: string) => (fileName = value))
 				this.store.dispatch(
 					new User.Update.Avatar({
 						id: e,
