@@ -1,11 +1,12 @@
 // auth.state.ts
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Injectable } from '@angular/core';
+import { RecordAuthResponse } from 'pocketbase'
 
 // Define actions
 export class Login {
   static readonly type = '[Auth] Login';
-  constructor(public payload: { username: string; password: string }) {}
+  constructor(public payload: { record: RecordAuthResponse }) {}
 }
 
 export class Logout {
@@ -46,16 +47,12 @@ export class AuthState {
   // Actions
   @Action(Login)
   login(ctx: StateContext<AuthStateModel>, action: Login) {
-    const { username, password } = action.payload;
-
-    // Mock authentication logic
-    if (username === 'user' && password === 'pass') {
-      ctx.patchState({
-        username,
-        token: 'fake-jwt-token',
+    const record = action.payload.record.record
+    ctx.patchState({
+        username: record.username,
+        token: action.payload.record.token,
         isAuthenticated: true,
       });
-    }
   }
 
   @Action(Logout)

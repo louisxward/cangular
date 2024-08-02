@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
-// import { LoginService } from 'src/app/Core/services/login/login.service'
-import { Store } from '@ngxs/store';
-import { Login } from 'src/app/Core/state/auth/auth.state';
+import { LoginService } from 'src/app/Core/services/login/login.service'; 
 
 @Component({
 	selector: 'app-login-form',
@@ -14,9 +12,8 @@ export class LoginFormComponent implements OnInit {
 	response = ''
 
 	constructor(
-		// private loginService: LoginService,
+		private loginService: LoginService,
 		private formBuilder: FormBuilder,
-		private store: Store
 	) {
 		this.form = this.formBuilder.group({
 			username: [
@@ -40,7 +37,10 @@ export class LoginFormComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	submit() {
-		this.store.dispatch(new Login({ username: this.form.get('username')?.value, password: this.form.get('password')?.value }));
+	login(event: Event) {
+		event.preventDefault();// Hmm not sure what the use of this is
+		const username = this.form.get('username')?.value;
+		const password = this.form.get('password')?.value;
+		this.loginService.login(username, password)
 	}
 }

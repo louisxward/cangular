@@ -50,8 +50,6 @@ export class UserState {
 
 	@Action(User.Login.Logout)
 	logout(ctx: StateContext<UserStateModel>) {
-		console.log('logOut()')
-		this.pb.authStore.clear()
 		ctx.setState(userStateDefaults)
 	}
 
@@ -132,7 +130,7 @@ export class UserState {
 	}
 
 	@Selector()
-	static isLoggedIn(state: UserStateModel): boolean {
+	static isLoggedIn(state: UserStateModel): boolean { // ToDo - Remove and swtich to auth service
 		return null != state.id
 	}
 
