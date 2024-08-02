@@ -9,6 +9,9 @@ import { map } from 'rxjs/operators'
 @Injectable({
 	providedIn: 'root',
 })
+
+// For Routes atm
+
 export class AuthGuardService implements CanActivate {
 	constructor(
 		private store: Store,

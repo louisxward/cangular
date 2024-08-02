@@ -15,14 +15,14 @@ export class Logout {
 
 // Define the state model
 export interface AuthStateModel {
-	username: string | null
+	id: string | null
 	token: string | null
 	isAuthenticated: boolean
 }
 
 // Define the default state
 const defaults: AuthStateModel = {
-	username: null,
+	id: null,
 	token: null,
 	isAuthenticated: false,
 }
@@ -40,8 +40,8 @@ export class AuthState {
 	}
 
 	@Selector()
-	static username(state: AuthStateModel): string | null {
-		return state.username
+	static getId(state: AuthStateModel): string | null {
+		return state.id
 	}
 
 	// Actions
@@ -49,7 +49,7 @@ export class AuthState {
 	login(ctx: StateContext<AuthStateModel>, action: Login) {
 		const record = action.payload.record.record
 		ctx.patchState({
-			username: record.username,
+			id: record.id,
 			token: action.payload.record.token,
 			isAuthenticated: true,
 		})
@@ -57,10 +57,6 @@ export class AuthState {
 
 	@Action(Logout)
 	logout(ctx: StateContext<AuthStateModel>) {
-		ctx.patchState({
-			username: null,
-			token: null,
-			isAuthenticated: false,
-		})
+		ctx.setState(defaults)
 	}
 }

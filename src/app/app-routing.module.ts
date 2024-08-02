@@ -9,20 +9,22 @@ import { ProfileComponent } from 'src/app/Profile/profile/profile.component'
 import { LoginComponent } from 'src/app/Login/login/login.component'
 import { PageNotFoundComponent } from 'src/app/PageNotFound/pageNotFound/pageNotFound.component'
 import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
-import { UserService } from 'src/app/Core/services/user/user.service'
 
 const routes: Routes = [
 	{
 		path: '',
 		component: HomeComponent,
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'home',
 		component: HomeComponent,
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'about',
 		component: AboutComponent,
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'users',
@@ -37,7 +39,7 @@ const routes: Routes = [
 	{
 		path: 'profile',
 		component: ProfileComponent,
-		// canActivate: [AuthGuardService],
+		canActivate: [AuthGuardService],
 	},
 	{
 		path: 'login',
@@ -46,7 +48,8 @@ const routes: Routes = [
 	{
 		path: '**',
 		pathMatch: 'full',
-		component: PageNotFoundComponent,
+		component: PageNotFoundComponent, 
+		canActivate: [AuthGuardService],
 	},
 ]
 

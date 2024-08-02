@@ -8,7 +8,6 @@ import { UploadService } from '../../services/upload/upload.service'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 
 const userStateDefaults: UserStateModel = {
-	id: null,
 	avatarUrl: null,
 	avatarFileName: null,
 	username: null,
@@ -65,7 +64,6 @@ export class UserState {
 				.then((value: string) => (avatarUrl = value))
 		}
 		ctx.patchState({
-			id: id,
 			avatarUrl: avatarUrl,
 			username: username,
 			email: email,
@@ -89,7 +87,6 @@ export class UserState {
 			this.uploadService.deleteFile(id, fileName, 'avatar')
 		}
 		ctx.patchState({
-			id: id,
 			avatarUrl: avatarUrl,
 			avatarFileName: fileName,
 		})
@@ -103,10 +100,6 @@ export class UserState {
 	}
 
 	// Secelectors
-	@Selector()
-	static getId(state: UserStateModel): string {
-		return null != state.id ? state.id : ''
-	}
 
 	@Selector()
 	static getAvatarUrl(state: UserStateModel): string | null {
@@ -126,12 +119,6 @@ export class UserState {
 	@Selector()
 	static getEmail(state: UserStateModel): string | null {
 		return state.email
-	}
-
-	@Selector()
-	static isLoggedIn(state: UserStateModel): boolean {
-		// ToDo - Remove and swtich to auth service
-		return null != state.id
 	}
 
 	@Selector()

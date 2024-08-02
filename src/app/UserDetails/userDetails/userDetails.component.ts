@@ -8,10 +8,9 @@ import { SocialService } from 'src/app/Core/services/social/social.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
-import { UserService } from 'src/app/Core/services/user/user.service'
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
-import { UserState } from 'src/app/Core/state/index'
+import { map, filter } from 'rxjs/operators'
+import { UserState, AuthState } from 'src/app/Core/state/index'
 import { Store } from '@ngxs/store'
 
 @Component({
@@ -37,7 +36,7 @@ export class UserDetailsComponent {
 	found: boolean = false
 	create: boolean = false
 
-	id$: Observable<string>
+	id$: Observable<string | null>
 
 	userData = {
 		id: '0',
@@ -52,14 +51,18 @@ export class UserDetailsComponent {
 		private uploadService: UploadService,
 		private socialService: SocialService,
 		private authGuardService: AuthGuardService,
-		private userService: UserService,
 		private store: Store
 	) {
-		this.id$ = this.store.select(UserState.getId)
+		this.id$ = this.store.select(AuthState.getId)
 		this.pb = apiService.pb
 		const param = this.route.snapshot.paramMap.get('userId')
 		this.detailsUserId = param ? param : '0'
-		this.id$.subscribe((e) => {
+		this.id$
+		.pipe(
+			filter(e => e !== null), // Filter out null values
+			map(e => e as string) // Type assertion here
+		  )
+		.subscribe((e) => {
 			this.currentUser = e == this.detailsUserId
 		})
 	}
@@ -106,7 +109,12 @@ export class UserDetailsComponent {
 		if (this.currentUser) console.log('Current User')
 		// Social setup
 		if (!this.currentUser) {
-			this.id$.subscribe((e) => {
+			this.id$
+			.pipe(
+				filter(e => e !== null), // Filter out null values
+				map(e => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
 				this.socialService
 					.checkFollowing(e, this.detailsUserId)
 					.then((followingId) => {
@@ -134,8 +142,12 @@ export class UserDetailsComponent {
 	async follow() {
 		this.loader.start()
 		this.followPending = true
-
-		this.id$.subscribe((e) => {
+		this.id$
+		.pipe(
+			filter(e => e !== null), // Filter out null values
+			map(e => e as string) // Type assertion here
+		)
+		.subscribe((e) => {
 			this.socialService.follow(e, this.detailsUserId).then((followingId) => {
 				this.followingId = followingId
 			})
@@ -143,9 +155,8 @@ export class UserDetailsComponent {
 				.checkFollowing(this.detailsUserId, e)
 				.then((followingId) => {
 					this.mutualFollowing = null != followingId
-				})
+			})
 		})
-
 		this.followPending = false
 		this.loader.complete()
 	}

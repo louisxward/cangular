@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
-import { UserService } from 'src/app/Core/services/user/user.service'
 import { Store } from '@ngxs/store'
 import { User, UserState } from 'src/app/Core/state/user'
+import { AuthState } from 'src/app/Core/state'
+import { map, filter } from 'rxjs/operators'
 
 @Component({
 	selector: 'app-avatar-upload',
@@ -15,13 +16,12 @@ export class AvatarUploadComponent implements OnInit {
 	pending: boolean = false
 	file: File = new File([], '', {})
 	avatarFileName$ = this.store.select(UserState.getAvatarFileName)
-	userId$ = this.store.select(UserState.getId)
+	userId$ = this.store.select(AuthState.getId)
 
 	constructor(
 		private store: Store,
 		private uploadService: UploadService,
 		private authGuardService: AuthGuardService,
-		private userService: UserService
 	) {}
 
 	ngOnInit(): void {}
@@ -38,7 +38,12 @@ export class AvatarUploadComponent implements OnInit {
 		let fileName = ''
 		const formData = new FormData()
 		formData.append('avatar', this.file)
-		this.userId$.subscribe((e) => {
+		this.userId$
+		.pipe(
+			filter(e => e !== null), // Filter out null values
+			map(e => e as string) // Type assertion here
+		  )
+		.subscribe((e) => {
 			this.uploadService
 				.upload(formData, e)
 				.then((value: string) => (fileName = value))
@@ -59,7 +64,12 @@ export class AvatarUploadComponent implements OnInit {
 		this.file = new File([], '', {})
 		this.pending = false
 
-		this.userId$.subscribe((e) => {
+		this.userId$
+		.pipe(
+			filter(e => e !== null), // Filter out null values
+			map(e => e as string) // Type assertion here
+		  )
+		.subscribe((e) => {
 			this.store.dispatch(
 				new User.Update.Avatar({
 					id: e,
