@@ -28,7 +28,7 @@ export class UserDetailsComponent {
 	followPending: boolean = false
 
 	detailsUserId: string
-	avatarUrl: string = ''
+	avatarUrl: string | null = null
 	lastLoggedIn: string = ''
 
 	currentUser: boolean = false
@@ -96,7 +96,7 @@ export class UserDetailsComponent {
 				}
 				this.lastLoggedIn = value.lastLoggedIn
 				this.found = true
-				this.getAvatarUrl(value.avatar, '200x200').then((url) => {
+				this.uploadService.getFileUrl(this.detailsUserId, 'users', 'avatar', '200x200').then((url) => {
 					this.avatarUrl = url
 				})
 			})
@@ -172,19 +172,5 @@ export class UserDetailsComponent {
 		this.mutualFollowing = false
 		this.followPending = false
 		this.loader.complete()
-	}
-
-	async getAvatarUrl(
-		fileName: string | null,
-		thumbSize: string | null
-	): Promise<string> {
-		if (null == fileName || fileName == '') return ''
-		let url = ''
-		// await this.uploadService xxx
-		// 	.getFileUrl(this.detailsUserId, fileName, thumbSize)
-		// 	.then((foundUrl) => {
-		// 		url = foundUrl
-		// 	})
-		return url
 	}
 }

@@ -55,19 +55,29 @@ export class UploadService {
 
 	async getFileName(id: string, collection: string, column: string): Promise<string | null>{
 		console.log('getFileName()')
+		// console.log(id + ' - ' + collection + ' - ' + column)
 		return this.pb.collection(collection).getOne(id).
 			then((record)=>{
-			return record[column] //Hmm not sure on the types here
+				const fileName = record[column]
+				if(null !== fileName && '' !== fileName){
+					return fileName
+				}
+				return null
 		})
 	}
 
-	async getFileUrl(id: string, collection: string, column: string){
+	async getFileUrl(id: string, collection: string, column: string, size: string | null){
 		console.log('getFileUrl()')
+		const value: {[key: string]: any} = {}
+		if(null !== size){
+			console.log('CHECK')
+			value['thumb'] = size
+		}
 		return this.pb.collection(collection).getOne(id).
 			then((record)=>{
 			const fileName = record[column]
-			if(null !== fileName){
-				return this.pb.getFileUrl(record, fileName, {})// Fix 'thumb': '100x250'
+			if(null !== fileName && '' !== fileName){// Because file comes back empty sometimes
+				return this.pb.getFileUrl(record, fileName, value)
 			}
 			return null
 		})

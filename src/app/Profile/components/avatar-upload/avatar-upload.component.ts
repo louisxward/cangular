@@ -48,7 +48,7 @@ export class AvatarUploadComponent implements OnInit {
 		await this.uploadService.upload(file, this.id, this.collection, this.column).then((e)=>{
 			if(e){
 				this.uploadedFileName = file.name
-				this.uploadService.getFileUrl(this.id, this.collection, this.column)
+				this.uploadService.getFileUrl(this.id, this.collection, this.column, '200x200')
 				.then((url)=>{
 					this.store.dispatch(new User.Update.Avatar({url}))
 				})	

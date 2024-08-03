@@ -33,7 +33,7 @@ export class LoginService {
 		return myPromise
 			.then(async (authRecord) => {
 				console.log('user found')
-				const avatarUrl = await this.uploadService.getFileUrl(authRecord.record.id, 'users', 'avatar')
+				const avatarUrl = await this.uploadService.getFileUrl(authRecord.record.id, 'users', 'avatar','200x200')
 				this.store.dispatch(
 					new User.Login.Login({
 						record: authRecord.record,
