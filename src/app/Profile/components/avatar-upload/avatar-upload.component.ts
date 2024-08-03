@@ -49,8 +49,13 @@ export class AvatarUploadComponent implements OnInit {
 			if(e){
 				this.uploadedFileName = file.name
 				this.uploadService.getFileUrl(this.id, this.collection, this.column, '200x200')
-				.then((url)=>{
-					this.store.dispatch(new User.Update.Avatar({url}))
+				.then((avatarUrl)=>{
+
+					this.uploadService.getFileUrl(this.id, this.collection, this.column, '30x30')
+						.then((smallAvatarUrl)=>{
+							
+							this.store.dispatch(new User.Update.Avatar({avatarUrl: avatarUrl, smallAvatarUrl: smallAvatarUrl}))
+						})	
 				})	
 			}
 		})
@@ -63,7 +68,7 @@ export class AvatarUploadComponent implements OnInit {
 		await this.uploadService.delete(this.id, this.collection, this.column).then((e)=>{
 			if(e){
 				this.uploadedFileName = null
-				this.store.dispatch(new User.Update.Avatar({url: null}))
+				this.store.dispatch(new User.Update.Avatar({avatarUrl: null, smallAvatarUrl: null}))
 			}
 		})
 		this.pending = false

@@ -18,7 +18,6 @@ export class UploadService {
 	}
 
 	async upload(file: File, id: string, collection: string, column: string) {
-		console.log('upload()')
 		this.loader.start()
 		const value = new FormData()
 		value.append(column, file)
@@ -37,7 +36,6 @@ export class UploadService {
 
 
 	async delete(id: string, collection: string, column: string) {
-		console.log('deleteFile()')
 		this.loader.start()
 		const value = new FormData()
 		value.append(column, '')
@@ -54,8 +52,6 @@ export class UploadService {
 	}
 
 	async getFileName(id: string, collection: string, column: string): Promise<string | null>{
-		console.log('getFileName()')
-		// console.log(id + ' - ' + collection + ' - ' + column)
 		return this.pb.collection(collection).getOne(id).
 			then((record)=>{
 				const fileName = record[column]
@@ -67,10 +63,8 @@ export class UploadService {
 	}
 
 	async getFileUrl(id: string, collection: string, column: string, size: string | null){
-		console.log('getFileUrl()')
 		const value: {[key: string]: any} = {}
 		if(null !== size){
-			console.log('CHECK')
 			value['thumb'] = size
 		}
 		return this.pb.collection(collection).getOne(id).

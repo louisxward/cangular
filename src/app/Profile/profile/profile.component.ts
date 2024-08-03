@@ -15,7 +15,7 @@ import { ApiService } from 'src/app/Core/services/api/api.service'
 export class ProfileComponent {
 	pb: PocketBase
 
-	isLoggedIn$ = this.store.select(AuthState.isAuthenticated) // ToDo - Auth should check this instead
+	isLoggedIn$ = this.store.select(AuthState.isAuthenticated)
 	userId$ = this.store.select(AuthState.getId)
 	avatarUrl$ = this.store.select(UserState.getAvatarUrl)
 	username$ = this.store.select(UserState.getUsername)

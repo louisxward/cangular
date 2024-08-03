@@ -34,10 +34,12 @@ export class LoginService {
 			.then(async (authRecord) => {
 				console.log('user found')
 				const avatarUrl = await this.uploadService.getFileUrl(authRecord.record.id, 'users', 'avatar','200x200')
+				const smallAvatarUrl = await this.uploadService.getFileUrl(authRecord.record.id, 'users', 'avatar','30x30')
 				this.store.dispatch(
 					new User.Login.Login({
 						record: authRecord.record,
-						avatarUrl: avatarUrl
+						avatarUrl: avatarUrl,
+						smallAvatarUrl: smallAvatarUrl,
 					})
 				)
 				this.store.dispatch(

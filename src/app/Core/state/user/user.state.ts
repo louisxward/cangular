@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/Core/services/api/api.service'
 
 const userStateDefaults: UserStateModel = {
 	avatarUrl: null,
+	smallAvatarUrl: null,
 	username: null,
 	email: null,
 	sidebarExpanded: false,
@@ -36,6 +37,7 @@ export class UserState {
 	login(ctx: StateContext<UserStateModel>, action: User.Login.Login) {
 		ctx.patchState({
 			avatarUrl: action.payload.avatarUrl,
+			smallAvatarUrl: action.payload.smallAvatarUrl,
 			username: action.payload.record.username,
 			email: action.payload.record.email,
 		})
@@ -52,7 +54,8 @@ export class UserState {
 		action: User.Update.Avatar
 	) {
 		ctx.patchState({
-			avatarUrl: action.payload.url
+			avatarUrl: action.payload.avatarUrl,
+			smallAvatarUrl: action.payload.smallAvatarUrl
 		})
 	}
 
@@ -68,6 +71,11 @@ export class UserState {
 	static getAvatarUrl(state: UserStateModel): string | null {
 		return state.avatarUrl
 	}
+		// Selectors
+		@Selector()
+		static getSmallAvatarUrl(state: UserStateModel): string | null {
+			return state.smallAvatarUrl
+		}
 
 	@Selector()
 	static getUsername(state: UserStateModel): string | null {
