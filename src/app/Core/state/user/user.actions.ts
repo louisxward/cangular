@@ -11,18 +11,6 @@ export namespace User {
 			constructor(public payload: { url: string | null }) {}
 		}
 
-		export class User {
-			static readonly type = '[Update] User'
-			constructor(
-				public payload: {
-					id: string
-					avatar: string
-					username: string
-					email: string
-				}
-			) {}
-		}
-
 		export class Sidebar {
 			static readonly type = '[Update] Sidebar State'
 		}
@@ -31,7 +19,7 @@ export namespace User {
 	export namespace Login {
 		export class Login {
 			static readonly type = '[Login] Login'
-			constructor(public payload: { record: Record }) {}
+			constructor(public payload: { record: Record, avatarUrl: string | null}) {}
 		}
 
 		export class Logout {

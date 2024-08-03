@@ -9,7 +9,6 @@ import { ApiService } from 'src/app/Core/services/api/api.service'
 
 const userStateDefaults: UserStateModel = {
 	avatarUrl: null,
-	avatarFileName: null,
 	username: null,
 	email: null,
 	sidebarExpanded: false,
@@ -35,15 +34,11 @@ export class UserState {
 	// Actions
 	@Action(User.Login.Login)
 	login(ctx: StateContext<UserStateModel>, action: User.Login.Login) {
-		const record = action.payload.record
-		this.store.dispatch(
-			new User.Update.User({
-				id: record.id,
-				avatar: record.avatar,
-				username: record.username,
-				email: record.email,
-			})
-		)
+		ctx.patchState({
+			avatarUrl: action.payload.avatarUrl,
+			username: action.payload.record.username,
+			email: action.payload.record.email,
+		})
 	}
 
 	@Action(User.Login.Logout)
@@ -51,33 +46,11 @@ export class UserState {
 		ctx.setState(userStateDefaults)
 	}
 
-	@Action(User.Update.User)
-	async updateUser(ctx: StateContext<UserStateModel>, action: User.Update.User) {
-		const id = action.payload.id
-		const avatarFileName = action.payload.avatar
-		const username = action.payload.username
-		const email = action.payload.email
-		let avatarUrl = ''
-		if (avatarFileName) {
-			// await this.uploadService xxx
-			// 	.getFileUrl(id, avatarFileName, null)
-			// 	.then((value: string) => (avatarUrl = value))
-		}
-		ctx.patchState({
-			avatarUrl: avatarUrl,
-			username: username,
-			email: email,
-			avatarFileName: avatarFileName,
-		})
-	}
-
 	@Action(User.Update.Avatar)
 	async updateAvatar(
 		ctx: StateContext<UserStateModel>,
 		action: User.Update.Avatar
 	) {
-		console.log('updateAvatar()')
-		console.log('URL: ' + action.payload.url)
 		ctx.patchState({
 			avatarUrl: action.payload.url
 		})
@@ -90,16 +63,10 @@ export class UserState {
 		})
 	}
 
-	// Secelectors
-
+	// Selectors
 	@Selector()
 	static getAvatarUrl(state: UserStateModel): string | null {
 		return state.avatarUrl
-	}
-
-	@Selector()
-	static getAvatarFileName(state: UserStateModel): string | null {
-		return state.avatarFileName
 	}
 
 	@Selector()

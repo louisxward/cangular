@@ -6,6 +6,7 @@ import { Router } from '@angular/router'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
+import { UploadService } from '../upload/upload.service'
 
 @Injectable()
 export class LoginService {
@@ -18,41 +19,44 @@ export class LoginService {
 		private router: Router,
 		private notificationService: NotificationService,
 		private apiService: ApiService,
-		private loadingBarService: LoadingBarService
+		private loadingBarService: LoadingBarService,
+		private uploadService: UploadService
 	) {
 		this.pb = apiService.pb
 	}
 
-	async login(username: string, password: string): Promise<string> {
+	async login(username: string, password: string): Promise<boolean> { // ToDo - Tidy upppppp
 		this.loader.start()
 		const myPromise = this.pb
 			.collection('users')
 			.authWithPassword(username, password)
-		let response = ''
-		await myPromise
-			.then((value) => {
+		return myPromise
+			.then(async (authRecord) => {
 				console.log('user found')
-				response = 'user found'
+				const avatarUrl = await this.uploadService.getFileUrl(authRecord.record.id, 'users', 'avatar')
 				this.store.dispatch(
 					new User.Login.Login({
-						record: value.record,
+						record: authRecord.record,
+						avatarUrl: avatarUrl
 					})
 				)
 				this.store.dispatch(
 					new Login({
-						record: value,
+						record: authRecord,
 					})
 				)
-				this.setLastLoggedIn(value.record.id)
+				this.setLastLoggedIn(authRecord.record.id)
 				this.router.navigate(['/profile'])
-				this.notificationService.success('welcome ' + value.record.username)
+				this.notificationService.success('welcome ' + authRecord.record.username)
+				this.loader.complete()
+				return true
 			})
-			.catch((error) => {
-				response = 'incorrect username/password'
-				console.log('user not found')
+			.catch(() => {
+				console.error('user not found')
+				this.loader.stop()
+				return false
 			})
-		this.loader.complete()
-		return response
+
 	}
 
 	logout() {
