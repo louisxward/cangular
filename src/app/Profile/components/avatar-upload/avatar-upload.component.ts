@@ -14,7 +14,7 @@ export class AvatarUploadComponent implements OnInit {
 	pending: boolean = false
 	id: string
 	uploadedFileName: string | null = null;
-	collection: 'users'
+	collection = 'users'
 	column = 'avatar'
 
 	constructor(
