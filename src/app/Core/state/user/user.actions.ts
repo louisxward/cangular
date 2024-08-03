@@ -8,7 +8,7 @@ export namespace User {
 	export namespace Update {
 		export class Avatar {
 			static readonly type = '[Update] Avatar'
-			constructor(public payload: { id: string; fileName: string }) {}
+			constructor(public payload: { url: string | null }) {}
 		}
 
 		export class User {

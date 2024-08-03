@@ -23,14 +23,14 @@ export class UploadService {
 		const value = new FormData()
 		value.append(column, file)
 		return this.pb.collection(collection).update(id, value)
-		.then(()=>{
+		.then((e)=>{
 			this.loader.complete()
-			return true
+			return e.avatar
 		})
 		.catch((error)=>{
 			console.error(error)
 			this.loader.stop()
-			return false
+			return null
 		})
 		
 	}
@@ -54,8 +54,16 @@ export class UploadService {
 	}
 
 
-	async getFileUrl(userId: string, fileName: string, thumbSize2: string | null){
+	async getFileUrl(id: string, collection: string, column: string){
 		console.log('getFileUrl()')
+		return this.pb.collection(collection).getOne(id).
+			then((record)=>{
+			const fileName = record[column]
+			if(null !== fileName){
+				return this.pb.getFileUrl(record, fileName, {})// Fix 'thumb': '100x250'
+			}
+			return null
+		})
 	}
 
 }

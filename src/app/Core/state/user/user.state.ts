@@ -76,19 +76,10 @@ export class UserState {
 		ctx: StateContext<UserStateModel>,
 		action: User.Update.Avatar
 	) {
-		const id = action.payload.id
-		const fileName = action.payload.fileName
-		let avatarUrl = ''
-		if (fileName != '') {
-			// await this.uploadService xxx
-			// 	.getFileUrl(id, fileName, null)
-			// 	.then((value: string) => (avatarUrl = value))
-		} else {
-			// this.uploadService.deleteFile(id, fileName, 'avatar') xxx
-		}
+		console.log('updateAvatar()')
+		console.log('URL: ' + action.payload.url)
 		ctx.patchState({
-			avatarUrl: avatarUrl,
-			avatarFileName: fileName,
+			avatarUrl: action.payload.url
 		})
 	}
 

@@ -43,6 +43,10 @@ export class AvatarUploadComponent implements OnInit {
 		await this.uploadService.upload(file, this.id, 'users', 'avatar').then((e)=>{
 			if(e){
 				this.uploadedFileName = file.name
+				this.uploadService.getFileUrl(this.id, 'users', 'avatar')
+				.then((url)=>{
+					this.store.dispatch(new User.Update.Avatar({url}))
+				})	
 			}
 		})
 		this.pending = false
@@ -54,6 +58,7 @@ export class AvatarUploadComponent implements OnInit {
 		await this.uploadService.delete(this.id, 'users', 'avatar').then((e)=>{
 			if(e){
 				this.uploadedFileName = null
+				this.store.dispatch(new User.Update.Avatar({url: null}))
 			}
 		})
 		this.pending = false
