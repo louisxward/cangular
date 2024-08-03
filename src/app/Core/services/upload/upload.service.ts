@@ -53,6 +53,13 @@ export class UploadService {
 		})
 	}
 
+	async getFileName(id: string, collection: string, column: string): Promise<string | null>{
+		console.log('getFileUrl()')
+		return this.pb.collection(collection).getOne(id).
+			then((record)=>{
+			return record[column] //Hmm not sure on the types here
+		})
+	}
 
 	async getFileUrl(id: string, collection: string, column: string){
 		console.log('getFileUrl()')

@@ -14,6 +14,8 @@ export class AvatarUploadComponent implements OnInit {
 	pending: boolean = false
 	id: string
 	uploadedFileName: string | null = null;
+	collection: 'users'
+	column = 'avatar'
 
 	constructor(
 		private store: Store,
@@ -30,6 +32,9 @@ export class AvatarUploadComponent implements OnInit {
 		.subscribe(e=>{
 			this.id = e
 		})
+		this.uploadService.getFileName(this.id, this.collection, this.column).then((e)=>{
+			this.uploadedFileName = e
+		})
 	}
 
 	onChange(event: any) {
@@ -40,10 +45,10 @@ export class AvatarUploadComponent implements OnInit {
 	async upload(file: File) {
 		console.log('onUpload()')
 		this.pending = true
-		await this.uploadService.upload(file, this.id, 'users', 'avatar').then((e)=>{
+		await this.uploadService.upload(file, this.id, this.collection, this.column).then((e)=>{
 			if(e){
 				this.uploadedFileName = file.name
-				this.uploadService.getFileUrl(this.id, 'users', 'avatar')
+				this.uploadService.getFileUrl(this.id, this.collection, this.column)
 				.then((url)=>{
 					this.store.dispatch(new User.Update.Avatar({url}))
 				})	
@@ -55,7 +60,7 @@ export class AvatarUploadComponent implements OnInit {
 	async delete() {
 		console.log('delete()')
 		this.pending = true
-		await this.uploadService.delete(this.id, 'users', 'avatar').then((e)=>{
+		await this.uploadService.delete(this.id, this.collection, this.column).then((e)=>{
 			if(e){
 				this.uploadedFileName = null
 				this.store.dispatch(new User.Update.Avatar({url: null}))
