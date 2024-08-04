@@ -3,18 +3,21 @@ import PocketBase from 'pocketbase'
 import { NotificationService } from '../notification/notification.service'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 
 @Injectable()
 export class UploadService {
 	pb: PocketBase
-	loader = this.loadingBarService.useRef()
+	loader: LoadingBarState
+	
 
 	constructor(
 		private notificationService: NotificationService,
 		private apiService: ApiService,
 		private loadingBarService: LoadingBarService
 	) {
-		this.pb = apiService.pb
+		this.pb = this.apiService.pb
+		this.loader = this.loadingBarService.useRef()
 	}
 
 	async upload(file: File, id: string, collection: string, column: string) {
@@ -24,11 +27,13 @@ export class UploadService {
 		return this.pb.collection(collection).update(id, value)
 		.then((e)=>{
 			this.loader.complete()
+			this.notificationService.success('file uploaded')
 			return e.avatar
 		})
 		.catch((error)=>{
 			console.error(error)
 			this.loader.stop()
+			this.notificationService.error('file upload failed')
 			return null
 		})
 		
@@ -42,11 +47,13 @@ export class UploadService {
 		return this.pb.collection(collection).update(id, value)
 		.then(()=>{
 			this.loader.complete()
+			this.notificationService.success('file deleted')
 			return true
 		})
 		.catch((error)=>{
 			console.error(error)
 			this.loader.stop()
+			this.notificationService.error('file delete failed')
 			return false
 		})
 	}
@@ -63,15 +70,15 @@ export class UploadService {
 	}
 
 	async getFileUrl(id: string, collection: string, column: string, size: string | null){
-		const value: {[key: string]: any} = {}
+		const query: {[key: string]: any} = {}
 		if(null !== size){
-			value['thumb'] = size
+			query['thumb'] = size
 		}
 		return this.pb.collection(collection).getOne(id).
 			then((record)=>{
 			const fileName = record[column]
 			if(null !== fileName && '' !== fileName){// Because file comes back empty sometimes
-				return this.pb.getFileUrl(record, fileName, value)
+				return this.pb.getFileUrl(record, fileName, query)
 			}
 			return null
 		})
