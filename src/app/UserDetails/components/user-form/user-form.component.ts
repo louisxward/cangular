@@ -19,7 +19,7 @@ export class UserFormComponent implements OnInit {
 	form: FormGroup
 	responses: string[]
 
-	@Input('userData') userDetails = {
+	@Input('userDetails') userDetails = {
 		id: '0',
 		username: '',
 		email: '',
