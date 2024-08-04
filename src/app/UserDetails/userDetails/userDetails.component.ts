@@ -11,7 +11,7 @@ import { UploadService } from 'src/app/Core/services/upload/upload.service'
 	templateUrl: './userDetails.component.html',
 	styleUrls: ['./userDetails.component.scss'],
 })
-export class UserDetailsComponent {
+export class UserDetailsComponent implements OnInit{
 	pb: PocketBase
 	loader: LoadingBarState
 	userDetailsId: string
@@ -37,7 +37,7 @@ export class UserDetailsComponent {
 		this.userDetailsId = param ? param : '0'
 	}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		if(this.userDetailsId == '0'){
 			this.found = true
 		} else {

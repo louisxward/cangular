@@ -3,7 +3,10 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import PocketBase from 'pocketbase'
+import { Record } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
+import { ErrorContainer } from './error'
+import { Router } from '@angular/router'
 
 @Component({
 	selector: 'app-user-form',
@@ -14,6 +17,7 @@ export class UserFormComponent implements OnInit {
 	pb: PocketBase
 	loader: LoadingBarState
 	form: FormGroup
+	responses: string[]
 
 	@Input('userData') userDetails = {
 		id: '0',
@@ -25,14 +29,14 @@ export class UserFormComponent implements OnInit {
 		private apiService: ApiService,
 		private loadingBarService: LoadingBarService,
 		private fb: FormBuilder,
+		private router: Router
 	) {
 		this.pb = this.apiService.pb
 		this.loader = this.loadingBarService.useRef()
 		this.form = this.fb.group({})
+		this.responses = []
 	}
 	ngOnInit(): void {
-		console.log("ngOnInit")
-		console.log(this.userDetails.id)
 		this.setupForm()
 	}
 
@@ -59,6 +63,10 @@ export class UserFormComponent implements OnInit {
 		)
 		// If new user
 		if (this.userDetails.id == '0') {
+			this.form.addControl(// Makes record email field public
+				'emailVisibility',
+				new FormControl(true, Validators.required)
+			)
 			this.form.addControl(
 				'password',
 				new FormControl(
@@ -88,7 +96,60 @@ export class UserFormComponent implements OnInit {
 		}
 	}
 
-	submit(){
-		
+	async submit(){
+		this.loader.start()
+		if (this.userDetails.id == '0') {
+			await this.createUser()
+		} else {
+			await this.saveUser()
+		}
+		this.loader.complete()
 	}
+
+
+	async saveUser() {
+		const myPromise = this.pb
+			.collection('users')
+			.update(this.userDetails.id, this.form.value)
+		await this.handlePromise(myPromise, false)
+	}
+
+	async createUser() {
+		const myPromise = this.pb.collection('users').create(this.form.value)
+		await this.handlePromise(myPromise, true)
+	}
+
+	async handlePromise(myPromise: Promise<Record>, create: boolean) {
+		await myPromise
+			.then((value) => {
+				create ? console.info('user created') : console.info('user saved')
+				this.router.navigate(['users'])
+			})
+			.catch((e) => {
+				this.handleError(e)
+			})
+	}
+
+	handleError(e: any){// ToDo - sort type out
+		let errorContainer: ErrorContainer = e.data
+		let error = errorContainer.data
+		let errorMessages: string[] = []
+		if (error.passwordConfirm) {
+			errorMessages.push(
+				error.passwordConfirm.message.replace('Values', 'Passwords')
+			)
+			this.form.controls['password'].setValue('')
+			this.form.controls['passwordConfirm'].setValue('')
+		}
+		if (error.username) {
+			errorMessages.push(error.username.message)
+			this.form.controls['username'].setValue(this.userDetails.username)
+		}
+		if (error.email) {
+			errorMessages.push(error.email.message)
+			this.form.controls['email'].setValue(this.userDetails.email)
+		}
+		this.responses = errorMessages
+	}
+
 }
