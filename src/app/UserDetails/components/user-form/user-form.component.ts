@@ -16,7 +16,7 @@ export class UserFormComponent implements OnInit {
 	form: FormGroup
 
 	@Input('userData') userDetails = {
-		id: '',
+		id: '0',
 		username: '',
 		email: '',
 	}
@@ -84,7 +84,7 @@ export class UserFormComponent implements OnInit {
 		}
 		// If not new user
 		else{
-			// hmm
+			this.form.controls['email'].disable()
 		}
 	}
 

@@ -4,10 +4,15 @@
 		id="{{ userDetailsId }}"></app-page-header>
 	<div class="content">
 
-		<app-user-form [userData]="userDetails"> </app-user-form>
+		<app-user-form [userData]="userDetails" *ngIf="this.found"> </app-user-form>
 
 		<div *ngIf="avatarUrl" class="avatarDisplay">
 			<img [src]="avatarUrl" title="Avatar" />
 		</div>
+
+		<div *ngIf="lastLoggedIn" class="dataTimeDisplay">
+			<h2>{{ lastLoggedIn | date: 'short' : 'UTC' }}</h2>
+		</div>
+
 	</div>
 </main>

@@ -20,7 +20,7 @@ export class UserDetailsComponent {
 	lastLoggedIn: string | null = null
 
 	userDetails = {// ToDo - This can be improved with interfaces?
-		id: '',
+		id: '0',
 		username: '',
 		email: '',
 	}
