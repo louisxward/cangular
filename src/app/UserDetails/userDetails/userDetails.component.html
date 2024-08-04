@@ -3,7 +3,7 @@
 		header="User Details"
 		id="{{ userDetailsId }}"></app-page-header>
 	<div class="content">
-
+<!-- ToDo - surely there is a better way to wait to include user form insteatd of waiting for found to be true -->
 		<app-user-form [userData]="userDetails" *ngIf="this.found"> </app-user-form>
 
 		<div *ngIf="avatarUrl" class="avatarDisplay">
