@@ -13,7 +13,7 @@
 			<app-user-form
 				[userData]="userData"
 				[editable]="currentUser || detailsUserId == '0'"></app-user-form>
-			<div *ngIf="avatarUrl != ''" class="avatarDisplay">
+			<div *ngIf="avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl" title="Avatar" />
 			</div>
 			<div class="statusDisplay" *ngIf="mutualFollowing">

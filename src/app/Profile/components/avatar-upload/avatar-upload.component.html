@@ -1,11 +1,11 @@
-<div class="text-center" *ngIf="!loading">
+<div class="text-center">
 	<label style="display: block">Avatar Upload:</label>
 	<div class="fileUpload">
 		<label for="chooose" class="chooose">Choose</label>
 		<label class="fileName">
-			{{ (avatarFileName$ | async) || 'Please select a file' }}
+			{{ pending ? 'updating...' : uploadedFileName || 'Please select a file' }}
 		</label>
-		<label (click)="delete()" class="delete" *ngIf="avatarFileName$ | async"
+		<label (click)="delete()" class="delete" *ngIf="uploadedFileName"
 			>X</label
 		>
 		<input
@@ -14,7 +14,4 @@
 			(change)="onChange($event)"
 			style="display: none" />
 	</div>
-</div>
-<div class="text-center" *ngIf="loading">
-	<h3>uploading...</h3>
 </div>

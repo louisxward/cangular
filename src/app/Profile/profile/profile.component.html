@@ -6,7 +6,7 @@
 		</div>
 		<div *ngIf="isLoggedIn$ | async">
 			<div *ngIf="avatarUrl$ | async as avatarUrl" class="avatarDisplay">
-				<img [src]="avatarUrl + '200x200'" title="Avatar" />
+				<img [src]="avatarUrl" title="Avatar" />
 			</div>
 			<div class="dataTimeDisplay">
 				<h2>{{ time | date: 'short' : 'UTC' }}</h2>

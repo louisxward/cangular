@@ -1,16 +1,29 @@
-import { Component } from '@angular/core'
-import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component'
-import { LoginFormComponent } from '../../Login/components/login-form/login-form.component'
+import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngxs/store'
 import { AuthState } from 'src/app/Core/state/index'
+import { Router } from '@angular/router'
+import { map } from 'rxjs/operators'
 
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-	isLoggedIn$ = this.store.select(AuthState.isAuthenticated)
+export class LoginComponent implements OnInit{
+	constructor(private store: Store,
+		private router: Router
+	) {}
+	
+	ngOnInit(): void {
+		this.redirect()
+	}
 
-	constructor(private store: Store) {}
+	redirect(){
+		this.store.select(AuthState.isAuthenticated).subscribe((e)=>{
+			if(e){
+				this.router.navigate(['/profile'])
+			}
+		})
+	}
+
 }
