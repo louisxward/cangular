@@ -62,9 +62,4 @@ export class SocialService {
 		return temp
 	}
 
-	async checkMutuals(aId: string, bId: string) {
-		await this.checkFollowing(aId, bId)
-
-		return false
-	}
 }
