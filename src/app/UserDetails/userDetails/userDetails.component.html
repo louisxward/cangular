@@ -3,6 +3,9 @@
 		header="User Details"
 		id="{{ userDetailsId }}"></app-page-header>
 	<div class="content">
+
+		<app-user-form [userData]="userDetails"> </app-user-form>
+
 		<div *ngIf="avatarUrl" class="avatarDisplay">
 			<img [src]="avatarUrl" title="Avatar" />
 		</div>
