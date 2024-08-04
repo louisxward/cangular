@@ -7,12 +7,12 @@ import { NotificationService } from 'src/app/Core/services/notification/notifica
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { UploadService } from '../upload/upload.service'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 
 @Injectable()
 export class LoginService {
 	pb: PocketBase
-
-	loader = this.loadingBarService.useRef()
+	loader: LoadingBarState
 
 	constructor(
 		private store: Store,
@@ -22,7 +22,8 @@ export class LoginService {
 		private loadingBarService: LoadingBarService,
 		private uploadService: UploadService
 	) {
-		this.pb = apiService.pb
+		this.pb = this.apiService.pb
+		this.loader = this.loadingBarService.useRef()
 	}
 
 	async login(username: string, password: string): Promise<boolean> { // ToDo - Tidy upppppp
