@@ -51,19 +51,9 @@
 		type="submit"
 		*ngIf="form.status != 'DISABLED'"
 		[disabled]="!form.valid || (form.valid && !form.dirty)">
-		{{ userData.id == '0' ? 'Create' : 'Save' }}
+		{{ userDetails.id == '0' ? 'Create' : 'Save' }}
 	</button>
 	<div class="formMessage">
 		<h3 *ngFor="let response of responses">{{ response }}</h3>
 	</div>
 </form>
-
-<!-- <br/>
-<p>name invalid: {{ form.controls['username'].invalid | json }}</p>
-<p>name dirty: {{ form.controls['username'].dirty | json }}</p>
-<p>name touched: {{ form.controls['username'].touched | json }}</p>
-
-<br/>
-<p>Form value: {{ form.value | json }}</p>
-<p>Form status: {{ form.status | json }}</p>
-<p>Form status: {{ form.dirty | json }}</p> -->

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core'
-import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component'
 import { Store } from '@ngxs/store'
-import { UserState, AuthState } from 'src/app/Core/state/index'
 import PocketBase from 'pocketbase'
-import { LoginService } from 'src/app/Core/services/login/login.service'
-import { AvatarUploadComponent } from '../components/avatar-upload/avatar-upload.component'
 import { ApiService } from 'src/app/Core/services/api/api.service'
+import { LoginService } from 'src/app/Core/services/login/login.service'
+import { AuthState, UserState } from 'src/app/Core/state/index'
 
 @Component({
 	selector: 'app-profile',
@@ -39,16 +37,16 @@ export class ProfileComponent {
 	}
 
 	checkAuth(): void {
-		console.log('ISVALID: ' + this.pb.authStore.isValid)
-		console.log('TOKEN: ' + this.pb.authStore.token)
+		console.info('ISVALID: ' + this.pb.authStore.isValid)
+		console.info('TOKEN: ' + this.pb.authStore.token)
 	}
 
 	checkStoreAuth(): void {
 		this.isLoggedIn$.subscribe((f) => {
-			console.log('LOGGEDIN: ' + f)
+			console.info('LOGGEDIN: ' + f)
 		})
 		this.userId$.subscribe((f) => {
-			console.log('USERID: ' + f)
+			console.info('USERID: ' + f)
 		})
 	}
 }

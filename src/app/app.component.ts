@@ -1,5 +1,4 @@
 import { ApplicationRef, Component, isDevMode } from '@angular/core'
-import { SidebarComponent } from './Sidebar/sidebar/sidebar.component'
 import { Store } from '@ngxs/store'
 import { first } from 'rxjs/operators'
 import { User } from './Core/state/'
@@ -10,13 +9,12 @@ import { User } from './Core/state/'
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-	title = 'cangular2.0'
+	title = 'cangular'
 
-	constructor(
-		private store: Store,
-		private appRef: ApplicationRef
-	) {
-		isDevMode() ? console.log('!!!Dev Mode!!!') : console.log('!!!Prod Mode!!!')
+	constructor(private store: Store, private appRef: ApplicationRef) {
+		isDevMode()
+			? console.info('AppMode: DEVELOPMENT')
+			: console.info('AppMode: PRODUCTION')
 		this.appRef.isStable.pipe(first((stable) => stable)).subscribe(() => {
 			this.store.dispatch(new User.AppLoaded())
 		})

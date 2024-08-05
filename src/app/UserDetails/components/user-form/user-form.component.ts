@@ -1,53 +1,51 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
-import { Router } from '@angular/router'
+import { LoadingBarService } from '@ngx-loading-bar/core'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import PocketBase from 'pocketbase'
-import { Error, ErrorContainer, User } from './error'
 import { Record } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
-import { LoadingBarService } from '@ngx-loading-bar/core'
+import { ErrorContainer } from './error'
+import { Router } from '@angular/router'
 
 @Component({
 	selector: 'app-user-form',
 	templateUrl: './user-form.component.html',
 	styleUrls: ['./user-form.component.scss'],
 })
-export class UserFormComponent {
+export class UserFormComponent implements OnInit {
 	pb: PocketBase
-
-	loader = this.loadingBarService.useRef()
-
-	@Input('userData') userData = {
-		id: '',
-		username: '',
-		email: '',
-	}
-
-	@Input('editable') editable = false
-
-	userDefault: User = {
-		username: '',
-		email: '',
-	}
-
+	loader: LoadingBarState
 	form: FormGroup
-	responses: string[] = []
+	responses: string[]
+
+	@Input('userDetails') userDetails = {
+		id: '0',
+		username: '',
+		email: '',
+	}
 
 	constructor(
-		private router: Router,
-		private fb: FormBuilder,
 		private apiService: ApiService,
-		private loadingBarService: LoadingBarService
+		private loadingBarService: LoadingBarService,
+		private fb: FormBuilder,
+		private router: Router
 	) {
-		this.pb = apiService.pb
+		this.pb = this.apiService.pb
+		this.loader = this.loadingBarService.useRef()
 		this.form = this.fb.group({})
+		this.responses = []
+	}
+	ngOnInit(): void {
+		this.setupForm()
 	}
 
-	ngOnInit(): void {
+	setupForm() {
+		// Username
 		this.form.addControl(
 			'username',
 			new FormControl(
-				this.userData.username,
+				this.userDetails.username,
 				Validators.compose([
 					Validators.required,
 					Validators.minLength(3),
@@ -55,16 +53,18 @@ export class UserFormComponent {
 				])
 			)
 		)
-		//only admins can edit emails, creation still allows anyone to set the email
+		// Email
 		this.form.addControl(
 			'email',
-			new FormControl(this.userData.email, [
+			new FormControl(this.userDetails.email, [
 				Validators.required,
 				Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
 			])
 		)
-		if (this.userData.id == '0') {
+		// If new user
+		if (this.userDetails.id == '0') {
 			this.form.addControl(
+				// Makes record email field public
 				'emailVisibility',
 				new FormControl(true, Validators.required)
 			)
@@ -90,25 +90,16 @@ export class UserFormComponent {
 					])
 				)
 			)
-		} else {
-			this.userDefault.username = this.userData.username
-			this.userDefault.email = this.userData.email
+		}
+		// If not new user
+		else {
 			this.form.controls['email'].disable()
 		}
-		if (!this.editable) {
-			this.form.disable()
-		}
-	}
-
-	ngOnDestroy() {
-		this.pb.cancelAllRequests
 	}
 
 	async submit() {
 		this.loader.start()
-		console.log('Form Submitted')
-		//console.log(this.form.value)
-		if (this.userData.id == '0') {
+		if (this.userDetails.id == '0') {
 			await this.createUser()
 		} else {
 			await this.saveUser()
@@ -119,7 +110,7 @@ export class UserFormComponent {
 	async saveUser() {
 		const myPromise = this.pb
 			.collection('users')
-			.update(this.userData.id, this.form.value)
+			.update(this.userDetails.id, this.form.value)
 		await this.handlePromise(myPromise, false)
 	}
 
@@ -131,30 +122,34 @@ export class UserFormComponent {
 	async handlePromise(myPromise: Promise<Record>, create: boolean) {
 		await myPromise
 			.then((value) => {
-				create ? console.log('user created') : console.log('user saved')
+				create ? console.info('user created') : console.info('user saved')
 				this.router.navigate(['users'])
 			})
 			.catch((e) => {
-				let errorContainer: ErrorContainer = e.data
-				console.log(errorContainer)
-				let error = errorContainer.data
-				let errorMessages: string[] = []
-				if (error.passwordConfirm) {
-					errorMessages.push(
-						error.passwordConfirm.message.replace('Values', 'Passwords')
-					)
-					this.form.controls['password'].setValue('')
-					this.form.controls['passwordConfirm'].setValue('')
-				}
-				if (error.username) {
-					errorMessages.push(error.username.message)
-					this.form.controls['username'].setValue(this.userDefault.username)
-				}
-				if (error.email) {
-					errorMessages.push(error.email.message)
-					this.form.controls['email'].setValue(this.userDefault.email)
-				}
-				this.responses = errorMessages
+				this.handleError(e)
 			})
+	}
+
+	handleError(e: any) {
+		// ToDo - sort type out
+		let errorContainer: ErrorContainer = e.data
+		let error = errorContainer.data
+		let errorMessages: string[] = []
+		if (error.passwordConfirm) {
+			errorMessages.push(
+				error.passwordConfirm.message.replace('Values', 'Passwords')
+			)
+			this.form.controls['password'].setValue('')
+			this.form.controls['passwordConfirm'].setValue('')
+		}
+		if (error.username) {
+			errorMessages.push(error.username.message)
+			this.form.controls['username'].setValue(this.userDetails.username)
+		}
+		if (error.email) {
+			errorMessages.push(error.email.message)
+			this.form.controls['email'].setValue(this.userDetails.email)
+		}
+		this.responses = errorMessages
 	}
 }

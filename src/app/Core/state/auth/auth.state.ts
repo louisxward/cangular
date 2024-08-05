@@ -1,6 +1,5 @@
-// auth.state.ts
-import { State, Action, StateContext, Selector } from '@ngxs/store'
 import { Injectable } from '@angular/core'
+import { Action, Selector, State, StateContext } from '@ngxs/store'
 import { RecordAuthResponse } from 'pocketbase'
 
 // Define actions

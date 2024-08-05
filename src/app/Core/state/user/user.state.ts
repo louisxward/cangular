@@ -55,7 +55,7 @@ export class UserState {
 	) {
 		ctx.patchState({
 			avatarUrl: action.payload.avatarUrl,
-			smallAvatarUrl: action.payload.smallAvatarUrl
+			smallAvatarUrl: action.payload.smallAvatarUrl,
 		})
 	}
 
@@ -71,11 +71,11 @@ export class UserState {
 	static getAvatarUrl(state: UserStateModel): string | null {
 		return state.avatarUrl
 	}
-		// Selectors
-		@Selector()
-		static getSmallAvatarUrl(state: UserStateModel): string | null {
-			return state.smallAvatarUrl
-		}
+	// Selectors
+	@Selector()
+	static getSmallAvatarUrl(state: UserStateModel): string | null {
+		return state.smallAvatarUrl
+	}
 
 	@Selector()
 	static getUsername(state: UserStateModel): string | null {

@@ -1,176 +1,154 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { PageHeaderComponent } from '../../Core/components/page-header/page-header.component'
-import { UserFormComponent } from '../components/user-form/user-form.component'
+import { LoadingBarService } from '@ngx-loading-bar/core'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
+import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
+import { filter, map } from 'rxjs/operators'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { SocialService } from 'src/app/Core/services/social/social.service'
-import { LoadingBarService } from '@ngx-loading-bar/core'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
-import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
-import { Observable } from 'rxjs'
-import { map, filter } from 'rxjs/operators'
-import { UserState, AuthState } from 'src/app/Core/state/index'
-import { Store } from '@ngxs/store'
+import { AuthState } from 'src/app/Core/state/auth/auth.state'
 
 @Component({
 	selector: 'app-userDetails',
 	templateUrl: './userDetails.component.html',
 	styleUrls: ['./userDetails.component.scss'],
 })
-export class UserDetailsComponent {
+export class UserDetailsComponent implements OnInit {
 	pb: PocketBase
-
-	loader = this.loadingBarService.useRef()
-
-	followingId: string | null = null
-	mutualFollowing: boolean = false
-	followPending: boolean = false
-
-	detailsUserId: string
-	avatarUrl: string | null = null
-	lastLoggedIn: string = ''
-
-	currentUser: boolean = false
-	loaded: boolean = false
+	loader: LoadingBarState
+	userDetailsId: string
 	found: boolean = false
-	create: boolean = false
+	avatarUrl: string | null = null
+	lastLoggedIn: string | null = null
+	currentUserId: string
+	currentUser: boolean = false // if the authd user is editing their own details
+	followingId: string | null = null // if the user is following the authd user
+	mutuals: boolean = false
 
-	id$: Observable<string | null>
-
-	userData = {
+	userDetails = {
+		// ToDo - This can be improved with interfaces?
 		id: '0',
 		username: '',
 		email: '',
 	}
 
 	constructor(
-		private route: ActivatedRoute,
 		private apiService: ApiService,
 		private loadingBarService: LoadingBarService,
+		private route: ActivatedRoute,
 		private uploadService: UploadService,
 		private socialService: SocialService,
-		private authGuardService: AuthGuardService,
 		private store: Store
 	) {
-		this.id$ = this.store.select(AuthState.getId)
-		this.pb = apiService.pb
+		this.pb = this.apiService.pb
+		this.loader = this.loadingBarService.useRef()
 		const param = this.route.snapshot.paramMap.get('userId')
-		this.detailsUserId = param ? param : '0'
-		this.id$
-			.pipe(
-				filter((e) => e !== null), // Filter out null values
-				map((e) => e as string) // Type assertion here
-			)
-			.subscribe((e) => {
-				this.currentUser = e == this.detailsUserId
-			})
+		this.userDetailsId = param ? param : '0'
 	}
 
-	async ngOnInit() {
-		if (this.detailsUserId != '0') {
-			await this.loadUser()
-		} else {
-			this.loaded = true
+	ngOnInit(): void {
+		this.store
+			.select(AuthState.getId)
+			.pipe(
+				filter((e) => e !== null),
+				map((e) => e as string)
+			)
+			.subscribe((e) => {
+				this.currentUserId = e
+			})
+		if (this.userDetailsId == '0') {
 			this.found = true
-			this.create = true
+		} else {
+			this.getUser().then((found) => {
+				this.found = found
+				this.currentUser = this.currentUserId == this.userDetailsId
+				this.checkSocial()
+			})
 		}
 	}
 
-	ngOnDestroy() {
-		this.pb.cancelAllRequests()
-		this.loader.complete()
+	checkSocial() {
+		if (!this.currentUser) {
+			// check if authd user follows this user
+			this.socialService
+				.checkFollowing(this.currentUserId, this.userDetailsId)
+				.then((e) => {
+					this.followingId = e
+					if (e) {
+						// check if this user follows authd user
+						this.socialService
+							.checkFollowing(this.userDetailsId, this.currentUserId)
+							.then((f) => {
+								this.mutuals = null != f
+							})
+					}
+				})
+		}
 	}
 
-	async loadUser() {
-		console.log('loadUser() start')
+	followUser() {
 		this.loader.start()
-		const myPromise = this.pb.collection('users').getOne(this.detailsUserId, {})
-		await myPromise
-			.then((value) => {
-				console.log('User Found')
-				this.userData = {
-					id: value.id,
-					username: value.username,
-					email: value.email,
-				}
-				this.lastLoggedIn = value.lastLoggedIn
-				this.found = true
-				this.uploadService.getFileUrl(this.detailsUserId, 'users', 'avatar', '200x200').then((url) => {
-					this.avatarUrl = url
+		this.socialService
+			.follow(this.currentUserId, this.userDetailsId)
+			.then((e) => {
+				this.followingId = e
+				// Check if user we followed follows us back
+				this.socialService
+					.checkFollowing(this.userDetailsId, this.currentUserId)
+					.then((f) => {
+						this.mutuals = null != f
+					})
+				this.loader.complete()
+			})
+			.catch((e) => {
+				console.error(e)
+				this.loader.stop()
+			})
+	}
+
+	unfollowUser() {
+		if (null != this.followingId) {
+			this.loader.start()
+			this.socialService
+				.unfollow(this.followingId)
+				.then((e) => {
+					this.followingId = e
+					this.mutuals = false
+					this.loader.complete()
 				})
+				.catch((e) => {
+					console.error(e)
+					this.loader.stop()
+				})
+		}
+	}
+
+	getUser() {
+		this.loader.start()
+		return this.pb
+			.collection('users')
+			.getOne(this.userDetailsId, {})
+			.then((record) => {
+				this.userDetails = {
+					id: record.id,
+					username: record.username,
+					email: record.email,
+				}
+				this.lastLoggedIn = record.lastLoggedIn
+				this.uploadService
+					.getFileUrl(record.id, 'users', 'avatar', '200x200')
+					.then((url) => {
+						this.avatarUrl = url
+					})
+				this.loader.complete()
+				return true
 			})
 			.catch((error) => {
-				console.log(error)
-				console.log('User Not Found')
+				console.error(error)
+				this.loader.stop()
+				return false
 			})
-		// Check if current user is viewing profile
-		//this.currentUser = this.id$ == this.detailsUserId
-		if (this.currentUser) console.log('Current User')
-		// Social setup
-		if (!this.currentUser) {
-			this.id$
-				.pipe(
-					filter((e) => e !== null), // Filter out null values
-					map((e) => e as string) // Type assertion here
-				)
-				.subscribe((e) => {
-					this.socialService
-						.checkFollowing(e, this.detailsUserId)
-						.then((followingId) => {
-							this.followingId = followingId
-						})
-				})
-
-			if (null != this.followingId) {
-				// If user follows profile. check profile follows user
-
-				this.id$.subscribe((e) => {
-					this.socialService
-						.checkFollowing(this.detailsUserId, e)
-						.then((followingId) => {
-							this.mutualFollowing = null != followingId
-						})
-				})
-			}
-		}
-		this.loaded = true
-		this.loader.complete()
-		console.log('loadUser() end')
-	}
-
-	async follow() {
-		this.loader.start()
-		this.followPending = true
-		this.id$
-			.pipe(
-				filter((e) => e !== null), // Filter out null values
-				map((e) => e as string) // Type assertion here
-			)
-			.subscribe((e) => {
-				this.socialService.follow(e, this.detailsUserId).then((followingId) => {
-					this.followingId = followingId
-				})
-				this.socialService
-					.checkFollowing(this.detailsUserId, e)
-					.then((followingId) => {
-						this.mutualFollowing = null != followingId
-					})
-			})
-		this.followPending = false
-		this.loader.complete()
-	}
-
-	async unfollow() {
-		this.loader.start()
-		this.followPending = true
-		if (null != this.followingId) {
-			await this.socialService.unfollow(this.followingId).then((followingId) => {
-				this.followingId = followingId
-			})
-		}
-		this.mutualFollowing = false
-		this.followPending = false
-		this.loader.complete()
 	}
 }
