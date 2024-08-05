@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { Store } from '@ngxs/store'
-import { User, UserState } from 'src/app/Core/state/user'
+import { filter, map } from 'rxjs/operators'
+import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { AuthState } from 'src/app/Core/state'
-import { map, filter } from 'rxjs/operators'
+import { User } from 'src/app/Core/state/user'
 
 @Component({
 	selector: 'app-avatar-upload',
@@ -17,10 +17,7 @@ export class AvatarUploadComponent implements OnInit {
 	collection = 'users'
 	column = 'avatar'
 
-	constructor(
-		private store: Store,
-		private uploadService: UploadService
-	) {}
+	constructor(private store: Store, private uploadService: UploadService) {}
 
 	ngOnInit(): void {
 		this.store
@@ -40,12 +37,10 @@ export class AvatarUploadComponent implements OnInit {
 	}
 
 	onChange(event: any) {
-		console.log('onChange()')
 		this.upload(event.target.files[0])
 	}
 
 	async upload(file: File) {
-		console.log('onUpload()')
 		this.pending = true
 		await this.uploadService
 			.upload(file, this.id, this.collection, this.column)
@@ -72,7 +67,6 @@ export class AvatarUploadComponent implements OnInit {
 	}
 
 	async delete() {
-		console.log('delete()')
 		this.pending = true
 		await this.uploadService
 			.delete(this.id, this.collection, this.column)

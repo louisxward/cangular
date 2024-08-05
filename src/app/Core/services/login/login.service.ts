@@ -34,7 +34,6 @@ export class LoginService {
 			.authWithPassword(username, password)
 		return myPromise
 			.then(async (authRecord) => {
-				console.log('user found')
 				const avatarUrl = await this.uploadService.getFileUrl(
 					authRecord.record.id,
 					'users',
@@ -66,14 +65,12 @@ export class LoginService {
 				return true
 			})
 			.catch(() => {
-				console.error('user not found')
 				this.loader.stop()
 				return false
 			})
 	}
 
 	logout() {
-		console.log('logout()')
 		this.store.dispatch(new User.Login.Logout())
 		this.store.dispatch(new Logout())
 		this.notificationService.success('logged out')

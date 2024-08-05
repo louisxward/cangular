@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core'
 import { Router } from '@angular/router'
+import { LoadingBarService } from '@ngx-loading-bar/core'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
-import { LoadingBarService } from '@ngx-loading-bar/core'
 import { Column } from './data-table-result'
 
 @Component({
@@ -41,10 +41,8 @@ export class DataTableComponent {
 	}
 
 	async getResults() {
-		console.log('getResults()')
 		const myPromise = this.pb.collection('users').getList(this.page, this.max, {})
 		await myPromise.then((value) => {
-			console.log(value)
 			this.size = value.totalItems
 			this.pages = value.totalPages
 			this.results = value.items
