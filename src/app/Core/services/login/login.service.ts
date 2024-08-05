@@ -6,7 +6,7 @@ import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
-import { Login, Logout, User } from 'src/app/Core/state/index'; // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import { Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
 import { UploadService } from '../upload/upload.service'
 
 @Injectable()
