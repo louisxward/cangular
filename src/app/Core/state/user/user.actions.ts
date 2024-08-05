@@ -1,4 +1,4 @@
-import { Record } from 'pocketbase'
+import { RecordModel } from 'pocketbase'
 
 export namespace User {
 	export class AppLoaded {
@@ -23,7 +23,7 @@ export namespace User {
 			static readonly type = '[Login] Login'
 			constructor(
 				public payload: {
-					record: Record
+					record: RecordModel
 					avatarUrl: string | null
 					smallAvatarUrl: string | null
 				}

@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
-import PocketBase, { Record } from 'pocketbase'
+import PocketBase, { RecordModel } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { ErrorContainer } from './error'
 
@@ -122,7 +122,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		await this.handlePromise(myPromise, true)
 	}
 
-	async handlePromise(myPromise: Promise<Record>, create: boolean) {
+	async handlePromise(myPromise: Promise<RecordModel>, create: boolean) {
 		await myPromise
 			.then((value) => {
 				create ? console.info('user created') : console.info('user saved')

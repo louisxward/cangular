@@ -7,10 +7,7 @@ import { ApiService } from 'src/app/Core/services/api/api.service'
 export class SocialService {
 	pb: PocketBase
 
-	constructor(
-		private store: Store,
-		private apiService: ApiService
-	) {
+	constructor(private store: Store, private apiService: ApiService) {
 		this.pb = apiService.pb
 	}
 
@@ -40,20 +37,22 @@ export class SocialService {
 			})
 	}
 
-	async checkFollowing(userId: string, followUserId: string | null) {
-		let temp = null
-		if (!followUserId) return followUserId
-		const query = "user='"
-			.concat(userId + "' && follows_user='")
-			.concat(followUserId + "'")
-		const myPromise = this.pb
+	async checkFollowing(userId: string, followUserId: string) {
+		const params: { [key: string]: any } = {}
+		params['user'] = userId
+		params['follows_user'] = followUserId
+		const filter = this.pb.filter(
+			'user = {:user} && follows_user = {:follows_user}',
+			params
+		)
+		return this.pb
 			.collection('user_follows')
-			.getFirstListItem(query, {})
-		await myPromise
-			.then((value) => {
-				temp = value.id
+			.getFirstListItem(filter)
+			.then((e) => {
+				return e.id
 			})
-			.catch((error: 404) => {})
-		return temp
+			.catch(() => {
+				return null
+			})
 	}
 }
