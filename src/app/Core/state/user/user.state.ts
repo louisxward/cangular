@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core'
-import { UserStateModel } from './user.model'
-import { State, Action, StateContext, Store, Selector } from '@ngxs/store'
+import { Action, Selector, State, StateContext } from '@ngxs/store'
 import { User } from './user.actions'
-import PocketBase from 'pocketbase'
-import { Router } from '@angular/router'
-import { UploadService } from '../../services/upload/upload.service'
-import { ApiService } from 'src/app/Core/services/api/api.service'
+import { UserStateModel } from './user.model'
 
 const userStateDefaults: UserStateModel = {
 	avatarUrl: null,
@@ -21,17 +17,6 @@ const userStateDefaults: UserStateModel = {
 })
 @Injectable()
 export class UserState {
-	pb: PocketBase
-
-	constructor(
-		private store: Store,
-		private router: Router,
-		private uploadService: UploadService,
-		private apiService: ApiService
-	) {
-		this.pb = apiService.pb
-	}
-
 	// Actions
 	@Action(User.Login.Login)
 	login(ctx: StateContext<UserStateModel>, action: User.Login.Login) {
