@@ -59,6 +59,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 			.subscribe((e) => {
 				this.currentUserId = e
 			})
+			.unsubscribe()
 		if (this.userDetailsId == '0') {
 			this.found = true
 			this.loaded = true

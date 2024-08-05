@@ -1,9 +1,9 @@
 import { Component } from '@angular/core'
-import { FormGroup, FormBuilder } from '@angular/forms'
+import { FormBuilder, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
+import { LoadingBarService } from '@ngx-loading-bar/core'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
-import { LoadingBarService } from '@ngx-loading-bar/core'
 import { QueryService } from 'src/app/Core/services/query/query.service'
 
 export interface userTableItem {

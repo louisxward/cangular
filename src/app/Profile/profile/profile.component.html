@@ -1,15 +1,12 @@
 <main class="profile-page">
 	<app-page-header header="Profile" id="{{ userId$ | async }}"></app-page-header>
 	<div class="content">
-		<div *ngIf="!(isLoggedIn$ | async)">
+		<div *ngIf="!loaded">
 			<h3>Loading...</h3>
 		</div>
-		<div *ngIf="isLoggedIn$ | async">
+		<div *ngIf="loaded">
 			<div *ngIf="avatarUrl$ | async as avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl" title="Avatar" />
-			</div>
-			<div class="dataTimeDisplay">
-				<h2>{{ time | date: 'short' : 'UTC' }}</h2>
 			</div>
 			<div class="info">
 				<div *ngIf="username$ | async as username">

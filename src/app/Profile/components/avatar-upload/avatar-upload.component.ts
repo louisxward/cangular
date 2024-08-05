@@ -29,6 +29,7 @@ export class AvatarUploadComponent implements OnInit {
 			.subscribe((e) => {
 				this.id = e
 			})
+			.unsubscribe()
 		this.uploadService
 			.getFileName(this.id, this.collection, this.column)
 			.then((e) => {
