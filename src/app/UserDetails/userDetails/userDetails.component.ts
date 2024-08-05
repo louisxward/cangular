@@ -1,14 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import PocketBase from 'pocketbase'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
-import { UploadService } from 'src/app/Core/services/upload/upload.service'
 import { Store } from '@ngxs/store'
-import { AuthState } from 'src/app/Core/state/auth/auth.state'
-import { map, filter } from 'rxjs/operators'
+import PocketBase from 'pocketbase'
+import { filter, map } from 'rxjs/operators'
+import { ApiService } from 'src/app/Core/services/api/api.service'
 import { SocialService } from 'src/app/Core/services/social/social.service'
+import { UploadService } from 'src/app/Core/services/upload/upload.service'
+import { AuthState } from 'src/app/Core/state/auth/auth.state'
 
 @Component({
 	selector: 'app-userDetails',
