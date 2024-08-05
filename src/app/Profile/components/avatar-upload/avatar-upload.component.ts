@@ -45,8 +45,8 @@ export class AvatarUploadComponent implements OnInit {
 		this.pending = true
 		await this.uploadService
 			.upload(file, this.id, this.collection, this.column)
-			.then((e) => {
-				if (e) {
+			.then((record) => {
+				if (record) {
 					this.uploadedFileName = file.name
 					this.uploadService
 						.getFileUrl(this.id, this.collection, this.column, '200x200')

@@ -19,17 +19,22 @@ export class UploadService {
 		this.loader = this.loadingBarService.useRef()
 	}
 
-	async upload(file: File, id: string, collection: string, column: string) {
+	async upload(
+		file: File,
+		id: string,
+		collection: string,
+		column: string
+	): Promise<string | null> {
 		this.loader.start()
 		const value = new FormData()
 		value.append(column, file)
 		return this.pb
 			.collection(collection)
 			.update(id, value)
-			.then((e) => {
+			.then((record) => {
 				this.loader.complete()
 				this.notificationService.success('file uploaded')
-				return e.avatar
+				return record[column]
 			})
 			.catch((error) => {
 				console.error(error)
@@ -95,7 +100,6 @@ export class UploadService {
 					// Because file comes back empty sometimes
 					return this.pb.getFileUrl(record, fileName, query)
 				}
-				console.error('file not found')
 				return null
 			})
 	}
