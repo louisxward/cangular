@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core'
-import PocketBase from 'pocketbase'
-import { NotificationService } from '../notification/notification.service'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
+import PocketBase from 'pocketbase'
+import { ApiService } from 'src/app/Core/services/api/api.service'
+import { NotificationService } from '../notification/notification.service'
 
 @Injectable()
 export class UploadService {
@@ -95,6 +95,7 @@ export class UploadService {
 					// Because file comes back empty sometimes
 					return this.pb.getFileUrl(record, fileName, query)
 				}
+				console.error('file not found')
 				return null
 			})
 	}

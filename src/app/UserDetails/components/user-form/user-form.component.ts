@@ -5,6 +5,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import PocketBase, { RecordModel } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
+import { User } from 'src/app/Core/services/user/user.service'
 import { ErrorContainer } from './error'
 
 @Component({
@@ -18,11 +19,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 	form: FormGroup
 	responses: string[]
 
-	@Input('userDetails') userDetails = {
-		id: '0',
-		username: '',
-		email: '',
-	}
+	@Input('userDetails') userDetails: User
 
 	constructor(
 		private apiService: ApiService,
