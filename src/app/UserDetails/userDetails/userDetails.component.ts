@@ -42,6 +42,7 @@ export class UserDetailsComponent implements OnInit {
 		private socialService: SocialService,
 		private store: Store
 	) {
+		console.log('UserDetailsComponent Init')
 		this.pb = this.apiService.pb
 		this.loader = this.loadingBarService.useRef()
 		const param = this.route.snapshot.paramMap.get('userId')
