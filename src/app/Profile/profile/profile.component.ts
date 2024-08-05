@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { filter, map, Observable } from 'rxjs'
@@ -11,7 +11,7 @@ import { AuthState, UserState } from 'src/app/Core/state/index'
 	templateUrl: './profile.component.html',
 	styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 	pb: PocketBase
 
 	isAuthenticated$: Observable<boolean>
@@ -28,6 +28,9 @@ export class ProfileComponent implements OnInit {
 		private apiService: ApiService
 	) {
 		this.pb = apiService.pb
+	}
+	ngOnDestroy(): void {
+		this.pb.cancelAllRequests()
 	}
 
 	ngOnInit(): void {
