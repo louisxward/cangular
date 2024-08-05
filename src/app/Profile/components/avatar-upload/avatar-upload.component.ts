@@ -45,23 +45,29 @@ export class AvatarUploadComponent implements OnInit {
 		this.pending = true
 		await this.uploadService
 			.upload(file, this.id, this.collection, this.column)
-			.then((record) => {
-				if (record) {
-					this.uploadedFileName = file.name
-					this.uploadService
+			.then(async (fileName) => {
+				if (fileName) {
+					// ToDo - Tidy up
+					this.uploadedFileName = fileName
+					let avatarUrl: string | null = null
+					await this.uploadService
 						.getFileUrl(this.id, this.collection, this.column, '200x200')
-						.then((avatarUrl) => {
-							this.uploadService
-								.getFileUrl(this.id, this.collection, this.column, '30x30')
-								.then((smallAvatarUrl) => {
-									this.store.dispatch(
-										new User.Update.Avatar({
-											avatarUrl: avatarUrl,
-											smallAvatarUrl: smallAvatarUrl,
-										})
-									)
-								})
+						.then((url) => {
+							avatarUrl = url
 						})
+
+					let smallAvatarUrl: string | null = null
+					await this.uploadService
+						.getFileUrl(this.id, this.collection, this.column, '200x200')
+						.then((url) => {
+							smallAvatarUrl = url
+						})
+					this.store.dispatch(
+						new User.Update.Avatar({
+							avatarUrl: avatarUrl,
+							smallAvatarUrl: smallAvatarUrl,
+						})
+					)
 				}
 			})
 		this.pending = false
