@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
@@ -15,7 +15,7 @@ import { AuthState } from 'src/app/Core/state/auth/auth.state'
 	templateUrl: './userDetails.component.html',
 	styleUrls: ['./userDetails.component.scss'],
 })
-export class UserDetailsComponent implements OnInit {
+export class UserDetailsComponent implements OnInit, OnDestroy {
 	pb: PocketBase
 	loader: LoadingBarState
 	userDetailsId: string
@@ -26,6 +26,7 @@ export class UserDetailsComponent implements OnInit {
 	currentUser: boolean = false // if the authd user is editing their own details
 	followingId: string | null = null // if the user is following the authd user
 	mutuals: boolean = false
+	loaded: boolean = false
 
 	userDetails = {
 		// ToDo - This can be improved with interfaces?
@@ -47,6 +48,10 @@ export class UserDetailsComponent implements OnInit {
 		const param = this.route.snapshot.paramMap.get('userId')
 		this.userDetailsId = param ? param : '0'
 	}
+	ngOnDestroy(): void {
+		this.pb.cancelAllRequests
+		this.loader.stop
+	}
 
 	ngOnInit(): void {
 		this.store
@@ -60,11 +65,13 @@ export class UserDetailsComponent implements OnInit {
 			})
 		if (this.userDetailsId == '0') {
 			this.found = true
+			this.loaded = true
 		} else {
 			this.getUser().then((found) => {
 				this.found = found
 				this.currentUser = this.currentUserId == this.userDetailsId
 				this.checkSocial()
+				this.loaded = true
 			})
 		}
 	}
