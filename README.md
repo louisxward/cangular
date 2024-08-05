@@ -16,7 +16,7 @@ Pocketbase version 0.22.17
 
 Clone then `npm i` to install all the dependencies locally
 <br>
-Run `ng serve` in `/frontend` to launch dev server. Navigate to `http://localhost:4200/`
+Run `ng serve` to launch dev server
 <br>
 Navigate to `https://pocketbase.io/` and set up a database.
 <br>
