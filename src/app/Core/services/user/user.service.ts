@@ -16,6 +16,11 @@ export interface UserList {
 	email: string | null
 }
 
+export interface UserListSearch {
+	id: string
+	username: string
+}
+
 @Injectable()
 export class UserService {
 	pb: PocketBase

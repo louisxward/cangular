@@ -4,14 +4,11 @@ import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { QueryService } from 'src/app/Core/services/query/query.service'
-import { UserService } from 'src/app/Core/services/user/user.service'
-
-export interface userTableItem {
-	id: number
-	username: string
-	email: string
-}
-
+import {
+	UserList,
+	UserListSearch,
+	UserService,
+} from 'src/app/Core/services/user/user.service'
 @Component({
 	selector: 'app-user-table',
 	templateUrl: './user-table.component.html',
@@ -22,7 +19,7 @@ export class UserTableComponent {
 
 	pagnationForm: FormGroup
 	searchForm: FormGroup
-	results: any[] = []
+	results: UserList[] = []
 	loaded = false
 
 	query = ''
@@ -31,6 +28,11 @@ export class UserTableComponent {
 	page = 1
 	pages = 0
 	pageSizes = [10, 25, 50, 100]
+	// Exmpty for a reason
+	search: UserListSearch = {
+		id: '',
+		username: '',
+	}
 
 	constructor(
 		private router: Router,
@@ -47,10 +49,7 @@ export class UserTableComponent {
 			max: 10,
 			page: 1,
 		})
-		this.searchForm = this.fb.group({
-			id: '',
-			username: '',
-		})
+		this.searchForm = this.fb.group(this.search)
 		this.searchForm.setValidators(this.atLeastOneValidator())
 		this.getResults()
 		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
@@ -133,7 +132,7 @@ export class UserTableComponent {
 		this.getResults()
 	}
 
-	viewUser(id: number) {
+	viewUser(id: string) {
 		this.router.navigate(['users/', id])
 	}
 
