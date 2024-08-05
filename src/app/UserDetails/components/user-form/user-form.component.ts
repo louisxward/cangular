@@ -63,7 +63,8 @@ export class UserFormComponent implements OnInit {
 		)
 		// If new user
 		if (this.userDetails.id == '0') {
-			this.form.addControl(// Makes record email field public
+			this.form.addControl(
+				// Makes record email field public
 				'emailVisibility',
 				new FormControl(true, Validators.required)
 			)
@@ -91,12 +92,12 @@ export class UserFormComponent implements OnInit {
 			)
 		}
 		// If not new user
-		else{
+		else {
 			this.form.controls['email'].disable()
 		}
 	}
 
-	async submit(){
+	async submit() {
 		this.loader.start()
 		if (this.userDetails.id == '0') {
 			await this.createUser()
@@ -105,7 +106,6 @@ export class UserFormComponent implements OnInit {
 		}
 		this.loader.complete()
 	}
-
 
 	async saveUser() {
 		const myPromise = this.pb
@@ -130,7 +130,8 @@ export class UserFormComponent implements OnInit {
 			})
 	}
 
-	handleError(e: any){// ToDo - sort type out
+	handleError(e: any) {
+		// ToDo - sort type out
 		let errorContainer: ErrorContainer = e.data
 		let error = errorContainer.data
 		let errorMessages: string[] = []
@@ -151,5 +152,4 @@ export class UserFormComponent implements OnInit {
 		}
 		this.responses = errorMessages
 	}
-
 }

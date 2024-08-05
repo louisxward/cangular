@@ -13,28 +13,30 @@ import { map, filter } from 'rxjs/operators'
 export class AvatarUploadComponent implements OnInit {
 	pending: boolean = false
 	id: string
-	uploadedFileName: string | null = null;
+	uploadedFileName: string | null = null
 	collection = 'users'
 	column = 'avatar'
 
 	constructor(
 		private store: Store,
-		private uploadService: UploadService,
-	) {
-	}
+		private uploadService: UploadService
+	) {}
 
 	ngOnInit(): void {
-		this.store.select(AuthState.getId)
-		.pipe(
-			filter((e) => e !== null), // Filter out null values
-			map((e) => e as string) // Type assertion here
-		)
-		.subscribe(e=>{
-			this.id = e
-		})
-		this.uploadService.getFileName(this.id, this.collection, this.column).then((e)=>{
-			this.uploadedFileName = e
-		})
+		this.store
+			.select(AuthState.getId)
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
+				this.id = e
+			})
+		this.uploadService
+			.getFileName(this.id, this.collection, this.column)
+			.then((e) => {
+				this.uploadedFileName = e
+			})
 	}
 
 	onChange(event: any) {
@@ -45,32 +47,43 @@ export class AvatarUploadComponent implements OnInit {
 	async upload(file: File) {
 		console.log('onUpload()')
 		this.pending = true
-		await this.uploadService.upload(file, this.id, this.collection, this.column).then((e)=>{
-			if(e){
-				this.uploadedFileName = file.name
-				this.uploadService.getFileUrl(this.id, this.collection, this.column, '200x200')
-				.then((avatarUrl)=>{
-
-					this.uploadService.getFileUrl(this.id, this.collection, this.column, '30x30')
-						.then((smallAvatarUrl)=>{
-							
-							this.store.dispatch(new User.Update.Avatar({avatarUrl: avatarUrl, smallAvatarUrl: smallAvatarUrl}))
-						})	
-				})	
-			}
-		})
+		await this.uploadService
+			.upload(file, this.id, this.collection, this.column)
+			.then((e) => {
+				if (e) {
+					this.uploadedFileName = file.name
+					this.uploadService
+						.getFileUrl(this.id, this.collection, this.column, '200x200')
+						.then((avatarUrl) => {
+							this.uploadService
+								.getFileUrl(this.id, this.collection, this.column, '30x30')
+								.then((smallAvatarUrl) => {
+									this.store.dispatch(
+										new User.Update.Avatar({
+											avatarUrl: avatarUrl,
+											smallAvatarUrl: smallAvatarUrl,
+										})
+									)
+								})
+						})
+				}
+			})
 		this.pending = false
 	}
 
 	async delete() {
 		console.log('delete()')
 		this.pending = true
-		await this.uploadService.delete(this.id, this.collection, this.column).then((e)=>{
-			if(e){
-				this.uploadedFileName = null
-				this.store.dispatch(new User.Update.Avatar({avatarUrl: null, smallAvatarUrl: null}))
-			}
-		})
+		await this.uploadService
+			.delete(this.id, this.collection, this.column)
+			.then((e) => {
+				if (e) {
+					this.uploadedFileName = null
+					this.store.dispatch(
+						new User.Update.Avatar({ avatarUrl: null, smallAvatarUrl: null })
+					)
+				}
+			})
 		this.pending = false
 	}
 }

@@ -8,7 +8,9 @@ export namespace User {
 	export namespace Update {
 		export class Avatar {
 			static readonly type = '[Update] Avatar'
-			constructor(public payload: { avatarUrl: string | null, smallAvatarUrl: string | null }) {}
+			constructor(
+				public payload: { avatarUrl: string | null; smallAvatarUrl: string | null }
+			) {}
 		}
 
 		export class Sidebar {
@@ -19,7 +21,13 @@ export namespace User {
 	export namespace Login {
 		export class Login {
 			static readonly type = '[Login] Login'
-			constructor(public payload: { record: Record, avatarUrl: string | null, smallAvatarUrl: string | null}) {}
+			constructor(
+				public payload: {
+					record: Record
+					avatarUrl: string | null
+					smallAvatarUrl: string | null
+				}
+			) {}
 		}
 
 		export class Logout {

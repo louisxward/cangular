@@ -52,8 +52,8 @@ export class UserDetailsComponent implements OnInit {
 		this.store
 			.select(AuthState.getId)
 			.pipe(
-				filter((e) => e !== null), // Filter out null values
-				map((e) => e as string) // Type assertion here
+				filter((e) => e !== null),
+				map((e) => e as string)
 			)
 			.subscribe((e) => {
 				this.currentUserId = e
@@ -69,7 +69,7 @@ export class UserDetailsComponent implements OnInit {
 		}
 	}
 
-	async checkSocial() {
+	checkSocial() {
 		if (!this.currentUser) {
 			// check if authd user follows this user
 			this.socialService
@@ -77,6 +77,7 @@ export class UserDetailsComponent implements OnInit {
 				.then((e) => {
 					this.followingId = e
 					if (e) {
+						// check if this user follows authd user
 						this.socialService
 							.checkFollowing(this.userDetailsId, this.currentUserId)
 							.then((f) => {
@@ -94,9 +95,11 @@ export class UserDetailsComponent implements OnInit {
 			.then((e) => {
 				this.followingId = e
 				// Check if user we followed follows us back
-				this.socialService.checkFollowing(this.userDetailsId, this.currentUserId).then((f)=>{
-					this.mutuals = null != f
-				})
+				this.socialService
+					.checkFollowing(this.userDetailsId, this.currentUserId)
+					.then((f) => {
+						this.mutuals = null != f
+					})
 				this.loader.complete()
 			})
 			.catch((e) => {
@@ -123,7 +126,7 @@ export class UserDetailsComponent implements OnInit {
 	}
 
 	// ToDo - fix window refresh issue
-	async getUser() {
+	getUser() {
 		this.loader.start()
 		return this.pb
 			.collection('users')
