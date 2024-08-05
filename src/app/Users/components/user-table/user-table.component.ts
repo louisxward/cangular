@@ -22,7 +22,7 @@ export class UserTableComponent {
 	results: UserList[] = []
 	loaded = false
 
-	query = ''
+	filter = ''
 	max = 10
 	size = 0
 	page = 1
@@ -81,7 +81,7 @@ export class UserTableComponent {
 	getResults() {
 		this.loader.start()
 		this.userService
-			.getResults(this.page, this.max, this.query)
+			.getResults(this.page, this.max, this.filter)
 			.then((records) => {
 				if (records) {
 					this.size = records.totalItems
@@ -118,17 +118,13 @@ export class UserTableComponent {
 
 	searchSubmit() {
 		console.log(this.searchForm.value)
-		this.query = this.queryService.formatQuery(
-			JSON.stringify(this.searchForm.value)
-		)
+		this.filter = this.queryService.formatQueryNew(this.searchForm.value)
 		this.getResults()
 	}
 
 	searchReset() {
-		this.query = ''
+		this.filter = ''
 		this.searchForm.reset()
-		let obj = { id: '', username: '' }
-		this.searchForm.patchValue(obj)
 		this.getResults()
 	}
 

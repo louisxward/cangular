@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core'
+import PocketBase from 'pocketbase'
+import { ApiService } from '../api/api.service'
 
 @Injectable()
 export class QueryService {
-	constructor() {}
+	pb: PocketBase
+	constructor(private apiService: ApiService) {
+		this.pb = apiService.pb
+	}
 
 	formatQuery(data: string): string {
 		let query = ''
@@ -21,5 +26,18 @@ export class QueryService {
 			}
 		}
 		return query
+	}
+
+	//'user = {:user} && follows_user = {:follows_user}',
+	formatQueryNew(params: { [key: string]: string }): string {
+		let filterPre = ''
+		for (const [key, value] of Object.entries(params)) {
+			if (filterPre) {
+				filterPre = key + '= {:' + key + '}'
+			} else {
+				filterPre = filterPre + ' &&' + key + '= {:' + key + '}'
+			}
+		}
+		return this.pb.filter(filterPre, params)
 	}
 }

@@ -39,10 +39,10 @@ export class UserService {
 			})
 	}
 
-	getResults(page: number, max: number, query: string) {
+	getResults(page: number, max: number, filter: string) {
 		return this.pb
 			.collection('users')
-			.getList<UserList>(page, max, { filter: query })
+			.getList<UserList>(page, max, { filter: filter })
 			.catch((error) => {
 				console.error(error)
 				return null
