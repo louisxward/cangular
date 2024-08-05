@@ -1,19 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
+import { Component, Input, OnDestroy, OnInit } from '@angular/core'
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
-import PocketBase from 'pocketbase'
-import { Record } from 'pocketbase'
+import PocketBase, { Record } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { ErrorContainer } from './error'
-import { Router } from '@angular/router'
 
 @Component({
 	selector: 'app-user-form',
 	templateUrl: './user-form.component.html',
 	styleUrls: ['./user-form.component.scss'],
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit, OnDestroy {
 	pb: PocketBase
 	loader: LoadingBarState
 	form: FormGroup
@@ -35,6 +34,10 @@ export class UserFormComponent implements OnInit {
 		this.loader = this.loadingBarService.useRef()
 		this.form = this.fb.group({})
 		this.responses = []
+	}
+	ngOnDestroy(): void {
+		this.pb.cancelAllRequests
+		this.loader.stop
 	}
 	ngOnInit(): void {
 		this.setupForm()
