@@ -2,9 +2,9 @@ import { Component } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
-import PocketBase from 'pocketbase'
-import { ApiService } from 'src/app/Core/services/api/api.service'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { QueryService } from 'src/app/Core/services/query/query.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
 
 export interface userTableItem {
 	id: number
@@ -18,9 +18,7 @@ export interface userTableItem {
 	styleUrls: ['./user-table.component.scss'],
 })
 export class UserTableComponent {
-	pb: PocketBase
-
-	loader = this.loadingBarService.useRef()
+	loader: LoadingBarState
 
 	pagnationForm: FormGroup
 	searchForm: FormGroup
@@ -37,11 +35,14 @@ export class UserTableComponent {
 	constructor(
 		private router: Router,
 		private fb: FormBuilder,
-		private apiService: ApiService,
 		private loadingBarService: LoadingBarService,
-		private queryService: QueryService
+		private queryService: QueryService,
+		private userService: UserService
 	) {
-		this.pb = apiService.pb
+		this.loader = this.loadingBarService.useRef()
+	}
+
+	ngOnInit(): void {
 		this.pagnationForm = this.fb.group({
 			max: 10,
 			page: 1,
@@ -52,15 +53,12 @@ export class UserTableComponent {
 		})
 		this.searchForm.setValidators(this.atLeastOneValidator())
 		this.getResults()
-		this.pagnationForm.get('max')?.valueChanges.subscribe((f) => {
-			this.updateMax(f)
+		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
+			this.updateMax(max)
 		})
 	}
 
-	ngOnInit(): void {}
-
 	ngOnDestroy() {
-		this.pb.cancelAllRequests()
 		this.loader.complete()
 	}
 
@@ -81,22 +79,23 @@ export class UserTableComponent {
 		}
 	}
 
-	async getResults() {
+	getResults() {
 		this.loader.start()
-		const myPromise = this.pb
-			.collection('users')
-			.getList(this.page, this.max, { filter: this.query })
-		await myPromise.then((value) => {
-			this.size = value.totalItems
-			this.pages = value.totalPages
-			this.results = value.items
-		})
-		this.loaded = true
-		this.loader.complete()
+		this.userService
+			.getResults(this.page, this.max, this.query)
+			.then((records) => {
+				if (records) {
+					this.size = records.totalItems
+					this.pages = records.totalPages
+					this.results = records.items
+				}
+				this.loaded = true
+				this.loader.complete()
+			})
 	}
 
-	updateMax(size: number) {
-		this.max = size
+	updateMax(max: number) {
+		this.max = max
 		this.getResults()
 	}
 
@@ -119,6 +118,7 @@ export class UserTableComponent {
 	submit() {}
 
 	searchSubmit() {
+		console.log(this.searchForm.value)
 		this.query = this.queryService.formatQuery(
 			JSON.stringify(this.searchForm.value)
 		)

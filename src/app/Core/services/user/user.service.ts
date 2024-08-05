@@ -10,6 +10,12 @@ export interface User {
 	lastLoggedIn: string | null
 }
 
+export interface UserList {
+	id: string
+	username: string
+	email: string | null
+}
+
 @Injectable()
 export class UserService {
 	pb: PocketBase
@@ -22,6 +28,16 @@ export class UserService {
 		return this.pb
 			.collection('users')
 			.getOne<User>(id, {})
+			.catch((error) => {
+				console.error(error)
+				return null
+			})
+	}
+
+	getResults(page: number, max: number, query: string) {
+		return this.pb
+			.collection('users')
+			.getList<UserList>(page, max, { filter: query })
 			.catch((error) => {
 				console.error(error)
 				return null
