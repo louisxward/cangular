@@ -66,13 +66,13 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 			this.getUser().then((found: boolean) => {
 				this.found = found
 				this.currentUser = this.currentUserId == this.userDetailsId
-				this.checkSocial()
+				this.checkSocial() // ToDo - Hmm when does dis run?
 				this.loaded = true
 			})
 		}
 	}
 
-	checkSocial() {
+	async checkSocial() {
 		if (!this.currentUser) {
 			// check if authd user follows this user
 			this.socialService
@@ -97,34 +97,27 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 			.follow(this.currentUserId, this.userDetailsId)
 			.then((followingId) => {
 				this.followingId = followingId
-				// Check if user we followed follows us back
-				this.socialService
-					.checkFollowing(this.userDetailsId, this.currentUserId)
-					.then((mutuals) => {
-						this.mutuals = null != mutuals
-					})
+				if (this.followingId) {
+					this.socialService
+						.checkFollowing(this.userDetailsId, this.currentUserId)
+						.then((mutuals) => {
+							this.mutuals = null != mutuals
+						})
+				}
 				this.loader.complete()
-			})
-			.catch((error) => {
-				console.error(error)
-				this.loader.stop()
 			})
 	}
 
 	unfollowUser() {
 		if (null != this.followingId) {
 			this.loader.start()
-			this.socialService
-				.unfollow(this.followingId)
-				.then((followingId) => {
-					this.followingId = followingId
+			this.socialService.unfollow(this.followingId).then((followingId) => {
+				this.followingId = followingId
+				if (!this.followingId) {
 					this.mutuals = false
-					this.loader.complete()
-				})
-				.catch((error) => {
-					console.error(error)
-					this.loader.stop()
-				})
+				}
+				this.loader.complete()
+			})
 		}
 	}
 
