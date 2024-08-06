@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core'
+import { FormControl } from '@angular/forms'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
@@ -17,8 +18,8 @@ export interface UserList {
 }
 
 export interface UserListSearch {
-	id: string
-	username: string
+	id: FormControl<string | null>
+	username: FormControl<string | null>
 }
 
 @Injectable()

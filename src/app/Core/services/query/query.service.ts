@@ -28,16 +28,17 @@ export class QueryService {
 		return query
 	}
 
-	//'user = {:user} && follows_user = {:follows_user}',
-	formatQueryNew(params: { [key: string]: string }): string {
-		let filterPre = ''
+	formatQueryAnd(params: { [key: string]: string | null }): string {
+		let filter = ''
 		for (const [key, value] of Object.entries(params)) {
-			if (filterPre) {
-				filterPre = key + '= {:' + key + '}'
-			} else {
-				filterPre = filterPre + ' &&' + key + '= {:' + key + '}'
+			if (value) {
+				if ('' == filter) {
+					filter = key + '= {:' + key + '}'
+				} else {
+					filter = filter + ' &&' + key + '= {:' + key + '}'
+				}
 			}
 		}
-		return this.pb.filter(filterPre, params)
+		return this.pb.filter(filter, params) // Seems backwords since we can add the values in the above?
 	}
 }

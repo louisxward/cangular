@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
@@ -18,7 +18,7 @@ export class UserTableComponent {
 	loader: LoadingBarState
 
 	pagnationForm: FormGroup
-	searchForm: FormGroup
+	searchForm: FormGroup<UserListSearch>
 	results: UserList[] = []
 	loaded = false
 
@@ -30,8 +30,8 @@ export class UserTableComponent {
 	pageSizes = [10, 25, 50, 100]
 	// Exmpty for a reason
 	search: UserListSearch = {
-		id: '',
-		username: '',
+		id: new FormControl(null),
+		username: new FormControl(null),
 	}
 
 	constructor(
@@ -50,7 +50,7 @@ export class UserTableComponent {
 			page: 1,
 		})
 		this.searchForm = this.fb.group(this.search)
-		this.searchForm.setValidators(this.atLeastOneValidator())
+		// this.searchForm.setValidators(this.atLeastOneValidator()) // ToDo - Make it that something insearch must be filled in to search
 		this.getResults()
 		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
 			this.updateMax(max)
@@ -61,24 +61,8 @@ export class UserTableComponent {
 		this.loader.complete()
 	}
 
-	private atLeastOneValidator = () => {
-		return (controlGroup: any) => {
-			let controls = controlGroup.controls
-			if (controls) {
-				let theOne = Object.keys(controls).find((key) => controls[key].value !== '')
-				if (!theOne) {
-					return {
-						atLeastOneRequired: {
-							text: 'At least one should be selected',
-						},
-					}
-				}
-			}
-			return null
-		}
-	}
-
 	getResults() {
+		// ToDo - filter should get passed into here instead of pulling from class
 		this.loader.start()
 		this.userService
 			.getResults(this.page, this.max, this.filter)
@@ -95,6 +79,7 @@ export class UserTableComponent {
 
 	updateMax(max: number) {
 		this.max = max
+		this.pagnationForm.value.max = max
 		this.getResults()
 	}
 
@@ -118,7 +103,7 @@ export class UserTableComponent {
 
 	searchSubmit() {
 		console.log(this.searchForm.value)
-		this.filter = this.queryService.formatQueryNew(this.searchForm.value)
+		this.filter = this.queryService.formatQueryAnd(this.searchForm.value)
 		this.getResults()
 	}
 

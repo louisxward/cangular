@@ -40,7 +40,7 @@ export class SocialService {
 	async checkFollowing(userId: string, followUserId: string) {
 		const params: { [key: string]: any } = {}
 		params['user'] = userId
-		params['follows_user'] = followUserId
+		params['follows_user'] = followUserId //
 		const filter = this.pb.filter(
 			'user = {:user} && follows_user = {:follows_user}',
 			params
