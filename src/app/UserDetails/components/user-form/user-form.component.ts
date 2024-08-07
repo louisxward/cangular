@@ -107,8 +107,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
 	async createUser() {
 		await this.userService.createUserPassword(this.form.value).then((e) => {
-			if (e instanceof User) {
-				console.log('e instanceof User')
+			if (e instanceof Boolean) {
 				this.router.navigate(['users'])
 			} else {
 				this.responses = e

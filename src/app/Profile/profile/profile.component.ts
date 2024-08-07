@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { filter, firstValueFrom, map } from 'rxjs'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoginService } from 'src/app/Core/services/login/login.service'
 import { AuthState, UserState } from 'src/app/Core/state/index'
 
@@ -21,16 +20,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 	loaded = false
 
-	constructor(
-		private store: Store,
-		private loginService: LoginService,
-		private apiService: ApiService
-	) {
-		this.pb = apiService.pb
-	}
-	ngOnDestroy(): void {
-		this.pb.cancelAllRequests()
-	}
+	constructor(private store: Store, private loginService: LoginService) {}
+	ngOnDestroy(): void {}
 
 	async ngOnInit(): Promise<void> {
 		const userId$ = this.store.select(AuthState.getId).pipe(
