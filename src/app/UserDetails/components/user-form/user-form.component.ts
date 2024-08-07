@@ -93,25 +93,38 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	async submit() {
-		this.loader.start()
+	submit() {
 		if (this.userDetails.id == '0') {
-			await this.createUser()
+			this.createUser()
 		} else {
-			await this.saveUser()
+			this.saveUser()
 		}
-		this.loader.complete()
 	}
 
-	saveUser() {}
+	saveUser() {
+		this.loader.start()
+		this.userService
+			.updateUser(this.form.value, this.userDetails.id)
+			.then((e) => {
+				if (e instanceof Boolean) {
+					this.router.navigate(['users'])
+				} else {
+					this.responses = e
+				}
+				this.loader.complete()
+			})
+	}
 
-	async createUser() {
-		await this.userService.createUserPassword(this.form.value).then((e) => {
+	createUser() {
+		this.loader.start()
+		this.userService.createUserPassword(this.form.value).then((e) => {
 			if (e instanceof Boolean) {
+				//ToDO - not sure on this
 				this.router.navigate(['users'])
 			} else {
 				this.responses = e
 			}
+			this.loader.complete()
 		})
 	}
 }

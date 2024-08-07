@@ -65,13 +65,20 @@ export class UserService {
 			})
 	}
 
-	async saveUser(user: User) {
-		try {
-			return await this.pb.collection('users').update<User>(user.id, user)
-		} catch (error) {
-			console.error(error)
-			return null
-		}
+	async updateUser(user: User, userId: string) {
+		return await this.pb
+			.collection('users')
+			.update<User>(userId, user)
+			.then(() => {
+				return new Boolean(true) // ToDo - Hmm - Not sure why this needs to be done. Dont think passing either value back is a good idea
+			})
+			.catch((error) => {
+				console.error(error)
+				if (error instanceof ClientResponseError) {
+					return this.errorService.parseError(error)
+				}
+				return []
+			})
 	}
 
 	partialUser(init?: Partial<User>) {
