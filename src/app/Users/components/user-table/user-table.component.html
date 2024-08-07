@@ -8,8 +8,12 @@
 		</tr>
 	</thead>
 	<tbody>
-		<h1 *ngIf="!loaded">Loading...</h1>
-		<h1 *ngIf="loaded && size == 0">No Results</h1>
+		<tr *ngIf="!loaded">
+			<td style="width: 100%">Loading...</td>
+		</tr>
+		<tr *ngIf="loaded && size == 0">
+			<td style="width: 100%">No Results</td>
+		</tr>
 		<tr *ngFor="let userTableItem of results" class="data">
 			<td style="width: 10%">{{ userTableItem.id }}</td>
 			<td style="width: 20%">{{ userTableItem.username }}</td>
