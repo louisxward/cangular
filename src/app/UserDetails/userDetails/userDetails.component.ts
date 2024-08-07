@@ -69,7 +69,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 			this.getUser().then(async (found: boolean) => {
 				this.found = found
 				this.currentUser = this.currentUserId == this.userDetailsId
-				await this.checkSocial() // ToDo - Hmm when does dis run?
+				await this.checkSocial()
 				this.loaded = true
 			})
 		}

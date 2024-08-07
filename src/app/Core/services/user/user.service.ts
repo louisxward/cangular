@@ -30,23 +30,41 @@ export class UserService {
 		this.pb = apiService.pb
 	}
 
-	getUser(id: string) {
-		return this.pb
-			.collection('users')
-			.getOne<User>(id, {})
-			.catch((error) => {
-				console.error(error)
-				return null
-			})
+	async createUser(user: User) {
+		try {
+			return await this.pb.collection('users').create<User>(user)
+		} catch (error) {
+			console.error(error)
+			return null
+		}
 	}
 
-	getResults(page: number, max: number, filter: string) {
-		return this.pb
-			.collection('users')
-			.getList<UserList>(page, max, { filter: filter })
-			.catch((error) => {
-				console.error(error)
-				return null
-			})
+	async saveUser(user: User) {
+		try {
+			return await this.pb.collection('users').update<User>(user.id, user)
+		} catch (error) {
+			console.error(error)
+			return null
+		}
+	}
+
+	async getUser(id: string) {
+		try {
+			return await this.pb.collection('users').getOne<User>(id, {})
+		} catch (error) {
+			console.error(error)
+			return null
+		}
+	}
+
+	async getResults(page: number, max: number, filter: string) {
+		try {
+			return await this.pb
+				.collection('users')
+				.getList<UserList>(page, max, { filter: filter })
+		} catch (error) {
+			console.error(error)
+			return null
+		}
 	}
 }

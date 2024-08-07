@@ -50,7 +50,7 @@ export class UserTableComponent {
 			page: 1,
 		})
 		this.searchForm = this.fb.group(this.search)
-		this.searchForm.setValidators(this.atLeastOneValidator()) // ToDo - Make it that something insearch must be filled in to search
+		this.searchForm.setValidators(this.atLeastOneValidator())
 		this.getResults()
 		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
 			this.updateMax(max)
