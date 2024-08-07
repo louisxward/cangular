@@ -50,11 +50,30 @@ export class UserTableComponent {
 			page: 1,
 		})
 		this.searchForm = this.fb.group(this.search)
-		// this.searchForm.setValidators(this.atLeastOneValidator()) // ToDo - Make it that something insearch must be filled in to search
+		this.searchForm.setValidators(this.atLeastOneValidator()) // ToDo - Make it that something insearch must be filled in to search
 		this.getResults()
 		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
 			this.updateMax(max)
 		})
+	}
+
+	private atLeastOneValidator = () => {
+		return (controlGroup: any) => {
+			let controls = controlGroup.controls
+			if (controls) {
+				let theOne = Object.keys(controls).find(
+					(key) => controls[key].value !== '' && controls[key].value !== null
+				)
+				if (!theOne) {
+					return {
+						atLeastOneRequired: {
+							text: 'At least one should be selected',
+						},
+					}
+				}
+			}
+			return null
+		}
 	}
 
 	ngOnDestroy() {

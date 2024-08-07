@@ -16,6 +16,7 @@ import { AuthState } from 'src/app/Core/state/auth/auth.state'
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {
 	loader: LoadingBarState
+
 	userDetailsId: string
 	found: boolean = false
 	avatarUrl: string | null = null
@@ -24,6 +25,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 	currentUser: boolean = false // if the authd user is editing their own details
 	followingId: string | null = null // if the user is following the authd user
 	mutuals: boolean = false
+
 	loaded: boolean = false
 
 	userDetails: User = {
@@ -64,10 +66,10 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 			this.found = true
 			this.loaded = true
 		} else {
-			this.getUser().then((found: boolean) => {
+			this.getUser().then(async (found: boolean) => {
 				this.found = found
 				this.currentUser = this.currentUserId == this.userDetailsId
-				this.checkSocial() // ToDo - Hmm when does dis run?
+				await this.checkSocial() // ToDo - Hmm when does dis run?
 				this.loaded = true
 			})
 		}
