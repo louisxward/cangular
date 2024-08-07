@@ -11,15 +11,17 @@ import { User } from 'src/app/Core/state/user'
 	styleUrls: ['./avatar-upload.component.scss'],
 })
 export class AvatarUploadComponent implements OnInit {
-	pending: boolean = false
 	id: string
 	uploadedFileName: string | null = null
 	collection = 'users'
 	column = 'avatar'
 
+	pending: boolean = false
+	loaded: boolean = false
+
 	constructor(private store: Store, private uploadService: UploadService) {}
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
 		this.store
 			.select(AuthState.getId)
 			.pipe(
@@ -30,11 +32,12 @@ export class AvatarUploadComponent implements OnInit {
 				this.id = e
 			})
 			.unsubscribe()
-		this.uploadService
+		await this.uploadService
 			.getFileName(this.id, this.collection, this.column)
 			.then((e) => {
 				this.uploadedFileName = e
 			})
+		this.loaded = true
 	}
 
 	onChange(event: any) {
