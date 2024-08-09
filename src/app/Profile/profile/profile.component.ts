@@ -55,8 +55,4 @@ export class ProfileComponent implements OnInit {
 	logout(): void {
 		this.loginService.logout()
 	}
-
-	onClick() {
-		this.notificationService.success('test')
-	}
 }
