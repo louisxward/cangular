@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr'
 const toastrOptions = {
 	tapToDismiss: true,
 	positionClass: 'toast-bottom-right',
+	easeTime: 500,
 }
 
 @Injectable()

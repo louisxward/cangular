@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core'
-import PocketBase from 'pocketbase'
-import { NotificationService } from '../notification/notification.service'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
+import PocketBase from 'pocketbase'
+import { ApiService } from 'src/app/Core/services/api/api.service'
+import { NotificationService } from '../notification/notification.service'
 
 @Injectable()
 export class UploadService {
@@ -19,17 +19,22 @@ export class UploadService {
 		this.loader = this.loadingBarService.useRef()
 	}
 
-	async upload(file: File, id: string, collection: string, column: string) {
+	async upload(
+		file: File,
+		id: string,
+		collection: string,
+		column: string
+	): Promise<string | null> {
 		this.loader.start()
 		const value = new FormData()
 		value.append(column, file)
 		return this.pb
 			.collection(collection)
 			.update(id, value)
-			.then((e) => {
+			.then((record) => {
 				this.loader.complete()
 				this.notificationService.success('file uploaded')
-				return e.avatar
+				return record[column]
 			})
 			.catch((error) => {
 				console.error(error)

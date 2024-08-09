@@ -25,6 +25,7 @@ import { NotificationService } from './Core/services/notification/notification.s
 import { QueryService } from './Core/services/query/query.service'
 import { SocialService } from './Core/services/social/social.service'
 import { UploadService } from './Core/services/upload/upload.service'
+import { UserService } from './Core/services/user/user.service'
 import { HomeComponent } from './Home/home/home.component'
 import { LoginFormComponent } from './Login/components/login-form/login-form.component'
 import { LoginComponent } from './Login/login/login.component'
@@ -65,7 +66,7 @@ import { UsersComponent } from './Users/users/users.component'
 		BrowserAnimationsModule,
 		NgbModule,
 		ReactiveFormsModule,
-		ToastrModule.forRoot({}),
+		ToastrModule.forRoot({ maxOpened: 5 }),
 		//LoadingBarRouterModule,
 		LoadingBarModule,
 	],
@@ -73,6 +74,7 @@ import { UsersComponent } from './Users/users/users.component'
 		ApiService,
 		AuthGuardService,
 		LoginService,
+		UserService,
 		NotificationService,
 		ToastrService,
 		UploadService,

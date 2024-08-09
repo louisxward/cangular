@@ -35,8 +35,8 @@
 	right: 12px;
 }
 .toast-bottom-right {
-	right: 12px;
-	bottom: 12px;
+	right: 32px;
+	bottom: 26px;
 }
 .toast-bottom-left {
 	bottom: 12px;
@@ -99,16 +99,17 @@ button.toast-close-button {
 	margin: 0 0 6px;
 	padding: 15px 15px 15px 50px;
 	width: 300px;
-	border-radius: 3px 3px 3px 3px;
+	border: 1px solid #ffff00;
+	/* border-radius: 3px 3px 3px 3px; */
 	background-position: 15px center;
 	background-repeat: no-repeat;
 	background-size: 24px;
-	box-shadow: 0 0 4px #999999;
+	/* box-shadow: 0 0 4px #999999; */
 	color: #ffffff;
 }
 .toast-container .ngx-toastr:hover {
-	box-shadow: 0 0 12px #000000;
-	opacity: 1;
+	/* box-shadow: 0 0 12px #000000;
+	opacity: 1; */
 	cursor: pointer;
 }
 /* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/info-circle.svg */

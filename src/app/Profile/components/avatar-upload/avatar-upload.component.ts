@@ -11,15 +11,20 @@ import { User } from 'src/app/Core/state/user'
 	styleUrls: ['./avatar-upload.component.scss'],
 })
 export class AvatarUploadComponent implements OnInit {
-	pending: boolean = false
 	id: string
 	uploadedFileName: string | null = null
 	collection = 'users'
 	column = 'avatar'
 
-	constructor(private store: Store, private uploadService: UploadService) {}
+	pending: boolean = false
+	loaded: boolean = false
 
-	ngOnInit(): void {
+	constructor(
+		private store: Store,
+		private uploadService: UploadService
+	) {}
+
+	async ngOnInit(): Promise<void> {
 		this.store
 			.select(AuthState.getId)
 			.pipe(
@@ -29,11 +34,13 @@ export class AvatarUploadComponent implements OnInit {
 			.subscribe((e) => {
 				this.id = e
 			})
-		this.uploadService
+			.unsubscribe()
+		await this.uploadService
 			.getFileName(this.id, this.collection, this.column)
 			.then((e) => {
 				this.uploadedFileName = e
 			})
+		this.loaded = true
 	}
 
 	onChange(event: any) {
@@ -44,23 +51,29 @@ export class AvatarUploadComponent implements OnInit {
 		this.pending = true
 		await this.uploadService
 			.upload(file, this.id, this.collection, this.column)
-			.then((e) => {
-				if (e) {
-					this.uploadedFileName = file.name
-					this.uploadService
+			.then(async (fileName) => {
+				if (fileName) {
+					// ToDo - Tidy up
+					this.uploadedFileName = fileName
+					let avatarUrl: string | null = null
+					await this.uploadService
 						.getFileUrl(this.id, this.collection, this.column, '200x200')
-						.then((avatarUrl) => {
-							this.uploadService
-								.getFileUrl(this.id, this.collection, this.column, '30x30')
-								.then((smallAvatarUrl) => {
-									this.store.dispatch(
-										new User.Update.Avatar({
-											avatarUrl: avatarUrl,
-											smallAvatarUrl: smallAvatarUrl,
-										})
-									)
-								})
+						.then((url) => {
+							avatarUrl = url
 						})
+
+					let smallAvatarUrl: string | null = null
+					await this.uploadService
+						.getFileUrl(this.id, this.collection, this.column, '200x200')
+						.then((url) => {
+							smallAvatarUrl = url
+						})
+					this.store.dispatch(
+						new User.Update.Avatar({
+							avatarUrl: avatarUrl,
+							smallAvatarUrl: smallAvatarUrl,
+						})
+					)
 				}
 			})
 		this.pending = false

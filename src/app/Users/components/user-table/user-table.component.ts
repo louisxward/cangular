@@ -1,74 +1,68 @@
 import { Component } from '@angular/core'
-import { FormGroup, FormBuilder } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
-import PocketBase from 'pocketbase'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { QueryService } from 'src/app/Core/services/query/query.service'
-
-export interface userTableItem {
-	id: number
-	username: string
-	email: string
-}
-
+import {
+	UserList,
+	UserListSearch,
+	UserService,
+} from 'src/app/Core/services/user/user.service'
 @Component({
 	selector: 'app-user-table',
 	templateUrl: './user-table.component.html',
 	styleUrls: ['./user-table.component.scss'],
 })
 export class UserTableComponent {
-	pb: PocketBase
-
-	loader = this.loadingBarService.useRef()
+	loader: LoadingBarState
 
 	pagnationForm: FormGroup
-	searchForm: FormGroup
-	results: any[] = []
+	searchForm: FormGroup<UserListSearch>
+	results: UserList[] = []
 	loaded = false
 
-	query = ''
 	max = 10
 	size = 0
 	page = 1
 	pages = 0
 	pageSizes = [10, 25, 50, 100]
 
+	search: UserListSearch = {
+		id: new FormControl(null),
+		username: new FormControl(null),
+	}
+
 	constructor(
 		private router: Router,
 		private fb: FormBuilder,
-		private apiService: ApiService,
 		private loadingBarService: LoadingBarService,
-		private queryService: QueryService
+		private queryService: QueryService,
+		private userService: UserService
 	) {
-		this.pb = apiService.pb
+		this.loader = this.loadingBarService.useRef()
+	}
+
+	ngOnInit(): void {
 		this.pagnationForm = this.fb.group({
 			max: 10,
 			page: 1,
 		})
-		this.searchForm = this.fb.group({
-			id: '',
-			username: '',
-		})
+		this.searchForm = this.fb.group(this.search)
 		this.searchForm.setValidators(this.atLeastOneValidator())
-		this.getResults()
-		this.pagnationForm.get('max')?.valueChanges.subscribe((f) => {
-			this.updateMax(f)
+		this.getResults('')
+		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
+			this.updateMax(max)
 		})
-	}
-
-	ngOnInit(): void {}
-
-	ngOnDestroy() {
-		this.pb.cancelAllRequests()
-		this.loader.complete()
 	}
 
 	private atLeastOneValidator = () => {
 		return (controlGroup: any) => {
 			let controls = controlGroup.controls
 			if (controls) {
-				let theOne = Object.keys(controls).find((key) => controls[key].value !== '')
+				let theOne = Object.keys(controls).find(
+					(key) => controls[key].value !== '' && controls[key].value !== null
+				)
 				if (!theOne) {
 					return {
 						atLeastOneRequired: {
@@ -81,30 +75,34 @@ export class UserTableComponent {
 		}
 	}
 
-	async getResults() {
-		this.loader.start()
-		const myPromise = this.pb
-			.collection('users')
-			.getList(this.page, this.max, { filter: this.query })
-		await myPromise.then((value) => {
-			this.size = value.totalItems
-			this.pages = value.totalPages
-			this.results = value.items
-		})
-		this.loaded = true
+	ngOnDestroy() {
 		this.loader.complete()
 	}
 
-	updateMax(size: number) {
-		this.max = size
-		this.getResults()
+	getResults(filter: string) {
+		this.loader.start()
+		this.userService.getResults(this.page, this.max, filter).then((records) => {
+			if (records) {
+				this.size = records.totalItems
+				this.pages = records.totalPages
+				this.results = records.items
+			}
+			this.loaded = true
+			this.loader.complete()
+		})
+	}
+
+	updateMax(max: number) {
+		this.max = max
+		this.pagnationForm.value.max = max
+		this.getResults('')
 	}
 
 	updatePage(page: number) {
 		if (this.page != page) {
 			this.pagnationForm.value.page = page
 			this.page = page
-			this.getResults()
+			this.getResults('')
 		}
 	}
 
@@ -119,21 +117,15 @@ export class UserTableComponent {
 	submit() {}
 
 	searchSubmit() {
-		this.query = this.queryService.formatQuery(
-			JSON.stringify(this.searchForm.value)
-		)
-		this.getResults()
+		this.getResults(this.queryService.formatQueryAnd(this.searchForm.value))
 	}
 
 	searchReset() {
-		this.query = ''
 		this.searchForm.reset()
-		let obj = { id: '', username: '' }
-		this.searchForm.patchValue(obj)
-		this.getResults()
+		this.getResults('')
 	}
 
-	viewUser(id: number) {
+	viewUser(id: string) {
 		this.router.navigate(['users/', id])
 	}
 
