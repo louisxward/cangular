@@ -93,6 +93,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 	}
 
 	submit() {
+		this.responses = []
 		if (this.userDetails.id == '0') {
 			this.createUser()
 		} else {
@@ -109,9 +110,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
 					this.router.navigate(['users'])
 				} else {
 					this.responses = e
+					this.updateFormErrors()
 				}
 				this.loader.complete()
 			})
+	}
+
+	updateFormErrors() {
+		for (let repsonse of this.responses) {
+			for (let formKey of repsonse.formKeys) {
+				this.form.controls[formKey].setErrors({ incorrect: true })
+			}
+		}
 	}
 
 	createUser() {
@@ -121,6 +131,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 				this.router.navigate(['users'])
 			} else {
 				this.responses = e
+				this.updateFormErrors()
 			}
 			this.loader.complete()
 		})
