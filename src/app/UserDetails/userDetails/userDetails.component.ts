@@ -51,7 +51,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 		this.loader.stop
 	}
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
 		this.store
 			.select(AuthState.getId)
 			.pipe(
@@ -66,7 +66,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 			this.found = true
 			this.loaded = true
 		} else {
-			this.getUser().then(async (found: boolean) => {
+			await this.getUser().then(async (found: boolean) => {
 				this.found = found
 				this.currentUser = this.currentUserId == this.userDetailsId
 				await this.checkSocial()

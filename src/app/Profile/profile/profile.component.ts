@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { filter, firstValueFrom, map } from 'rxjs'
@@ -10,7 +10,7 @@ import { AuthState, UserState } from 'src/app/Core/state/index'
 	templateUrl: './profile.component.html',
 	styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
 	pb: PocketBase
 
 	userId: string
@@ -21,7 +21,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	loaded = false
 
 	constructor(private store: Store, private loginService: LoginService) {}
-	ngOnDestroy(): void {}
 
 	async ngOnInit(): Promise<void> {
 		const userId$ = this.store.select(AuthState.getId).pipe(

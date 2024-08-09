@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { User, UserService } from 'src/app/Core/services/user/user.service'
 
 @Component({
@@ -19,7 +18,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 	@Input('userDetails') userDetails: User
 
 	constructor(
-		private apiService: ApiService,
 		private loadingBarService: LoadingBarService,
 		private fb: FormBuilder,
 		private router: Router,
