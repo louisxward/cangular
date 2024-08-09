@@ -28,7 +28,7 @@ export class UserTableComponent {
 	page = 1
 	pages = 0
 	pageSizes = [10, 25, 50, 100]
-	// Exmpty for a reason
+
 	search: UserListSearch = {
 		id: new FormControl(null),
 		username: new FormControl(null),

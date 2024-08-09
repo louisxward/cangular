@@ -19,7 +19,10 @@ export class AvatarUploadComponent implements OnInit {
 	pending: boolean = false
 	loaded: boolean = false
 
-	constructor(private store: Store, private uploadService: UploadService) {}
+	constructor(
+		private store: Store,
+		private uploadService: UploadService
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		this.store

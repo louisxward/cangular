@@ -36,7 +36,10 @@ export interface UserListSearch {
 export class UserService {
 	pb: PocketBase
 
-	constructor(apiService: ApiService, private errorService: ErrorService) {
+	constructor(
+		apiService: ApiService,
+		private errorService: ErrorService
+	) {
 		this.pb = apiService.pb
 	}
 
@@ -54,7 +57,7 @@ export class UserService {
 			.collection('users')
 			.create(user)
 			.then(() => {
-				return new Boolean(true) // ToDo - Hmm - Not sure why this needs to be done. Dont think passing either value back is a good idea
+				return new Boolean(true)
 			})
 			.catch((error) => {
 				console.error(error)
@@ -80,9 +83,8 @@ export class UserService {
 				return []
 			})
 	}
-
+	// Not sure about this
 	partialUser(init?: Partial<User>) {
-		// ToDo - Not sure about this
 		return Object.assign(User, init)
 	}
 

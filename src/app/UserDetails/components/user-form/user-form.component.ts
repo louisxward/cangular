@@ -117,7 +117,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		this.loader.start()
 		this.userService.createUserPassword(this.form.value).then((e) => {
 			if (e instanceof Boolean) {
-				//ToDO - not sure on this
 				this.router.navigate(['users'])
 			} else {
 				this.responses = e

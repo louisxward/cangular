@@ -7,8 +7,8 @@
 				!loaded
 					? 'Loading...'
 					: pending
-					? 'Updating...'
-					: uploadedFileName || 'Please select a file'
+						? 'Updating...'
+						: uploadedFileName || 'Please select a file'
 			}}
 		</label>
 		<label (click)="delete()" class="delete" *ngIf="uploadedFileName">X</label>

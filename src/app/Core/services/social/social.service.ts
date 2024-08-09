@@ -7,7 +7,10 @@ import { ApiService } from 'src/app/Core/services/api/api.service'
 export class SocialService {
 	pb: PocketBase
 
-	constructor(private store: Store, private apiService: ApiService) {
+	constructor(
+		private store: Store,
+		private apiService: ApiService
+	) {
 		this.pb = apiService.pb
 	}
 

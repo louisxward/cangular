@@ -9,7 +9,10 @@ import { AuthState } from 'src/app/Core/state/index'
 	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-	constructor(private store: Store, private router: Router) {}
+	constructor(
+		private store: Store,
+		private router: Router
+	) {}
 
 	ngOnInit(): void {
 		this.redirect()
