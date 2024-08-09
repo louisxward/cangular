@@ -5,7 +5,14 @@ import { ClientResponseError } from 'pocketbase'
 	providedIn: 'root',
 })
 export class ErrorService {
-	constructor() {}
+	responseKeys: Map<string, string>
+
+	constructor() {
+		this.responseKeys = new Map<string, string>()
+		this.responseKeys.set('passwordConfirm', 'Passwords dont match')
+		this.responseKeys.set('username', 'Username is in use')
+		this.responseKeys.set('email', 'Email is in use')
+	}
 
 	parseError(error: ClientResponseError): string[] {
 		const response: string[] = []
@@ -20,9 +27,13 @@ export class ErrorService {
 		return response
 	}
 
-	parse400(error: ClientResponseError, respone: string[]) {
+	getResponseKeyValue(key: string): string {
+		return this.responseKeys.get(key) ?? '???' + key + '???'
+	}
+
+	parse400(error: ClientResponseError, responses: string[]) {
 		for (const [key] of Object.entries(error.data.data)) {
-			respone.push('{' + key + '}') // ToDo - Not sure on this method atm for saying if value is key or not
+			responses.push(this.getResponseKeyValue(key))
 		}
 	}
 }
