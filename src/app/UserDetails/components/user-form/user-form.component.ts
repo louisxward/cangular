@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
+import { ErrorRespose } from 'src/app/Core/services/error/error.service'
 import { User, UserService } from 'src/app/Core/services/user/user.service'
 
 @Component({
@@ -13,7 +14,7 @@ import { User, UserService } from 'src/app/Core/services/user/user.service'
 export class UserFormComponent implements OnInit, OnDestroy {
 	loader: LoadingBarState
 	form: FormGroup
-	responses: string[]
+	responses: ErrorRespose[]
 
 	@Input('userDetails') userDetails: User
 
@@ -65,7 +66,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 			this.form.addControl(
 				'password',
 				new FormControl(
-					'',
+					null,
 					Validators.compose([
 						Validators.required,
 						Validators.minLength(5),
@@ -76,7 +77,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 			this.form.addControl(
 				'passwordConfirm',
 				new FormControl(
-					'',
+					null,
 					Validators.compose([
 						Validators.required,
 						Validators.minLength(5),
@@ -92,6 +93,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 	}
 
 	submit() {
+		this.responses = []
 		if (this.userDetails.id == '0') {
 			this.createUser()
 		} else {
@@ -108,9 +110,22 @@ export class UserFormComponent implements OnInit, OnDestroy {
 					this.router.navigate(['users'])
 				} else {
 					this.responses = e
+					this.updateFormErrors()
 				}
 				this.loader.complete()
 			})
+	}
+
+	updateFormErrors() {
+		for (let repsonse of this.responses) {
+			for (let formKey of repsonse.formKeys) {
+				const control = this.form.controls[formKey]
+				control.setErrors({ incorrect: true })
+				if (repsonse.clearForm) {
+					control.setValue(null)
+				}
+			}
+		}
 	}
 
 	createUser() {
@@ -120,6 +135,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 				this.router.navigate(['users'])
 			} else {
 				this.responses = e
+				this.updateFormErrors()
 			}
 			this.loader.complete()
 		})
