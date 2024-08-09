@@ -1,6 +1,6 @@
 # Cangular
 
-Project version 0.8.5
+Project version 0.8.6
 <br>
 Angular version 15.0.4
 <br>
@@ -8,9 +8,7 @@ Pocketbase version 0.22.17
 
 ## Notes
 
-[Project](https://denim-rocket-cf2.notion.site/86fcc21725c24c0fbdea5a1dde65af1d?v=eacbca05816c4bcb92408274456dfbc0)
-<br>
-[To Do](https://denim-rocket-cf2.notion.site/b698b5da6d00448c9a7ddac9fa1c4638?v=85060aef98f2458fa5621a2de2e1148e)
+[To Do](https://denim-rocket-cf2.notion.site/Cangular-0b2ed8097faa47beb94c05f8fcba0ef1)
 
 ## Development server
 
