@@ -66,7 +66,7 @@ import { UsersComponent } from './Users/users/users.component'
 		BrowserAnimationsModule,
 		NgbModule,
 		ReactiveFormsModule,
-		ToastrModule.forRoot({}),
+		ToastrModule.forRoot({ maxOpened: 5 }),
 		//LoadingBarRouterModule,
 		LoadingBarModule,
 	],

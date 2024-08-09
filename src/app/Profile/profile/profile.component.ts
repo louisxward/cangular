@@ -3,6 +3,7 @@ import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { filter, firstValueFrom, map } from 'rxjs'
 import { LoginService } from 'src/app/Core/services/login/login.service'
+import { NotificationService } from 'src/app/Core/services/notification/notification.service'
 import { AuthState, UserState } from 'src/app/Core/state/index'
 
 @Component({
@@ -22,7 +23,8 @@ export class ProfileComponent implements OnInit {
 
 	constructor(
 		private store: Store,
-		private loginService: LoginService
+		private loginService: LoginService,
+		private notificationService: NotificationService
 	) {}
 
 	async ngOnInit(): Promise<void> {
@@ -52,5 +54,9 @@ export class ProfileComponent implements OnInit {
 	}
 	logout(): void {
 		this.loginService.logout()
+	}
+
+	onClick() {
+		this.notificationService.success('test')
 	}
 }
