@@ -20,6 +20,7 @@ import { AppComponent } from './app.component'
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component'
 import { ApiService } from './Core/services/api/api.service'
 import { AuthGuardService } from './Core/services/auth/auth-guard.service'
+import { ErrorService } from './Core/services/error/error.service'
 import { LoginService } from './Core/services/login/login.service'
 import { NotificationService } from './Core/services/notification/notification.service'
 import { QueryService } from './Core/services/query/query.service'
@@ -80,6 +81,7 @@ import { UsersComponent } from './Users/users/users.component'
 		UploadService,
 		SocialService,
 		QueryService,
+		ErrorService,
 	],
 	bootstrap: [AppComponent],
 })

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
+import { ErrorRespose } from 'src/app/Core/services/error/error.service'
 import { User, UserService } from 'src/app/Core/services/user/user.service'
 
 @Component({
@@ -13,7 +14,7 @@ import { User, UserService } from 'src/app/Core/services/user/user.service'
 export class UserFormComponent implements OnInit, OnDestroy {
 	loader: LoadingBarState
 	form: FormGroup
-	responses: string[]
+	responses: ErrorRespose[]
 
 	@Input('userDetails') userDetails: User
 

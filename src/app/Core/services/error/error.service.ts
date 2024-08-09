@@ -1,39 +1,58 @@
-import { Injectable } from '@angular/core'
 import { ClientResponseError } from 'pocketbase'
 
-@Injectable({
-	providedIn: 'root',
-})
+export interface ErrorRespose {
+	errorKey: string | null
+	formKey: string[]
+	response: string | null
+}
+
 export class ErrorService {
-	responseKeys: Map<string, string>
+	errorResponses: ErrorRespose[] = [
+		{
+			errorKey: 'passwordConfirm',
+			formKey: ['password', 'passwordConfirm'],
+			response: 'Passwords dont match',
+		},
+		{
+			errorKey: 'username',
+			formKey: ['username'],
+			response: 'Username is in use',
+		},
+		{ errorKey: 'email', formKey: ['email'], response: 'Email is in use' },
+	]
 
-	constructor() {
-		this.responseKeys = new Map<string, string>()
-		this.responseKeys.set('passwordConfirm', 'Passwords dont match')
-		this.responseKeys.set('username', 'Username is in use')
-		this.responseKeys.set('email', 'Email is in use')
-	}
+	constructor() {}
 
-	parseError(error: ClientResponseError): string[] {
-		const response: string[] = []
+	parseError(error: ClientResponseError): ErrorRespose[] {
+		const responses: ErrorRespose[] = []
 		switch (error.status) {
 			case 403:
-				response.push(error.message)
+				responses.push({
+					errorKey: null,
+					formKey: [],
+					response: error.message,
+				})
 				break
 			case 400:
-				this.parse400(error, response)
+				this.parse400(error, responses)
 				break
 		}
-		return response
+		return responses
 	}
 
-	getResponseKeyValue(key: string): string {
-		return this.responseKeys.get(key) ?? '???' + key + '???'
+	getResponse(errorKey: string): ErrorRespose {
+		return (
+			this.errorResponses.find((e) => e.errorKey === errorKey) ?? {
+				errorKey: errorKey,
+				formKey: [],
+				response: '???' + errorKey + '???',
+			}
+		)
 	}
 
-	parse400(error: ClientResponseError, responses: string[]) {
+	parse400(error: ClientResponseError, responses: ErrorRespose[]) {
 		for (const [key] of Object.entries(error.data.data)) {
-			responses.push(this.getResponseKeyValue(key))
+			responses.push(this.getResponse(key))
 		}
 	}
 }
