@@ -22,7 +22,6 @@ export class UserTableComponent {
 	results: UserList[] = []
 	loaded = false
 
-	filter = ''
 	max = 10
 	size = 0
 	page = 1
@@ -51,7 +50,7 @@ export class UserTableComponent {
 		})
 		this.searchForm = this.fb.group(this.search)
 		this.searchForm.setValidators(this.atLeastOneValidator())
-		this.getResults()
+		this.getResults('')
 		this.pagnationForm.get('max')?.valueChanges.subscribe((max) => {
 			this.updateMax(max)
 		})
@@ -80,33 +79,30 @@ export class UserTableComponent {
 		this.loader.complete()
 	}
 
-	getResults() {
-		// ToDo - filter should get passed into here instead of pulling from class
+	getResults(filter: string) {
 		this.loader.start()
-		this.userService
-			.getResults(this.page, this.max, this.filter)
-			.then((records) => {
-				if (records) {
-					this.size = records.totalItems
-					this.pages = records.totalPages
-					this.results = records.items
-				}
-				this.loaded = true
-				this.loader.complete()
-			})
+		this.userService.getResults(this.page, this.max, filter).then((records) => {
+			if (records) {
+				this.size = records.totalItems
+				this.pages = records.totalPages
+				this.results = records.items
+			}
+			this.loaded = true
+			this.loader.complete()
+		})
 	}
 
 	updateMax(max: number) {
 		this.max = max
 		this.pagnationForm.value.max = max
-		this.getResults()
+		this.getResults('')
 	}
 
 	updatePage(page: number) {
 		if (this.page != page) {
 			this.pagnationForm.value.page = page
 			this.page = page
-			this.getResults()
+			this.getResults('')
 		}
 	}
 
@@ -121,15 +117,12 @@ export class UserTableComponent {
 	submit() {}
 
 	searchSubmit() {
-		console.log(this.searchForm.value)
-		this.filter = this.queryService.formatQueryAnd(this.searchForm.value)
-		this.getResults()
+		this.getResults(this.queryService.formatQueryAnd(this.searchForm.value))
 	}
 
 	searchReset() {
-		this.filter = ''
 		this.searchForm.reset()
-		this.getResults()
+		this.getResults('')
 	}
 
 	viewUser(id: string) {
