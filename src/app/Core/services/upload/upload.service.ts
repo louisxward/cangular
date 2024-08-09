@@ -1,66 +1,106 @@
 import { Injectable } from '@angular/core'
-import PocketBase from 'pocketbase'
-import { NotificationService } from '../notification/notification.service'
-import { ApiService } from 'src/app/Core/services/api/api.service'
 import { LoadingBarService } from '@ngx-loading-bar/core'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
+import PocketBase from 'pocketbase'
+import { ApiService } from 'src/app/Core/services/api/api.service'
+import { NotificationService } from '../notification/notification.service'
 
 @Injectable()
 export class UploadService {
 	pb: PocketBase
-
-	loader = this.loadingBarService.useRef()
+	loader: LoadingBarState
 
 	constructor(
 		private notificationService: NotificationService,
 		private apiService: ApiService,
 		private loadingBarService: LoadingBarService
 	) {
-		this.pb = apiService.pb
+		this.pb = this.apiService.pb
+		this.loader = this.loadingBarService.useRef()
 	}
 
-	async upload(data: FormData, id: string) {
-		console.log('upload() start')
+	async upload(
+		file: File,
+		id: string,
+		collection: string,
+		column: string
+	): Promise<string | null> {
 		this.loader.start()
-		let fileName = ''
-		const myPromise = this.pb.collection('users').update(id, data)
-		await myPromise
-			.then((value) => {
+		const value = new FormData()
+		value.append(column, file)
+		return this.pb
+			.collection(collection)
+			.update(id, value)
+			.then((record) => {
+				this.loader.complete()
 				this.notificationService.success('file uploaded')
-				fileName = value.avatar
+				return record[column]
 			})
 			.catch((error) => {
-				console.log(error)
-				this.notificationService.error('upload failed')
+				console.error(error)
+				this.loader.stop()
+				this.notificationService.error('file upload failed')
+				return null
 			})
-		console.log('upload() end')
-		this.loader.complete()
-		return fileName
+	}
+
+	async delete(id: string, collection: string, column: string) {
+		this.loader.start()
+		const value = new FormData()
+		value.append(column, '')
+		return this.pb
+			.collection(collection)
+			.update(id, value)
+			.then(() => {
+				this.loader.complete()
+				this.notificationService.success('file deleted')
+				return true
+			})
+			.catch((error) => {
+				console.error(error)
+				this.loader.stop()
+				this.notificationService.error('file delete failed')
+				return false
+			})
+	}
+
+	async getFileName(
+		id: string,
+		collection: string,
+		column: string
+	): Promise<string | null> {
+		return this.pb
+			.collection(collection)
+			.getOne(id)
+			.then((record) => {
+				const fileName = record[column]
+				if (null !== fileName && '' !== fileName) {
+					return fileName
+				}
+				return null
+			})
 	}
 
 	async getFileUrl(
-		userId: string,
-		fileName: string,
-		thumbSize2: string | null
-	): Promise<string> {
-		let avatarUrl = ''
-		let thumbSize = thumbSize2 ?? ''
-		const myPromise = this.pb.collection('users').getOne(userId)
-		//const url = pb.files.getUrl(record, firstFilename, {'thumb': '100x250'});
-		await myPromise
-			.then((value) => {
-				avatarUrl = this.pb.getFileUrl(value, fileName, {
-					thumb: thumbSize,
-				})
+		id: string,
+		collection: string,
+		column: string,
+		size: string | null
+	) {
+		const query: { [key: string]: any } = {}
+		if (null !== size) {
+			query['thumb'] = size
+		}
+		return this.pb
+			.collection(collection)
+			.getOne(id)
+			.then((record) => {
+				const fileName = record[column]
+				if (null !== fileName && '' !== fileName) {
+					// Because file comes back empty sometimes
+					return this.pb.getFileUrl(record, fileName, query)
+				}
+				return null
 			})
-			.catch((error) => {
-				console.log(error)
-			})
-		return avatarUrl
-	}
-
-	deleteFile(userId: string, fileName: string, field: string) {
-		console.log('deleteFile()')
-		this.pb.collection('users').update(userId, { avatar: null })
-		this.notificationService.success('file deleted')
 	}
 }

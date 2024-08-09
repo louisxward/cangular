@@ -1,41 +1,28 @@
 <main class="userDetails-page">
 	<app-page-header
 		header="User Details"
-		id="{{ detailsUserId }}"></app-page-header>
+		id="{{ userDetailsId }}"></app-page-header>
 	<div class="content">
-		<div *ngIf="!loaded">
-			<h3>Loading...</h3>
-		</div>
-		<div *ngIf="loaded && !found">
-			<h3>User not Found</h3>
-		</div>
-		<div *ngIf="loaded && found">
-			<app-user-form
-				[userData]="userData"
-				[editable]="currentUser || detailsUserId == '0'"></app-user-form>
-			<div *ngIf="avatarUrl != ''" class="avatarDisplay">
+		<div *ngIf="!found && !loaded"><h3>Loading...</h3></div>
+		<div *ngIf="!found && loaded"><h3>Not found</h3></div>
+		<div *ngIf="found && loaded">
+			<app-user-form [userDetails]="userDetails"></app-user-form>
+			<div *ngIf="avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl" title="Avatar" />
 			</div>
-			<div class="statusDisplay" *ngIf="mutualFollowing">
+			<div class="statusDisplay" *ngIf="mutuals">
 				<h2>Mutuals</h2>
 				<span class="material-icons">swap_horiz</span>
 			</div>
-			<div *ngIf="lastLoggedIn != ''" class="dataTimeDisplay">
+
+			<div *ngIf="lastLoggedIn" class="dataTimeDisplay">
 				<h2>{{ lastLoggedIn | date: 'short' : 'UTC' }}</h2>
 			</div>
-			<div class="social buttons" *ngIf="loaded && !currentUser && !create">
-				<button
-					class="button"
-					*ngIf="!followingId"
-					(click)="follow()"
-					[disabled]="followPending">
+			<div class="social buttons" *ngIf="!currentUser && userDetailsId != '0'">
+				<button class="button" *ngIf="!followingId" (click)="followUser()">
 					Follow
 				</button>
-				<button
-					class="button"
-					*ngIf="followingId"
-					(click)="unfollow()"
-					[disabled]="followPending">
+				<button class="button" *ngIf="followingId" (click)="unfollowUser()">
 					Unfollow
 				</button>
 			</div>

@@ -1,4 +1,4 @@
-import { Record } from 'pocketbase'
+import { RecordModel } from 'pocketbase'
 
 export namespace User {
 	export class AppLoaded {
@@ -8,18 +8,8 @@ export namespace User {
 	export namespace Update {
 		export class Avatar {
 			static readonly type = '[Update] Avatar'
-			constructor(public payload: { id: string; fileName: string }) {}
-		}
-
-		export class User {
-			static readonly type = '[Update] User'
 			constructor(
-				public payload: {
-					id: string
-					avatar: string
-					username: string
-					email: string
-				}
+				public payload: { avatarUrl: string | null; smallAvatarUrl: string | null }
 			) {}
 		}
 
@@ -31,7 +21,13 @@ export namespace User {
 	export namespace Login {
 		export class Login {
 			static readonly type = '[Login] Login'
-			constructor(public payload: { record: Record }) {}
+			constructor(
+				public payload: {
+					record: RecordModel
+					avatarUrl: string | null
+					smallAvatarUrl: string | null
+				}
+			) {}
 		}
 
 		export class Logout {

@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core'
+import PocketBase from 'pocketbase'
+import { ApiService } from '../api/api.service'
 
 @Injectable()
 export class QueryService {
-	constructor() {}
+	pb: PocketBase
+	constructor(private apiService: ApiService) {
+		this.pb = apiService.pb
+	}
 
 	formatQuery(data: string): string {
 		let query = ''
@@ -21,5 +26,19 @@ export class QueryService {
 			}
 		}
 		return query
+	}
+
+	formatQueryAnd(params: { [key: string]: string | null }): string {
+		let filter = ''
+		for (const [key, value] of Object.entries(params)) {
+			if (value) {
+				if ('' == filter) {
+					filter = key + '= {:' + key + '}'
+				} else {
+					filter = filter + ' &&' + key + '= {:' + key + '}'
+				}
+			}
+		}
+		return this.pb.filter(filter, params) // Seems backwords since we can add the values in the above?
 	}
 }

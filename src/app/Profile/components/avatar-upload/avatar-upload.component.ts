@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { UploadService } from 'src/app/Core/services/upload/upload.service'
-import { AuthGuardService } from 'src/app/Core/services/auth/auth-guard.service'
 import { Store } from '@ngxs/store'
-import { User, UserState } from 'src/app/Core/state/user'
+import { filter, map } from 'rxjs/operators'
+import { UploadService } from 'src/app/Core/services/upload/upload.service'
+import { AuthState } from 'src/app/Core/state'
+import { User } from 'src/app/Core/state/user'
 
 @Component({
 	selector: 'app-avatar-upload',
@@ -10,54 +11,86 @@ import { User, UserState } from 'src/app/Core/state/user'
 	styleUrls: ['./avatar-upload.component.scss'],
 })
 export class AvatarUploadComponent implements OnInit {
-	loading: boolean = false
+	id: string
+	uploadedFileName: string | null = null
+	collection = 'users'
+	column = 'avatar'
+
 	pending: boolean = false
-	file: File = new File([], '', {})
-	avatarFileName$ = this.store.select(UserState.getAvatarFileName)
+	loaded: boolean = false
 
 	constructor(
 		private store: Store,
-		private uploadService: UploadService,
-		private authGuardService: AuthGuardService
+		private uploadService: UploadService
 	) {}
 
-	ngOnInit(): void {}
+	async ngOnInit(): Promise<void> {
+		this.store
+			.select(AuthState.getId)
+			.pipe(
+				filter((e) => e !== null), // Filter out null values
+				map((e) => e as string) // Type assertion here
+			)
+			.subscribe((e) => {
+				this.id = e
+			})
+			.unsubscribe()
+		await this.uploadService
+			.getFileName(this.id, this.collection, this.column)
+			.then((e) => {
+				this.uploadedFileName = e
+			})
+		this.loaded = true
+	}
 
 	onChange(event: any) {
-		this.file = event.target.files[0]
+		this.upload(event.target.files[0])
+	}
+
+	async upload(file: File) {
 		this.pending = true
-		this.onUpload()
-	}
-
-	async onUpload() {
-		console.log('onUpload()')
-		this.loading = true
-		let fileName = ''
-		const formData = new FormData()
-		formData.append('avatar', this.file)
 		await this.uploadService
-			.upload(formData, this.authGuardService.userId)
-			.then((value: string) => (fileName = value))
-		this.store.dispatch(
-			new User.Update.Avatar({
-				id: this.authGuardService.userId,
-				fileName: fileName,
+			.upload(file, this.id, this.collection, this.column)
+			.then(async (fileName) => {
+				if (fileName) {
+					// ToDo - Tidy up
+					this.uploadedFileName = fileName
+					let avatarUrl: string | null = null
+					await this.uploadService
+						.getFileUrl(this.id, this.collection, this.column, '200x200')
+						.then((url) => {
+							avatarUrl = url
+						})
+
+					let smallAvatarUrl: string | null = null
+					await this.uploadService
+						.getFileUrl(this.id, this.collection, this.column, '200x200')
+						.then((url) => {
+							smallAvatarUrl = url
+						})
+					this.store.dispatch(
+						new User.Update.Avatar({
+							avatarUrl: avatarUrl,
+							smallAvatarUrl: smallAvatarUrl,
+						})
+					)
+				}
 			})
-		)
-		this.loading = false
 		this.pending = false
-		this.file = new File([], '', {})
 	}
 
-	delete() {
-		console.log('delete()')
-		this.file = new File([], '', {})
-		this.pending = false
-		this.store.dispatch(
-			new User.Update.Avatar({
-				id: this.authGuardService.userId,
-				fileName: '',
+	async delete() {
+		this.pending = true
+		await this.uploadService
+			.delete(this.id, this.collection, this.column)
+			.then((e) => {
+				if (e) {
+					this.uploadedFileName = null
+					this.store.dispatch(
+						new User.Update.Avatar({ avatarUrl: null, smallAvatarUrl: null })
+					)
+				}
 			})
-		)
+		this.pending = false
 	}
 }
