@@ -66,7 +66,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 			this.form.addControl(
 				'password',
 				new FormControl(
-					'',
+					null,
 					Validators.compose([
 						Validators.required,
 						Validators.minLength(5),
@@ -77,7 +77,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 			this.form.addControl(
 				'passwordConfirm',
 				new FormControl(
-					'',
+					null,
 					Validators.compose([
 						Validators.required,
 						Validators.minLength(5),
@@ -119,7 +119,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
 	updateFormErrors() {
 		for (let repsonse of this.responses) {
 			for (let formKey of repsonse.formKeys) {
-				this.form.controls[formKey].setErrors({ incorrect: true })
+				const control = this.form.controls[formKey]
+				control.setErrors({ incorrect: true })
+				if (repsonse.clearForm) {
+					control.setValue(null)
+				}
 			}
 		}
 	}

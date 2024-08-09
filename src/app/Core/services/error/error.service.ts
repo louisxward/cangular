@@ -3,6 +3,7 @@ import { ClientResponseError } from 'pocketbase'
 export interface ErrorRespose {
 	errorKey: string | null
 	formKeys: string[]
+	clearForm: boolean
 	response: string | null
 }
 
@@ -11,14 +12,21 @@ export class ErrorService {
 		{
 			errorKey: 'passwordConfirm',
 			formKeys: ['password', 'passwordConfirm'],
+			clearForm: true,
 			response: 'Passwords dont match',
 		},
 		{
 			errorKey: 'username',
 			formKeys: ['username'],
+			clearForm: false,
 			response: 'Username is in use',
 		},
-		{ errorKey: 'email', formKeys: ['email'], response: 'Email is in use' },
+		{
+			errorKey: 'email',
+			formKeys: ['email'],
+			clearForm: false,
+			response: 'Email is in use',
+		},
 	]
 
 	constructor() {}
@@ -30,6 +38,7 @@ export class ErrorService {
 				responses.push({
 					errorKey: null,
 					formKeys: [],
+					clearForm: false,
 					response: error.message,
 				})
 				break
@@ -45,6 +54,7 @@ export class ErrorService {
 			this.errorResponses.find((e) => e.errorKey === errorKey) ?? {
 				errorKey: errorKey,
 				formKeys: [],
+				clearForm: false,
 				response: '???' + errorKey + '???',
 			}
 		)
