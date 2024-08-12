@@ -73,11 +73,34 @@ export class LoginService {
 	logout() {
 		this.store.dispatch(new User.Login.Logout())
 		this.store.dispatch(new Logout())
+		this.pb.authStore.clear()
 		this.notificationService.success('logged out')
 		this.router.navigate(['/login'])
 	}
 
 	setLastLoggedIn(id: string) {
 		this.pb.collection('users').update(id, { lastLoggedIn: new Date() })
+	}
+
+	async checkAuth() {
+		if (!this.pb.authStore.isValid) {
+			return false
+		}
+		return await this.pb
+			.collection('users')
+			.authRefresh()
+			.then(() => {
+				return true
+			})
+			.catch((error) => {
+				console.error(error)
+				return false
+			})
+	}
+
+	testAuth() {
+		console.log(this.pb.authStore.isValid)
+		console.log(this.pb.authStore.token)
+		console.log(this.pb.authStore.model)
 	}
 }

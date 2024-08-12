@@ -11,10 +11,7 @@ import { User } from './Core/state/'
 export class AppComponent {
 	title = 'cangular'
 
-	constructor(
-		private store: Store,
-		private appRef: ApplicationRef
-	) {
+	constructor(private store: Store, private appRef: ApplicationRef) {
 		isDevMode()
 			? console.info('AppMode: DEVELOPMENT')
 			: console.info('AppMode: PRODUCTION')

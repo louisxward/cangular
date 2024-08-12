@@ -55,4 +55,7 @@ export class ProfileComponent implements OnInit {
 	logout(): void {
 		this.loginService.logout()
 	}
+	onClick() {
+		this.loginService.testAuth()
+	}
 }
