@@ -15,11 +15,24 @@ export class AuthCheckService {
 		private loginService: LoginService
 	) {
 		console.log('AuthCheckService()') // ToDo - Remove when confident
-		this.refreshAuth()
-		this.startTimer()
+		this.loginService.onLogin().subscribe(() => this.enableTimer())
+		this.loginService.onLogout().subscribe(() => this.disableTimer())
 	}
 	private timeoutDuration = 1 * 60 * 1000 // ToDo - Not sure on this time at the moment
 	private timeout: any
+
+	private enableTimer() {
+		if (!this.timeout) {
+			this.refreshAuth()
+			this.startTimer()
+		}
+	}
+
+	private disableTimer() {
+		if (this.timeout) {
+			this.timeout = null
+		}
+	}
 
 	private startTimer() {
 		console.log('AuthCheckService().startTimer()') // ToDo - Remove when confident

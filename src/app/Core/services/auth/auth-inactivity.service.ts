@@ -9,7 +9,7 @@ export class AuthInactivityService {
 		this.startTimer()
 		this.setupActivityListeners()
 	}
-	private timeoutDuration = 1 * 60 * 1000 // 5 minutes in milliseconds
+	private timeoutDuration = 5 * 60 * 1000 // 5 minutes in milliseconds
 	private timeout: any
 
 	private startTimer() {

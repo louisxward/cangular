@@ -4,6 +4,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
 import { Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
@@ -13,6 +14,9 @@ import { UploadService } from '../upload/upload.service'
 export class LoginService {
 	pb: PocketBase
 	loader: LoadingBarState
+
+	private loggedIn = new BehaviorSubject<boolean>(false) //ToDo - Make this take in if authd remove below as not needed V
+	private loggedOut = new BehaviorSubject<boolean>(true)
 
 	constructor(
 		private store: Store,
@@ -61,6 +65,8 @@ export class LoginService {
 				this.setLastLoggedIn(authRecord.record.id)
 				this.router.navigate(['/profile'])
 				this.notificationService.success('welcome ' + authRecord.record.username)
+				this.loggedIn.next(false)
+				this.loggedOut.next(true)
 				this.loader.complete()
 				return true
 			})
@@ -70,6 +76,14 @@ export class LoginService {
 			})
 	}
 
+	onLogin() {
+		return this.loggedIn.asObservable()
+	}
+
+	onLogout() {
+		return this.loggedOut.asObservable()
+	}
+
 	logout(force: boolean) {
 		this.store.dispatch(new User.Login.Logout())
 		this.store.dispatch(new Logout())
@@ -77,6 +91,8 @@ export class LoginService {
 		this.pb.cancelAllRequests()
 		this.notificationService.success(force ? 'timed out' : 'logged out')
 		this.router.navigate(['/login'])
+		this.loggedIn.next(false)
+		this.loggedOut.next(true)
 	}
 
 	setLastLoggedIn(id: string) {
