@@ -70,11 +70,12 @@ export class LoginService {
 			})
 	}
 
-	logout() {
+	logout(force: boolean) {
 		this.store.dispatch(new User.Login.Logout())
 		this.store.dispatch(new Logout())
 		this.pb.authStore.clear()
-		this.notificationService.success('logged out')
+		this.pb.cancelAllRequests()
+		this.notificationService.success(force ? 'timed out' : 'logged out')
 		this.router.navigate(['/login'])
 	}
 

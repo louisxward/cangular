@@ -14,12 +14,15 @@ export class AuthCheckService {
 		private apiService: ApiService,
 		private loginService: LoginService
 	) {
+		console.log('AuthCheckService()') // ToDo - Remove when confident
+		this.refreshAuth()
 		this.startTimer()
 	}
-	private timeoutDuration = 1 * 60 * 1000 // 5 minutes in milliseconds
+	private timeoutDuration = 1 * 60 * 1000 // ToDo - Not sure on this time at the moment
 	private timeout: any
 
 	private startTimer() {
+		console.log('AuthCheckService().startTimer()') // ToDo - Remove when confident
 		this.timeout = setTimeout(async () => {
 			await this.refreshAuth()
 		}, this.timeoutDuration)
@@ -31,13 +34,13 @@ export class AuthCheckService {
 	}
 
 	private logout() {
-		this.loginService.logout()
+		this.loginService.logout(true)
 	}
 
 	private async refreshAuth() {
 		await this.loginService.checkAuth().then((e) => {
 			if (e) {
-				this.resetTimer
+				this.resetTimer()
 				return
 			}
 			this.logout()

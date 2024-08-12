@@ -1,6 +1,8 @@
 import { ApplicationRef, Component, isDevMode } from '@angular/core'
 import { Store } from '@ngxs/store'
 import { first } from 'rxjs/operators'
+import { AuthCheckService } from './Core/services/auth/auth-check.service'
+import { AuthInactivityService } from './Core/services/auth/auth-inactivity.service'
 import { User } from './Core/state/'
 
 @Component({
@@ -11,7 +13,12 @@ import { User } from './Core/state/'
 export class AppComponent {
 	title = 'cangular'
 
-	constructor(private store: Store, private appRef: ApplicationRef) {
+	constructor(
+		private store: Store,
+		private appRef: ApplicationRef,
+		private authCheckService: AuthCheckService, // Both are in use
+		private authInactivityService: AuthInactivityService
+	) {
 		isDevMode()
 			? console.info('AppMode: DEVELOPMENT')
 			: console.info('AppMode: PRODUCTION')
