@@ -3,7 +3,6 @@ import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { filter, firstValueFrom, map } from 'rxjs'
 import { LoginService } from 'src/app/Core/services/login/login.service'
-import { NotificationService } from 'src/app/Core/services/notification/notification.service'
 import { AuthState, UserState } from 'src/app/Core/state/index'
 
 @Component({
@@ -21,11 +20,7 @@ export class ProfileComponent implements OnInit {
 
 	loaded = false
 
-	constructor(
-		private store: Store,
-		private loginService: LoginService,
-		private notificationService: NotificationService
-	) {}
+	constructor(private store: Store, private loginService: LoginService) {}
 
 	async ngOnInit(): Promise<void> {
 		const userId$ = this.store.select(AuthState.getId).pipe(
@@ -53,6 +48,6 @@ export class ProfileComponent implements OnInit {
 		this.loaded = true
 	}
 	logout(): void {
-		this.loginService.logout()
+		this.loginService.logout(false)
 	}
 }
