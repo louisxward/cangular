@@ -8,7 +8,7 @@ export class AuthInactivityService {
 	constructor(private loginService: LoginService) {
 		this.loginService.onLoginChange().subscribe((e) => this.switchTimer(e)) //ToDo - What does this pass into switch timer?
 	}
-	private timeoutDuration = 0.1 * 60 * 1000 // 5 minutes in milliseconds
+	private timeoutDuration = 5 * 60 * 1000 // 5 minutes in milliseconds
 	private timeout: any
 
 	private enableTimer() {
