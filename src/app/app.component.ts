@@ -1,6 +1,8 @@
 import { ApplicationRef, Component, isDevMode } from '@angular/core'
 import { Store } from '@ngxs/store'
 import { first } from 'rxjs/operators'
+import { AuthCheckService } from './Core/services/auth/auth-check.service'
+import { AuthInactivityService } from './Core/services/auth/auth-inactivity.service'
 import { User } from './Core/state/'
 
 @Component({
@@ -13,7 +15,9 @@ export class AppComponent {
 
 	constructor(
 		private store: Store,
-		private appRef: ApplicationRef
+		private appRef: ApplicationRef,
+		private authCheckService: AuthCheckService, // Both are in use
+		private authInactivityService: AuthInactivityService
 	) {
 		isDevMode()
 			? console.info('AppMode: DEVELOPMENT')
