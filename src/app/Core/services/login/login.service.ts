@@ -89,9 +89,13 @@ export class LoginService {
 		this.store.dispatch(new Logout())
 		this.pb.authStore.clear()
 		this.pb.cancelAllRequests()
-		this.notificationService.success(force ? 'timed out' : 'logged out')
-		this.router.navigate(['/login'])
 		this.loggedIn.next(false)
+		if (!force) {
+			this.notificationService.success('logged out')
+		} else {
+			this.notificationService.error('login expired')
+		}
+		this.router.navigate(['/login'])
 	}
 
 	setLastLoggedIn(id: string) {
