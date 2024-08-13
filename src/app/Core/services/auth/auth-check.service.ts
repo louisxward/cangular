@@ -17,13 +17,12 @@ export class AuthCheckService {
 		console.log('AuthCheckService()') // ToDo - Remove when confident
 		this.loginService.onLoginChange().subscribe((e) => this.switchTimer(e)) //ToDo - What does this pass into switch timer?
 	}
-	private timeoutDuration = 0.1 * 60 * 1000 // ToDo - Not sure on this time at the moment
+	private timeoutDuration = 1 * 60 * 1000 // ToDo - Not sure on this time at the moment
 	private timeout: any
 
 	private enableTimer() {
 		console.log('AuthCheckService().enableTimer()') // ToDo - Remove when confident
 		if (!this.timeout) {
-			this.refreshAuth()
 			this.startTimer()
 		}
 	}
@@ -43,13 +42,17 @@ export class AuthCheckService {
 	private startTimer() {
 		console.log('AuthCheckService().startTimer()') // ToDo - Remove when confident
 		this.timeout = setTimeout(async () => {
-			await this.loginService.checkAuth().then((e) => {
-				if (!e) {
-					this.logout()
-				} else {
-					this.resetTimer()
-				}
-			})
+			console.log('AuthCheckService().startTimer().this.timeout: ' + this.timeout) // ToDo - Remove when confident
+			// Incase user logs out whilst timer is still active
+			if (this.timeout) {
+				await this.loginService.checkAuth().then((e) => {
+					if (!e) {
+						this.logout()
+					} else {
+						this.resetTimer()
+					}
+				})
+			}
 		}, this.timeoutDuration)
 	}
 
@@ -62,14 +65,5 @@ export class AuthCheckService {
 	private logout() {
 		console.log('AuthCheckService().logout()') // ToDo - Remove when confident
 		this.loginService.logout(true)
-	}
-
-	private async refreshAuth() {
-		console.log('AuthCheckService().refreshAuth()') // ToDo - Remove when confident
-		await this.loginService.checkAuth().then((e) => {
-			if (!e) {
-				this.logout()
-			}
-		})
 	}
 }
