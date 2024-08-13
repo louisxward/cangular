@@ -7,16 +7,14 @@ import PocketBase from 'pocketbase'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
-import { Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import { AuthState, Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
 import { UploadService } from '../upload/upload.service'
 
 @Injectable()
 export class LoginService {
 	pb: PocketBase
 	loader: LoadingBarState
-
-	private loggedIn = new BehaviorSubject<boolean>(false) //ToDo - Make this take in if authd remove below as not needed V
-	private loggedOut = new BehaviorSubject<boolean>(true)
+	loggedIn: BehaviorSubject<boolean>
 
 	constructor(
 		private store: Store,
@@ -28,6 +26,12 @@ export class LoginService {
 	) {
 		this.pb = this.apiService.pb
 		this.loader = this.loadingBarService.useRef()
+		this.store
+			.select(AuthState.isAuthenticated)
+			.subscribe((e) => {
+				this.loggedIn = new BehaviorSubject<boolean>(e)
+			})
+			.unsubscribe()
 	}
 
 	async login(username: string, password: string): Promise<boolean> {
@@ -65,8 +69,7 @@ export class LoginService {
 				this.setLastLoggedIn(authRecord.record.id)
 				this.router.navigate(['/profile'])
 				this.notificationService.success('welcome ' + authRecord.record.username)
-				this.loggedIn.next(false)
-				this.loggedOut.next(true)
+				this.loggedIn.next(true)
 				this.loader.complete()
 				return true
 			})
@@ -76,12 +79,9 @@ export class LoginService {
 			})
 	}
 
-	onLogin() {
+	onLoginChange() {
+		console.log('LoginService.onLoginChange()')
 		return this.loggedIn.asObservable()
-	}
-
-	onLogout() {
-		return this.loggedOut.asObservable()
 	}
 
 	logout(force: boolean) {
@@ -92,7 +92,6 @@ export class LoginService {
 		this.notificationService.success(force ? 'timed out' : 'logged out')
 		this.router.navigate(['/login'])
 		this.loggedIn.next(false)
-		this.loggedOut.next(true)
 	}
 
 	setLastLoggedIn(id: string) {
