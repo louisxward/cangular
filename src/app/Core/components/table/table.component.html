@@ -19,3 +19,26 @@
 		</tr>
 	</tbody>
 </table>
+
+<div class="pagnation">
+	<div class="filter">
+		<h3>Size</h3>
+		<li>
+			<ul
+				*ngFor="let pageSize of tableSettings.pageSizes"
+				(click)="tableSettings.pageUpdate(pageSize)">
+				{{
+					pageSize
+				}},
+			</ul>
+		</li>
+	</div>
+	<div class="filter">
+		<h3>Page</h3>
+		{{ tableSettings.page }}
+	</div>
+	<div class="filter">
+		<h3>Results</h3>
+		{{ tableSettings.size }}
+	</div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core'
+import { TableSettings } from 'src/app/Users/users/users.component'
 
 @Component({
 	selector: 'app-table',
@@ -14,6 +15,7 @@ export class TableComponent<T> {
 	@Input() data: T[] = []
 	@Input() showActions: boolean = false
 	@Input() actions: Array<{ label: string; action: (item: T) => void }> = []
+	@Input() tableSettings: TableSettings //ToDo - This isnt required when including comp?
 
 	sortData(column: { header: string; field: keyof T; sortable?: boolean }) {
 		if (column.sortable) {
