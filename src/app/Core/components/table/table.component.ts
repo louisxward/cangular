@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core'
 export class TableComponent<T> {
 	@Input() columns: Array<{
 		header: string
-		field: string
+		field: keyof T
 		sortable?: boolean
 	}> = []
 	@Input() data: T[] = []
@@ -17,7 +17,7 @@ export class TableComponent<T> {
 
 	sortData(column: any) {
 		if (column.sortable) {
-			// this.data.sort((a, b) => (a[column.field] > b[column.field] ? 1 : -1)) ToDo - Fixx
+			//this.data.sort((a, b) => (a[column.field] > b[column.field] ? 1 : -1)) ToDo - Fixx
 			return
 		}
 	}

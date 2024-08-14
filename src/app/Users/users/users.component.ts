@@ -1,12 +1,24 @@
 import { Component } from '@angular/core'
 
+interface Column {
+	header: string
+	field: keyof DataType
+	sortable?: boolean
+}
+
+interface DataType {
+	name: string
+	age: number
+	email: string
+}
+
 @Component({
 	selector: 'app-users',
 	templateUrl: './users.component.html',
 	styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
-	columns = [
+	columns: Column[] = [
 		{ header: 'Name', field: 'name', sortable: true },
 		{ header: 'Age', field: 'age', sortable: true },
 		{ header: 'Email', field: 'email' },

@@ -10,8 +10,7 @@
 	</thead>
 	<tbody>
 		<tr *ngFor="let row of data">
-			<!-- {{ row[column.field] }} ToDo - Add back to below V -->
-			<td *ngFor="let column of columns">Column</td>
+			<td *ngFor="let column of columns">{{ row[column.field] }}</td>
 			<td *ngIf="showActions">
 				<button *ngFor="let action of actions" (click)="action.action(row)">
 					{{ action.label }}
