@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
 
 interface Column {
@@ -21,6 +22,21 @@ export interface TableSettings {
 	pageUpdate: (pageSize: number) => void
 }
 
+export interface Search {
+	searchForm: FormGroup
+	searchUpdate: (filter: string) => void
+	formConfigs: FormConfig[]
+}
+
+export interface FormConfig {
+	type: string
+	label: string
+	name: string
+	placeholder: string
+	value: string | boolean
+	required: boolean
+}
+
 @Component({
 	selector: 'app-users',
 	templateUrl: './users.component.html',
@@ -32,8 +48,12 @@ export class UsersComponent {
 	actions: Action[]
 	tableSettings: TableSettings
 	showActions: boolean
+	search: Search
+	formConfigs: FormConfig[]
+	form: FormGroup
+	loaded: boolean = false
 
-	constructor(private userService: UserService) {
+	constructor(private userService: UserService, private fb: FormBuilder) {
 		this.columns = [
 			{ header: 'ID', field: 'id', sortable: true },
 			{ header: 'USERNAME', field: 'username', sortable: true },
@@ -52,14 +72,50 @@ export class UsersComponent {
 			pageSizes: [10, 25, 50, 100],
 			pageUpdate: (pageSize) => this.pageUpdate(pageSize),
 		}
+		this.formConfigs = [
+			{
+				type: 'text',
+				label: 'First Name',
+				name: 'firstName',
+				placeholder: 'Enter your first name',
+				value: '',
+				required: true,
+			},
+			{
+				type: 'checkbox',
+				label: 'Agree to Terms',
+				name: 'terms',
+				placeholder: 'Agree to Terms',
+				value: false,
+				required: true,
+			},
+		]
+		this.initializeForm()
+		this.search = {
+			searchForm: this.form,
+			searchUpdate: (filter) => this.searchUpdate(filter),
+			formConfigs: this.formConfigs,
+		}
 	}
 
-	ngOnInit(): void {
-		this.getResults()
+	initializeForm() {
+		const formGroup: Record<string, any[]> = {}
+		this.formConfigs.forEach((field) => {
+			formGroup[field.name] = [
+				field.value || '',
+				field.required ? Validators.required : null,
+			]
+		})
+		this.form = this.fb.group(formGroup)
 	}
 
-	getResults() {
-		this.userService
+	async ngOnInit(): Promise<void> {
+		await this.getResults()
+		this.loaded = true
+	}
+
+	async getResults() {
+		await this.userService
 			.getResults(this.tableSettings.page, this.tableSettings.max, '')
 			.then((records) => {
 				if (records) {
@@ -82,5 +138,9 @@ export class UsersComponent {
 		console.log('pageSize', pageSize)
 		this.tableSettings.max = pageSize
 		this.getResults()
+	}
+
+	searchUpdate(filter: string) {
+		console.log('filter', filter)
 	}
 }

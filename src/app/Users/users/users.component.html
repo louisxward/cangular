@@ -1,6 +1,8 @@
 <app-table
+	*ngIf="loaded"
 	[columns]="columns"
 	[data]="data"
 	[showActions]="showActions"
 	[actions]="actions"
-	[tableSettings]="tableSettings"></app-table>
+	[tableSettings]="tableSettings"
+	[search]="search"></app-table>
