@@ -80,7 +80,6 @@ export class LoginService {
 	}
 
 	onLoginChange() {
-		console.log('LoginService.onLoginChange()')
 		return this.loggedIn.asObservable()
 	}
 
