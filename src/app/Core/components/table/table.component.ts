@@ -15,11 +15,21 @@ export class TableComponent<T> {
 	@Input() showActions: boolean = false
 	@Input() actions: Array<{ label: string; action: (item: T) => void }> = []
 
-	sortData(column: any) {
+	sortData(column: { header: string; field: keyof T; sortable?: boolean }) {
 		if (column.sortable) {
-			//ToDo - Fixx
-			//this.data.sort((a, b) => (a[column.field] > b[column.field] ? 1 : -1))
-			return
+			this.data.sort((a, b) => {
+				const field = column.field
+				const aValue = a[field]
+				const bValue = b[field]
+
+				if (aValue < bValue) {
+					return -1
+				} else if (aValue > bValue) {
+					return 1
+				} else {
+					return 0
+				}
+			})
 		}
 	}
 }
