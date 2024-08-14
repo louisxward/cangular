@@ -47,6 +47,7 @@ export class ProfileComponent implements OnInit {
 		})
 		this.loaded = true
 	}
+
 	logout(): void {
 		this.loginService.logout(false)
 	}

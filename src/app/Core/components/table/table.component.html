@@ -1,4 +1,4 @@
-<table class="table">
+<table>
 	<thead>
 		<tr>
 			<th *ngFor="let column of columns" (click)="sortData(column)">
@@ -9,7 +9,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr *ngFor="let row of data">
+		<tr *ngFor="let row of data" class="data">
 			<td *ngFor="let column of columns">{{ row[column.field] }}</td>
 			<td *ngIf="showActions">
 				<button *ngFor="let action of actions" (click)="action.action(row)">
