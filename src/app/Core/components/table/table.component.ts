@@ -17,7 +17,8 @@ export class TableComponent<T> {
 
 	sortData(column: any) {
 		if (column.sortable) {
-			//this.data.sort((a, b) => (a[column.field] > b[column.field] ? 1 : -1)) ToDo - Fixx
+			//ToDo - Fixx
+			//this.data.sort((a, b) => (a[column.field] > b[column.field] ? 1 : -1))
 			return
 		}
 	}
