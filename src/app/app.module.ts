@@ -18,6 +18,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr'
 import { AboutComponent } from './About/about/about.component'
 import { AppComponent } from './app.component'
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component'
+import { TableComponent } from './Core/components/table/table.component'
 import { ApiService } from './Core/services/api/api.service'
 import { AuthGuardService } from './Core/services/auth/auth-guard.service'
 import { ErrorService } from './Core/services/error/error.service'
@@ -48,6 +49,7 @@ import { UsersComponent } from './Users/users/users.component'
 		PageHeaderComponent,
 		UsersComponent,
 		UserTableComponent,
+		TableComponent,
 		UserDetailsComponent,
 		UserFormComponent,
 		ProfileComponent,

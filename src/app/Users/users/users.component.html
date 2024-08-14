@@ -1,4 +1,5 @@
-<main class="users-page">
-	<app-page-header header="Users"></app-page-header>
-	<app-user-table></app-user-table>
-</main>
+<app-table
+	[columns]="columns"
+	[data]="data"
+	[showActions]="true"
+	[actions]="actions"></app-table>

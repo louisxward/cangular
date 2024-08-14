@@ -1,0 +1,22 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th *ngFor="let column of columns" (click)="sortData(column)">
+				{{ column.header }}
+				<span *ngIf="column.sortable">⇅</span>
+			</th>
+			<th *ngIf="showActions">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let row of data">
+			<!-- {{ row[column.field] }} ToDo - Add back to below V -->
+			<td *ngFor="let column of columns">Column</td>
+			<td *ngIf="showActions">
+				<button *ngFor="let action of actions" (click)="action.action(row)">
+					{{ action.label }}
+				</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
