@@ -130,7 +130,17 @@ button:disabled {
 	background-color: var(--primary);
 	color: black
 }
-
+.menu-toggle{
+	cursor: pointer;
+	appearance: none;
+	border: none;
+	outline: none;
+	background-color: black;
+	padding: 0;
+}
+.menu-toggle:hover{
+	color: var(--primary);
+}
 // Forms
 .form {
 	display: inline-block;

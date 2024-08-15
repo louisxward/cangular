@@ -21,7 +21,7 @@
 				: ''
 		" />
 	<br />
-	<button class="button" type="submit" [disabled]="!form.valid">Login</button>
+	<button type="submit" [disabled]="!form.valid">Login</button>
 	<div class="formMessage" *ngIf="!form.valid">
 		<h3>{{ response }}</h3>
 	</div>
