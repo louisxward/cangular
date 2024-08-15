@@ -4,7 +4,8 @@ import { Search, TableSettings } from 'src/app/Users/users/users.component'
 export interface Column<T> {
 	header: string
 	field: keyof T
-	sortable?: boolean
+	sortable: boolean
+	sortState: boolean | null // ToDo this can be done better atm null none true asc false dsc
 }
 
 export interface Action<T> {
@@ -25,21 +26,54 @@ export class TableComponent<T> {
 	@Input() tableSettings: TableSettings //ToDo - This isnt required when including comp?
 	@Input() search: Search
 
-	sortData(column: { header: string; field: keyof T; sortable?: boolean }) {
+	sortData(column: Column<T>) {
 		if (column.sortable) {
-			this.data.sort((a, b) => {
-				const field = column.field
-				const aValue = a[field]
-				const bValue = b[field]
-
-				if (aValue < bValue) {
-					return -1
-				} else if (aValue > bValue) {
-					return 1
-				} else {
-					return 0
-				}
-			})
+			const sortState = column.sortState
+			console.log(sortState)
+			if (sortState == null) {
+				this.data.sort((a, b) => {
+					const field = column.field
+					const aValue = a[field]
+					const bValue = b[field]
+					column.sortState = true
+					if (aValue < bValue) {
+						return -1
+					} else if (aValue > bValue) {
+						return 1
+					} else {
+						return 0
+					}
+				})
+			} else if (sortState == true) {
+				this.data.sort((b, a) => {
+					const field = column.field
+					const aValue = a[field]
+					const bValue = b[field]
+					column.sortState = false
+					if (aValue < bValue) {
+						return -1
+					} else if (aValue > bValue) {
+						return 1
+					} else {
+						return 0
+					}
+				})
+			} else if (sortState == false) {
+				// ToDo - Figure out how to reset sort
+				this.data.sort((a, b) => {
+					const field = column.field
+					const aValue = a[field]
+					const bValue = b[field]
+					column.sortState = null
+					if (aValue < bValue) {
+						return -1
+					} else if (aValue > bValue) {
+						return 1
+					} else {
+						return 0
+					}
+				})
+			}
 		}
 	}
 }

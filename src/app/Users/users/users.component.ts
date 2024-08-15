@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
 import { Action, Column } from 'src/app/Core/components/table/table.component'
 import { QueryService } from 'src/app/Core/services/query/query.service'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
@@ -43,21 +44,23 @@ export class UsersComponent {
 	search: Search
 	loaded: boolean = false
 	filter: string = ''
+	defaultPageSizes = [10, 25, 50, 100]
 
 	constructor(
 		private userService: UserService,
 		private fb: FormBuilder,
-		private queryService: QueryService
+		private queryService: QueryService,
+		private router: Router
 	) {
 		//column headers
 		this.columns = [
-			{ header: 'ID', field: 'id', sortable: true },
-			{ header: 'USERNAME', field: 'username', sortable: true },
-			{ header: 'EMAIL', field: 'email', sortable: true },
+			{ header: 'ID', field: 'id', sortable: true, sortState: null },
+			{ header: 'USERNAME', field: 'username', sortable: true, sortState: null },
+			{ header: 'EMAIL', field: 'email', sortable: true, sortState: null },
 		]
 		// row actions
 		this.actions = [
-			{ label: 'View', action: (item: UserList) => this.viewItem(item) },
+			{ label: 'View', action: (record: UserList) => this.view(record) },
 		]
 		this.showActions = this.actions.length > 0
 		// table settings ToDo alot of this can be defaulted in parent comp?
@@ -66,7 +69,7 @@ export class UsersComponent {
 			size: 0,
 			page: 1,
 			pages: 0,
-			pageSizes: [10, 25, 50, 100],
+			pageSizes: this.defaultPageSizes,
 			pageUpdate: (pageSize) => this.pageUpdate(pageSize),
 		}
 		// searchConfig
@@ -111,23 +114,41 @@ export class UsersComponent {
 				if (records) {
 					this.tableSettings.size = records.totalItems
 					this.tableSettings.pages = records.totalPages
+					this.tableSettings.pageSizes = this.getPagesForSize(records.totalItems)
 					this.data = records.items
 				}
 			})
 	}
 
-	viewItem(item: UserList) {
-		console.log('Edit', item)
+	getPagesForSize(size: number) {
+		const newPagesSizes: number[] = [] // Default
+		for (let pageSize of this.defaultPageSizes) {
+			if (pageSize == 10) {
+				newPagesSizes.push(pageSize)
+			} else if (size > pageSize) {
+				newPagesSizes.push(pageSize)
+			} else if (size < pageSize) {
+				newPagesSizes.push(pageSize)
+				return newPagesSizes
+			}
+		}
+		return newPagesSizes
+	}
+
+	view(record: UserList) {
+		this.router.navigate(['users/', record.id])
+	}
+
+	create() {
+		this.router.navigate(['users/', 0])
 	}
 
 	pageUpdate(pageSize: number) {
-		console.log('pageSize', pageSize)
 		this.tableSettings.max = pageSize
 		this.getResults()
 	}
 
 	searchUpdate(formValue: { [key: string]: string | null }) {
-		console.log('filter', formValue)
 		this.filter = this.queryService.formatQueryAnd(formValue)
 		this.getResults()
 	}
