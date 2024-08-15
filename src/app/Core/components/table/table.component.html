@@ -46,27 +46,24 @@
 <div class="search">
 	<form [formGroup]="search.searchForm">
 		<div *ngFor="let field of search.formConfigs">
-			<label>{{ field.label }}</label>
-
 			<div [ngSwitch]="field.type">
 				<input
 					*ngSwitchCase="'text'"
 					[formControlName]="field.name"
 					[placeholder]="field.placeholder"
 					type="text" />
-				<input
+				<!-- <input
 					*ngSwitchCase="'checkbox'"
 					[formControlName]="field.name"
-					type="checkbox" />
+					type="checkbox" /> -->
 			</div>
-
-			<div
+			<!-- <div
 				*ngIf="
 					search.searchForm.get(field.name)?.invalid &&
 					search.searchForm.get(field.name)?.touched
 				">
 				<small>{{ field.label }} is required</small>
-			</div>
+			</div> -->
 		</div>
 
 		<button type="submit" [disabled]="search.searchForm.invalid">Submit</button>

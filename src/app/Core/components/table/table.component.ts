@@ -1,22 +1,28 @@
 import { Component, Input } from '@angular/core'
 import { Search, TableSettings } from 'src/app/Users/users/users.component'
 
+interface column<T> {
+	header: string
+	field: keyof T
+	sortable?: boolean
+}
+
+interface Action<T> {
+	label: string
+	action: (item: T) => void
+}
 @Component({
 	selector: 'app-table',
 	templateUrl: './table.component.html',
 	styleUrls: ['./table.component.scss'],
 })
 export class TableComponent<T> {
-	@Input() columns: Array<{
-		header: string
-		field: keyof T
-		sortable?: boolean
-	}> = []
+	@Input() columns: column<T>[] = []
 	@Input() data: T[] = []
 	@Input() showActions: boolean = false
-	@Input() actions: Array<{ label: string; action: (item: T) => void }> = []
+	@Input() actions: Action<T>[] = []
 	@Input() tableSettings: TableSettings //ToDo - This isnt required when including comp?
-	@Input() search: Search //ToDo - This isnt required when including comp?
+	@Input() search: Search
 
 	sortData(column: { header: string; field: keyof T; sortable?: boolean }) {
 		if (column.sortable) {
