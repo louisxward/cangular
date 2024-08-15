@@ -71,5 +71,11 @@
 		<button class="button" type="submit" [disabled]="search.form.invalid">
 			Submit
 		</button>
+		<button
+			class="button"
+			(click)="search.reset()"
+			[disabled]="!search.form.dirty">
+			Reset
+		</button>
 	</form>
 </div>

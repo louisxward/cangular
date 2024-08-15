@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Action, Column } from 'src/app/Core/components/table/table.component'
+import { QueryService } from 'src/app/Core/services/query/query.service'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
 
 export interface TableSettings {
@@ -15,7 +16,8 @@ export interface TableSettings {
 export interface Search {
 	form: FormGroup
 	formConfigs: FormConfig[]
-	submit: (filter: string) => void
+	submit: (formValue: { [key: string]: string | null }) => void
+	reset: () => void
 }
 
 export interface FormConfig {
@@ -35,14 +37,18 @@ export interface FormConfig {
 export class UsersComponent {
 	columns: Column<UserList>[]
 	data: UserList[]
-	actions: Action<UserList>[] = []
+	actions: Action<UserList>[] = [] // ToDo do this on all. make this a reusbale comp too?
 	tableSettings: TableSettings
 	showActions: boolean = false
 	search: Search
 	loaded: boolean = false
 	filter: string = ''
 
-	constructor(private userService: UserService, private fb: FormBuilder) {
+	constructor(
+		private userService: UserService,
+		private fb: FormBuilder,
+		private queryService: QueryService
+	) {
 		//column headers
 		this.columns = [
 			{ header: 'ID', field: 'id', sortable: true },
@@ -54,7 +60,7 @@ export class UsersComponent {
 			{ label: 'View', action: (item: UserList) => this.viewItem(item) },
 		]
 		this.showActions = this.actions.length > 0
-		// table settings
+		// table settings ToDo alot of this can be defaulted in parent comp?
 		this.tableSettings = {
 			max: 10,
 			size: 0,
@@ -77,7 +83,8 @@ export class UsersComponent {
 		this.search = {
 			form: searchForm,
 			formConfigs: searchFormConfigs,
-			submit: (filter) => this.searchUpdate(filter),
+			submit: (formValue) => this.searchUpdate(formValue),
+			reset: () => this.searchReset(),
 		}
 	}
 
@@ -99,7 +106,7 @@ export class UsersComponent {
 
 	async getResults() {
 		await this.userService
-			.getResults(this.tableSettings.page, this.tableSettings.max, '')
+			.getResults(this.tableSettings.page, this.tableSettings.max, this.filter)
 			.then((records) => {
 				if (records) {
 					this.tableSettings.size = records.totalItems
@@ -119,8 +126,15 @@ export class UsersComponent {
 		this.getResults()
 	}
 
-	searchUpdate(filter: string) {
-		console.log('filter', filter)
-		this.filter = filter
+	searchUpdate(formValue: { [key: string]: string | null }) {
+		console.log('filter', formValue)
+		this.filter = this.queryService.formatQueryAnd(formValue)
+		this.getResults()
+	}
+
+	searchReset() {
+		this.search.form.reset()
+		this.filter = ''
+		this.getResults()
 	}
 }
