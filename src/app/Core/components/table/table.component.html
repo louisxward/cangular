@@ -12,7 +12,10 @@
 		<tr *ngFor="let row of data" class="data">
 			<td *ngFor="let column of columns">{{ row[column.field] }}</td>
 			<td *ngIf="showActions">
-				<button *ngFor="let action of actions" (click)="action.action(row)">
+				<button
+					class="button"
+					*ngFor="let action of actions"
+					(click)="action.action(row)">
 					{{ action.label }}
 				</button>
 			</td>
@@ -44,8 +47,8 @@
 </div>
 
 <div class="search">
-	<form [formGroup]="search.searchForm">
-		<div *ngFor="let field of search.formConfigs">
+	<form [formGroup]="search.form" (ngSubmit)="search.submit(search.form.value)">
+		<div *ngFor="let field of search.formConfigs" style="display: inline-block">
 			<div [ngSwitch]="field.type">
 				<input
 					*ngSwitchCase="'text'"
@@ -65,7 +68,8 @@
 				<small>{{ field.label }} is required</small>
 			</div> -->
 		</div>
-
-		<button type="submit" [disabled]="search.searchForm.invalid">Submit</button>
+		<button class="button" type="submit" [disabled]="search.form.invalid">
+			Submit
+		</button>
 	</form>
 </div>

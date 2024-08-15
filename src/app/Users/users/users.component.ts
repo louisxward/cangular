@@ -1,17 +1,7 @@
 import { Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Action, Column } from 'src/app/Core/components/table/table.component'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
-
-interface Column {
-	header: string
-	field: keyof UserList
-	sortable?: boolean
-}
-
-interface Action {
-	label: string
-	action: (item: UserList) => void
-}
 
 export interface TableSettings {
 	max: number
@@ -23,14 +13,14 @@ export interface TableSettings {
 }
 
 export interface Search {
-	searchForm: FormGroup
-	searchUpdate: (filter: string) => void
+	form: FormGroup
 	formConfigs: FormConfig[]
+	submit: (filter: string) => void
 }
 
 export interface FormConfig {
 	type: string
-	label: string
+	// label: string
 	name: string
 	placeholder: string
 	value: string | boolean
@@ -43,27 +33,28 @@ export interface FormConfig {
 	styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
-	columns: Column[]
+	columns: Column<UserList>[]
 	data: UserList[]
-	actions: Action[]
+	actions: Action<UserList>[] = []
 	tableSettings: TableSettings
-	showActions: boolean
+	showActions: boolean = false
 	search: Search
-	formConfigs: FormConfig[]
-	form: FormGroup
 	loaded: boolean = false
+	filter: string = ''
 
 	constructor(private userService: UserService, private fb: FormBuilder) {
+		//column headers
 		this.columns = [
 			{ header: 'ID', field: 'id', sortable: true },
 			{ header: 'USERNAME', field: 'username', sortable: true },
 			{ header: 'EMAIL', field: 'email', sortable: true },
 		]
-		this.showActions = true
+		// row actions
 		this.actions = [
-			{ label: 'Edit', action: (item: UserList) => this.editItem(item) },
-			{ label: 'Delete', action: (item: UserList) => this.deleteItem(item) },
+			{ label: 'View', action: (item: UserList) => this.viewItem(item) },
 		]
+		this.showActions = this.actions.length > 0
+		// table settings
 		this.tableSettings = {
 			max: 10,
 			size: 0,
@@ -72,41 +63,33 @@ export class UsersComponent {
 			pageSizes: [10, 25, 50, 100],
 			pageUpdate: (pageSize) => this.pageUpdate(pageSize),
 		}
-		this.formConfigs = [
+		// searchConfig
+		const searchFormConfigs: FormConfig[] = [
 			{
 				type: 'text',
-				label: 'First Name',
-				name: 'firstName',
-				placeholder: 'Enter your first name',
+				name: 'id',
+				placeholder: 'ID',
 				value: '',
 				required: true,
 			},
-			{
-				type: 'checkbox',
-				label: 'Agree to Terms',
-				name: 'terms',
-				placeholder: 'Agree to Terms',
-				value: false,
-				required: true,
-			},
 		]
-		this.initializeForm()
+		const searchForm = this.initializeForm(searchFormConfigs)
 		this.search = {
-			searchForm: this.form,
-			searchUpdate: (filter) => this.searchUpdate(filter),
-			formConfigs: this.formConfigs,
+			form: searchForm,
+			formConfigs: searchFormConfigs,
+			submit: (filter) => this.searchUpdate(filter),
 		}
 	}
 
-	initializeForm() {
+	initializeForm(formConfigs: FormConfig[]) {
 		const formGroup: Record<string, any[]> = {}
-		this.formConfigs.forEach((field) => {
+		formConfigs.forEach((field) => {
 			formGroup[field.name] = [
 				field.value || '',
 				field.required ? Validators.required : null,
 			]
 		})
-		this.form = this.fb.group(formGroup)
+		return this.fb.group(formGroup)
 	}
 
 	async ngOnInit(): Promise<void> {
@@ -126,12 +109,8 @@ export class UsersComponent {
 			})
 	}
 
-	editItem(item: UserList) {
+	viewItem(item: UserList) {
 		console.log('Edit', item)
-	}
-
-	deleteItem(item: UserList) {
-		console.log('Delete', item)
 	}
 
 	pageUpdate(pageSize: number) {
@@ -142,5 +121,6 @@ export class UsersComponent {
 
 	searchUpdate(filter: string) {
 		console.log('filter', filter)
+		this.filter = filter
 	}
 }

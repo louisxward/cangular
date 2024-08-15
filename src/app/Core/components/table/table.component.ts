@@ -1,23 +1,24 @@
 import { Component, Input } from '@angular/core'
 import { Search, TableSettings } from 'src/app/Users/users/users.component'
 
-interface column<T> {
+export interface Column<T> {
 	header: string
 	field: keyof T
 	sortable?: boolean
 }
 
-interface Action<T> {
+export interface Action<T> {
 	label: string
 	action: (item: T) => void
 }
+
 @Component({
 	selector: 'app-table',
 	templateUrl: './table.component.html',
 	styleUrls: ['./table.component.scss'],
 })
 export class TableComponent<T> {
-	@Input() columns: column<T>[] = []
+	@Input() columns: Column<T>[] = []
 	@Input() data: T[] = []
 	@Input() showActions: boolean = false
 	@Input() actions: Action<T>[] = []
