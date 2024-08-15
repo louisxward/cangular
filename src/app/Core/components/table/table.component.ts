@@ -25,26 +25,13 @@ export class TableComponent<T> {
 	@Input() actions: Action<T>[] = []
 	@Input() tableSettings: TableSettings //ToDo - This isnt required when including comp?
 	@Input() search: Search
+	@Input() loaded: boolean = false
 
 	sortData(column: Column<T>) {
 		if (column.sortable) {
 			const sortState = column.sortState
-			console.log(sortState)
-			if (sortState == null) {
-				this.data.sort((a, b) => {
-					const field = column.field
-					const aValue = a[field]
-					const bValue = b[field]
-					column.sortState = true
-					if (aValue < bValue) {
-						return -1
-					} else if (aValue > bValue) {
-						return 1
-					} else {
-						return 0
-					}
-				})
-			} else if (sortState == true) {
+			this.resetAllSortStates()
+			if (sortState == true) {
 				this.data.sort((b, a) => {
 					const field = column.field
 					const aValue = a[field]
@@ -58,22 +45,27 @@ export class TableComponent<T> {
 						return 0
 					}
 				})
-			} else if (sortState == false) {
-				// ToDo - Figure out how to reset sort
-				this.data.sort((a, b) => {
-					const field = column.field
-					const aValue = a[field]
-					const bValue = b[field]
-					column.sortState = null
-					if (aValue < bValue) {
-						return -1
-					} else if (aValue > bValue) {
-						return 1
-					} else {
-						return 0
-					}
-				})
+				return
 			}
+			this.data.sort((a, b) => {
+				const field = column.field
+				const aValue = a[field]
+				const bValue = b[field]
+				column.sortState = true
+				if (aValue < bValue) {
+					return -1
+				} else if (aValue > bValue) {
+					return 1
+				} else {
+					return 0
+				}
+			})
+		}
+	}
+
+	resetAllSortStates() {
+		for (let column of this.columns) {
+			column.sortState = null
 		}
 	}
 }

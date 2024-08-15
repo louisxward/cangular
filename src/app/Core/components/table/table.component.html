@@ -4,21 +4,28 @@
 			<th
 				*ngFor="let column of columns"
 				(click)="sortData(column)"
-				style="width: 35%">
+				style="width: 30%">
 				<!-- ToDo - fix this ^ -->
 				{{ column.header }}
 				<span *ngIf="column.sortable">{{
 					column.sortState == true ? '↓' : column.sortState == false ? '↑' : '⇅'
 				}}</span>
 			</th>
-			<th *ngIf="showActions">Actions</th>
+			<th *ngIf="showActions" style="width: 10%; text-align: center">ACTIONS</th>
 		</tr>
 	</thead>
 	<tbody>
+		<tr *ngIf="!loaded && tableSettings.size == 0">
+			<td>Loading...</td>
+		</tr>
+		<tr *ngIf="loaded && tableSettings.size == 0">
+			<td>No Results</td>
+		</tr>
 		<tr *ngFor="let row of data" class="data">
 			<td *ngFor="let column of columns">{{ row[column.field] }}</td>
-			<td *ngIf="showActions">
+			<td *ngIf="showActions" style="padding: 0">
 				<button
+					style="width: 100%; height: 100%"
 					class="button"
 					*ngFor="let action of actions"
 					(click)="action.action(row)">

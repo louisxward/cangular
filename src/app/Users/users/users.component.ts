@@ -79,7 +79,14 @@ export class UsersComponent {
 				name: 'id',
 				placeholder: 'ID',
 				value: '',
-				required: true,
+				required: false,
+			},
+			{
+				type: 'text',
+				name: 'username',
+				placeholder: 'USERNAME',
+				value: '',
+				required: false,
 			},
 		]
 		const searchForm = this.initializeForm(searchFormConfigs)
@@ -102,37 +109,22 @@ export class UsersComponent {
 		return this.fb.group(formGroup)
 	}
 
-	async ngOnInit(): Promise<void> {
-		await this.getResults()
-		this.loaded = true
+	ngOnInit(): void {
+		this.getResults()
 	}
 
 	async getResults() {
+		this.loaded = false
 		await this.userService
 			.getResults(this.tableSettings.page, this.tableSettings.max, this.filter)
 			.then((records) => {
 				if (records) {
 					this.tableSettings.size = records.totalItems
 					this.tableSettings.pages = records.totalPages
-					this.tableSettings.pageSizes = this.getPagesForSize(records.totalItems)
 					this.data = records.items
 				}
 			})
-	}
-
-	getPagesForSize(size: number) {
-		const newPagesSizes: number[] = [] // Default
-		for (let pageSize of this.defaultPageSizes) {
-			if (pageSize == 10) {
-				newPagesSizes.push(pageSize)
-			} else if (size > pageSize) {
-				newPagesSizes.push(pageSize)
-			} else if (size < pageSize) {
-				newPagesSizes.push(pageSize)
-				return newPagesSizes
-			}
-		}
-		return newPagesSizes
+		this.loaded = true
 	}
 
 	view(record: UserList) {

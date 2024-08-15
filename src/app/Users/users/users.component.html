@@ -1,7 +1,7 @@
 <main class="users-page">
 	<app-page-header header="Users"></app-page-header>
 	<app-table
-		*ngIf="loaded"
+		[loaded]="loaded"
 		[columns]="columns"
 		[data]="data"
 		[showActions]="showActions"

@@ -33,9 +33,9 @@ export class QueryService {
 		for (const [key, value] of Object.entries(params)) {
 			if (value) {
 				if ('' == filter) {
-					filter = key + '= {:' + key + '}'
+					filter = key + '~ {:' + key + '}'
 				} else {
-					filter = filter + ' &&' + key + '= {:' + key + '}'
+					filter = filter + ' &&' + key + '~ {:' + key + '}'
 				}
 			}
 		}
