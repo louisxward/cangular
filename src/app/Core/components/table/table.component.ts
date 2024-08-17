@@ -6,6 +6,7 @@ export interface Column<T> {
 	field: keyof T
 	sortable: boolean
 	sortState: boolean | null // ToDo this can be done better atm null none true asc false dsc
+	width: number
 }
 
 export interface Action<T> {
@@ -26,6 +27,13 @@ export class TableComponent<T> {
 	@Input() tableSettings: TableSettings //ToDo - This isnt required when including comp?
 	@Input() search: Search
 	@Input() loaded: boolean = false
+
+	getColumnWidth(column: Column<T>): string {
+		if (column.width == 0) {
+			return ''
+		}
+		return column.width + '%'
+	}
 
 	sortData(column: Column<T>) {
 		if (column.sortable) {

@@ -4,7 +4,7 @@
 			<th
 				*ngFor="let column of columns"
 				(click)="sortData(column)"
-				style="width: 30%">
+				[style.width]="getColumnWidth(column)">
 				<!-- ToDo - fix this ^ -->
 				{{ column.header }}
 				<span *ngIf="column.sortable">{{
@@ -26,7 +26,7 @@
 			<td *ngIf="showActions" style="padding: 0">
 				<button
 					class="altButton"
-					style="width: 100%; height: 100%"
+					style="width: 100%"
 					*ngFor="let action of actions"
 					(click)="action.action(row)">
 					{{ action.label }}

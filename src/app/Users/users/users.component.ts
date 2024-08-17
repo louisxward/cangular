@@ -54,9 +54,21 @@ export class UsersComponent {
 	) {
 		//column headers
 		this.columns = [
-			{ header: 'ID', field: 'id', sortable: true, sortState: null },
-			{ header: 'USERNAME', field: 'username', sortable: true, sortState: null },
-			{ header: 'EMAIL', field: 'email', sortable: true, sortState: null },
+			{ header: 'ID', field: 'id', sortable: true, sortState: null, width: 10 },
+			{
+				header: 'USERNAME',
+				field: 'username',
+				sortable: true,
+				sortState: null,
+				width: 20,
+			},
+			{
+				header: 'EMAIL',
+				field: 'email',
+				sortable: true,
+				sortState: null,
+				width: 0,
+			},
 		]
 		// row actions
 		this.actions = [
