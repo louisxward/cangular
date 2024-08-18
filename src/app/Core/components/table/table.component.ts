@@ -74,6 +74,11 @@ export class TableComponent<T> {
 		}
 	}
 
+	searchSubmit(formValue: { [key: string]: string | null }) {
+		this.search.submit(formValue)
+		this.search.form.markAsPristine()
+	}
+
 	resetAllSortStates() {
 		for (let column of this.columns) {
 			column.sortState = null

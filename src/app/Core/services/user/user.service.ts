@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import PocketBase, { ClientResponseError } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
-import { User } from '../../state/user/user.actions'
 import { ErrorService } from '../error/error.service'
 
 export interface User {
@@ -80,10 +79,6 @@ export class UserService {
 				return []
 			})
 	}
-	// Not sure about this
-	partialUser(init?: Partial<User>) {
-		return Object.assign(User, init)
-	}
 
 	async getUser(id: string) {
 		try {
@@ -95,8 +90,8 @@ export class UserService {
 	}
 
 	async getResults(page: number, max: number, filter: string, sort: string) {
-		console.log('UserService.getResults()')
-		console.log(
+		console.info('UserService.getResults()')
+		console.info(
 			'query: "' +
 				'page: ' +
 				page +

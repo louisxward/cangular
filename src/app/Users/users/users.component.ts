@@ -122,7 +122,20 @@ export class UsersComponent {
 				field.required ? Validators.required : null,
 			]
 		})
-		return this.fb.group(formGroup)
+		// ToDo this is dep vvv
+		const temp = this.fb.group(formGroup, {
+			validator: this.atLeastOneFieldValidator,
+		})
+		return temp
+	}
+
+	atLeastOneFieldValidator(formGroup: FormGroup) {
+		const controls = formGroup.controls
+		if (Object.values(controls).some((control) => control.value)) {
+			return null // valid
+		} else {
+			return { atLeastOneRequired: true } // invalid
+		}
 	}
 
 	ngOnInit(): void {
@@ -174,6 +187,7 @@ export class UsersComponent {
 	}
 
 	searchUpdate(formValue: { [key: string]: string | null }) {
+		console.log('searchUpdate()')
 		const newFilter = this.queryService.formatQueryAnd(formValue)
 		if (this.filter != newFilter) {
 			this.filter = newFilter

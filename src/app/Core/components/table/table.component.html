@@ -69,7 +69,7 @@
 </div>
 
 <div class="search">
-	<form [formGroup]="search.form" (ngSubmit)="search.submit(search.form.value)">
+	<form [formGroup]="search.form" (ngSubmit)="searchSubmit(search.form.value)">
 		<div *ngFor="let field of search.formConfigs" style="display: inline-block">
 			<div [ngSwitch]="field.type">
 				<input
@@ -90,8 +90,12 @@
 				<small>{{ field.label }} is required</small>
 			</div> -->
 		</div>
-		<button type="submit" [disabled]="search.form.invalid">Submit</button>
-		<button (click)="search.reset()" [disabled]="!search.form.dirty">
+		<button type="submit" [disabled]="search.form.invalid || !search.form.dirty">
+			Submit
+		</button>
+		<button
+			(click)="search.reset()"
+			[disabled]="search.form.invalid && !search.form.dirty">
 			Reset
 		</button>
 	</form>
