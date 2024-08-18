@@ -27,12 +27,30 @@ export class TableComponent<T> {
 	@Input() tableSettings: TableSettings //ToDo - This isnt required when including comp?
 	@Input() search: Search
 	@Input() loaded: boolean = false
+	tempPageSize: number
 
 	getColumnWidth(column: Column<T>): string {
 		if (column.width == 0) {
 			return ''
 		}
 		return column.width + '%'
+	}
+
+	updatePageSize(event: Event) {
+		try {
+			const selectedValue = Number((event.target as HTMLSelectElement).value)
+			if (this.tableSettings.max != selectedValue) {
+				this.tableSettings.pageSizeUpdate(selectedValue)
+			}
+		} catch {}
+	}
+
+	getPages() {
+		const pages: number[] = []
+		for (let i: number = 0; i < this.tableSettings.pages; i++) {
+			pages.push(i + 1)
+		}
+		return pages
 	}
 
 	sortData(column: Column<T>) {

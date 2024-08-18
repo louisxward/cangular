@@ -39,19 +39,26 @@
 <div class="pagnation">
 	<div class="filter">
 		<h3>Size</h3>
-		<li>
-			<ul
-				*ngFor="let pageSize of tableSettings.pageSizes"
-				(click)="tableSettings.pageUpdate(pageSize)">
-				{{
-					pageSize
-				}},
-			</ul>
-		</li>
+		<!--  -->
+		<select [(ngModel)]="tempPageSize" (change)="updatePageSize($event)">
+			<option *ngFor="let pageSize of tableSettings.pageSizes" [value]="pageSize">
+				{{ pageSize }}
+			</option>
+		</select>
 	</div>
 	<div class="filter">
 		<h3>Page</h3>
-		{{ tableSettings.page }}
+		<li>
+			<ul *ngFor="let page of getPages()" (click)="tableSettings.pageUpdate(page)">
+				<div *ngIf="page == tableSettings.page" style="display: inline-block">
+					<b>{{ page }}</b>
+				</div>
+				<div *ngIf="page != tableSettings.page" style="display: inline-block">
+					{{ page }}
+				</div>
+				<div *ngIf="page != getPages().length" style="display: inline-block">,</div>
+			</ul>
+		</li>
 	</div>
 	<div class="filter">
 		<h3>Results</h3>

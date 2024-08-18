@@ -11,7 +11,8 @@ export interface TableSettings {
 	page: number
 	pages: number
 	pageSizes: number[]
-	pageUpdate: (pageSize: number) => void
+	pageSizeUpdate: (pageSize: number) => void
+	pageUpdate: (page: number | null) => void
 }
 
 export interface Search {
@@ -44,7 +45,6 @@ export class UsersComponent {
 	search: Search
 	loaded: boolean = false
 	filter: string = ''
-	defaultPageSizes = [10, 25, 50, 100]
 
 	constructor(
 		private userService: UserService,
@@ -80,9 +80,10 @@ export class UsersComponent {
 			max: 10,
 			size: 0,
 			page: 1,
-			pages: 0,
-			pageSizes: this.defaultPageSizes,
-			pageUpdate: (pageSize) => this.pageUpdate(pageSize),
+			pages: 1,
+			pageSizes: [10, 25, 50, 100],
+			pageSizeUpdate: (pageSize) => this.pageSizeUpdate(pageSize),
+			pageUpdate: (page) => this.pageUpdate(page),
 		}
 		// searchConfig
 		const searchFormConfigs: FormConfig[] = [
@@ -130,7 +131,10 @@ export class UsersComponent {
 		await this.userService
 			.getResults(this.tableSettings.page, this.tableSettings.max, this.filter)
 			.then((records) => {
+				console.log(records)
 				if (records) {
+					this.tableSettings.page = records.page
+					this.tableSettings.max = records.perPage
 					this.tableSettings.size = records.totalItems
 					this.tableSettings.pages = records.totalPages
 					this.data = records.items
@@ -147,9 +151,16 @@ export class UsersComponent {
 		this.router.navigate(['users/', 0])
 	}
 
-	pageUpdate(pageSize: number) {
+	pageSizeUpdate(pageSize: number) {
 		this.tableSettings.max = pageSize
 		this.getResults()
+	}
+
+	pageUpdate(page: number | null) {
+		if (page) {
+			this.tableSettings.page = page
+			this.getResults()
+		}
 	}
 
 	searchUpdate(formValue: { [key: string]: string | null }) {

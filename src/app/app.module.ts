@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 // States
 import { AuthState, UserState } from './Core/state'
 
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin'
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin'
 import { NgxsModule } from '@ngxs/store'
@@ -68,6 +68,7 @@ import { UsersComponent } from './Users/users/users.component'
 		AppRoutingModule,
 		BrowserAnimationsModule,
 		NgbModule,
+		FormsModule,
 		ReactiveFormsModule,
 		ToastrModule.forRoot({ maxOpened: 5 }),
 		//LoadingBarRouterModule,
