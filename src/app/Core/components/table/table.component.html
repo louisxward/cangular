@@ -39,8 +39,7 @@
 <div class="pagnation">
 	<div class="filter">
 		<h3>Size</h3>
-		<!--  -->
-		<select [(ngModel)]="tempPageSize" (change)="updatePageSize($event)">
+		<select (change)="updatePageSize($event)">
 			<option *ngFor="let pageSize of tableSettings.pageSizes" [value]="pageSize">
 				{{ pageSize }}
 			</option>
