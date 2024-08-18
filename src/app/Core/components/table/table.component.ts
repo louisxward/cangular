@@ -5,7 +5,7 @@ export interface Column<T> {
 	header: string
 	field: keyof T
 	sortable: boolean
-	sortState: boolean | null // ToDo this can be done better atm null none true asc false dsc
+	sortState: boolean | null
 	width: number
 }
 
@@ -54,38 +54,21 @@ export class TableComponent<T> {
 	}
 
 	sortData(column: Column<T>) {
+		console.log('sortData()')
+		let newSortState = false
+		if (column.sortState == null) {
+			newSortState = true
+		} else {
+			newSortState = !column.sortState
+		}
+		console.log('sortData() newSortStae: ' + newSortState)
 		if (column.sortable) {
-			const sortState = column.sortState
-			this.resetAllSortStates()
-			if (sortState == true) {
-				this.data.sort((b, a) => {
-					const field = column.field
-					const aValue = a[field]
-					const bValue = b[field]
-					column.sortState = false
-					if (aValue < bValue) {
-						return -1
-					} else if (aValue > bValue) {
-						return 1
-					} else {
-						return 0
-					}
-				})
-				return
-			}
-			this.data.sort((a, b) => {
-				const field = column.field
-				const aValue = a[field]
-				const bValue = b[field]
-				column.sortState = true
-				if (aValue < bValue) {
-					return -1
-				} else if (aValue > bValue) {
-					return 1
-				} else {
-					return 0
-				}
-			})
+			try {
+				const field = String(column.field)
+				this.resetAllSortStates()
+				this.tableSettings.sortUpdate(field, newSortState)
+				column.sortState = newSortState
+			} catch {}
 		}
 	}
 

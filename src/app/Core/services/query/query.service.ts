@@ -41,4 +41,11 @@ export class QueryService {
 		}
 		return this.pb.filter(filter, params) // Seems backwords since we can add the values in the above?
 	}
+
+	formatSort(field: string, sortState: boolean): string {
+		if (field) {
+			return (sortState ? '+' : '-') + field
+		}
+		return ''
+	}
 }

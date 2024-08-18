@@ -36,10 +36,7 @@ export interface UserListSearch {
 export class UserService {
 	pb: PocketBase
 
-	constructor(
-		apiService: ApiService,
-		private errorService: ErrorService
-	) {
+	constructor(apiService: ApiService, private errorService: ErrorService) {
 		this.pb = apiService.pb
 	}
 
@@ -97,11 +94,13 @@ export class UserService {
 		}
 	}
 
-	async getResults(page: number, max: number, filter: string) {
+	async getResults(page: number, max: number, filter: string, sort: string) {
+		console.log('getResults()')
+		console.log('sort: ' + sort)
 		try {
 			return await this.pb
 				.collection('users')
-				.getList<UserList>(page, max, { filter: filter })
+				.getList<UserList>(page, max, { filter: filter, sort: sort })
 		} catch (error) {
 			console.error(error)
 			return null

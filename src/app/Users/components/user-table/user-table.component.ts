@@ -81,15 +81,17 @@ export class UserTableComponent {
 
 	getResults(filter: string) {
 		this.loader.start()
-		this.userService.getResults(this.page, this.max, filter).then((records) => {
-			if (records) {
-				this.size = records.totalItems
-				this.pages = records.totalPages
-				this.results = records.items
-			}
-			this.loaded = true
-			this.loader.complete()
-		})
+		this.userService
+			.getResults(this.page, this.max, filter, '')
+			.then((records) => {
+				if (records) {
+					this.size = records.totalItems
+					this.pages = records.totalPages
+					this.results = records.items
+				}
+				this.loaded = true
+				this.loader.complete()
+			})
 	}
 
 	updateMax(max: number) {

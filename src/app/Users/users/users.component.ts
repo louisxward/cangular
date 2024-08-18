@@ -13,6 +13,7 @@ export interface TableSettings {
 	pageSizes: number[]
 	pageSizeUpdate: (pageSize: number) => void
 	pageUpdate: (page: number | null) => void
+	sortUpdate: (field: string, sortState: boolean) => void
 }
 
 export interface Search {
@@ -45,6 +46,7 @@ export class UsersComponent {
 	search: Search
 	loaded: boolean = false
 	filter: string = ''
+	sort: string = ''
 
 	constructor(
 		private userService: UserService,
@@ -84,6 +86,7 @@ export class UsersComponent {
 			pageSizes: [10, 25, 50, 100],
 			pageSizeUpdate: (pageSize) => this.pageSizeUpdate(pageSize),
 			pageUpdate: (page) => this.pageUpdate(page),
+			sortUpdate: (field, sortState) => this.sortUpdate(field, sortState),
 		}
 		// searchConfig
 		const searchFormConfigs: FormConfig[] = [
@@ -129,9 +132,13 @@ export class UsersComponent {
 	async getResults() {
 		this.loaded = false
 		await this.userService
-			.getResults(this.tableSettings.page, this.tableSettings.max, this.filter)
+			.getResults(
+				this.tableSettings.page,
+				this.tableSettings.max,
+				this.filter,
+				this.sort
+			)
 			.then((records) => {
-				console.log(records)
 				if (records) {
 					this.tableSettings.page = records.page
 					this.tableSettings.max = records.perPage
@@ -165,6 +172,11 @@ export class UsersComponent {
 
 	searchUpdate(formValue: { [key: string]: string | null }) {
 		this.filter = this.queryService.formatQueryAnd(formValue)
+		this.getResults()
+	}
+
+	sortUpdate(field: string, sortState: boolean) {
+		this.sort = this.queryService.formatSort(field, sortState)
 		this.getResults()
 	}
 
