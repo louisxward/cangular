@@ -37,7 +37,6 @@ import { ProfileComponent } from './Profile/profile/profile.component'
 import { SidebarComponent } from './Sidebar/sidebar/sidebar.component'
 import { UserFormComponent } from './UserDetails/components/user-form/user-form.component'
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component'
-import { UserTableComponent } from './Users/components/user-table/user-table.component'
 import { UsersComponent } from './Users/users/users.component'
 
 @NgModule({
@@ -48,7 +47,6 @@ import { UsersComponent } from './Users/users/users.component'
 		AboutComponent,
 		PageHeaderComponent,
 		UsersComponent,
-		UserTableComponent,
 		TableComponent,
 		UserDetailsComponent,
 		UserFormComponent,
