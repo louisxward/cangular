@@ -95,8 +95,22 @@ export class UserService {
 	}
 
 	async getResults(page: number, max: number, filter: string, sort: string) {
-		console.log('getResults()')
-		console.log('sort: ' + sort)
+		console.log('UserService.getResults()')
+		console.log(
+			'query: "' +
+				'page: ' +
+				page +
+				' ' +
+				'max: ' +
+				max +
+				' ' +
+				'filter: ' +
+				filter +
+				' ' +
+				'sort: ' +
+				sort +
+				'"'
+		)
 		try {
 			return await this.pb
 				.collection('users')

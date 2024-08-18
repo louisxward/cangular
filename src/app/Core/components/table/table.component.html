@@ -4,7 +4,8 @@
 			<th
 				*ngFor="let column of columns"
 				(click)="sortData(column)"
-				[style.width]="getColumnWidth(column)">
+				[style.width]="getColumnWidth(column)"
+				[style.cursor]="column.sortable ? 'pointer' : ''">
 				<!-- ToDo - fix this ^ -->
 				{{ column.header }}
 				<span *ngIf="column.sortable">{{
@@ -52,7 +53,9 @@
 				<div *ngIf="page == tableSettings.page" style="display: inline-block">
 					<b>{{ page }}</b>
 				</div>
-				<div *ngIf="page != tableSettings.page" style="display: inline-block">
+				<div
+					*ngIf="page != tableSettings.page"
+					style="display: inline-block; cursor: pointer">
 					{{ page }}
 				</div>
 				<div *ngIf="page != getPages().length" style="display: inline-block">,</div>

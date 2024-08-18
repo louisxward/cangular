@@ -159,25 +159,34 @@ export class UsersComponent {
 	}
 
 	pageSizeUpdate(pageSize: number) {
-		this.tableSettings.max = pageSize
-		this.getResults()
+		if (this.tableSettings.max != pageSize) {
+			this.tableSettings.max = pageSize
+			this.tableSettings.page = 1
+			this.getResults()
+		}
 	}
 
 	pageUpdate(page: number | null) {
-		if (page) {
+		if (page && this.tableSettings.page != page) {
 			this.tableSettings.page = page
 			this.getResults()
 		}
 	}
 
 	searchUpdate(formValue: { [key: string]: string | null }) {
-		this.filter = this.queryService.formatQueryAnd(formValue)
-		this.getResults()
+		const newFilter = this.queryService.formatQueryAnd(formValue)
+		if (this.filter != newFilter) {
+			this.filter = newFilter
+			this.getResults()
+		}
 	}
 
 	sortUpdate(field: string, sortState: boolean) {
-		this.sort = this.queryService.formatSort(field, sortState)
-		this.getResults()
+		const newSort = this.queryService.formatSort(field, sortState)
+		if (this.sort != newSort) {
+			this.sort = newSort
+			this.getResults()
+		}
 	}
 
 	searchReset() {

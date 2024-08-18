@@ -42,7 +42,9 @@ export class TableComponent<T> {
 			if (this.tableSettings.max != selectedValue) {
 				this.tableSettings.pageSizeUpdate(selectedValue)
 			}
-		} catch {}
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	getPages() {
@@ -54,21 +56,21 @@ export class TableComponent<T> {
 	}
 
 	sortData(column: Column<T>) {
-		console.log('sortData()')
 		let newSortState = false
 		if (column.sortState == null) {
 			newSortState = true
 		} else {
 			newSortState = !column.sortState
 		}
-		console.log('sortData() newSortStae: ' + newSortState)
 		if (column.sortable) {
 			try {
 				const field = String(column.field)
 				this.resetAllSortStates()
 				this.tableSettings.sortUpdate(field, newSortState)
 				column.sortState = newSortState
-			} catch {}
+			} catch (error) {
+				console.error(error)
+			}
 		}
 	}
 
