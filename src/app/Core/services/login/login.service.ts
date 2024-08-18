@@ -92,6 +92,7 @@ export class LoginService {
 		if (!force) {
 			this.notificationService.success('logged out')
 		} else {
+			console.error('login expired')
 			this.notificationService.error('login expired')
 		}
 		this.router.navigate(['/login'])

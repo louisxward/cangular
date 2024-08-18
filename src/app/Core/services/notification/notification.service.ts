@@ -7,6 +7,13 @@ const toastrOptions = {
 	easeTime: 500,
 }
 
+const toastrOptionsPersist = {
+	tapToDismiss: true,
+	positionClass: 'toast-bottom-right',
+	disableTimeOut: true,
+	easeTime: 500,
+}
+
 @Injectable()
 export class NotificationService {
 	constructor(private toastrService: ToastrService) {}
@@ -20,6 +27,6 @@ export class NotificationService {
 	}
 
 	error(message: string) {
-		this.toastrService.error(message, '', toastrOptions)
+		this.toastrService.error(message, '', toastrOptionsPersist)
 	}
 }
