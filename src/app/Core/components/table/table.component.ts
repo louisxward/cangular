@@ -1,18 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { Search, TableSettings } from 'src/app/Users/users/users.component'
-
-export interface Column<T> {
-	header: string
-	field: keyof T
-	sortable: boolean
-	sortState: boolean | null
-	width: number
-}
-
-export interface Action<T> {
-	label: string
-	action: (item: T) => void
-}
+import { Action, Column, Search, TableSettings } from 'src/app/Core/state/table'
 
 @Component({
 	selector: 'app-table',
@@ -74,8 +61,8 @@ export class TableComponent<T> {
 		}
 	}
 
-	searchSubmit(formValue: { [key: string]: string | null }) {
-		this.search.submit(formValue)
+	searchSubmit() {
+		this.search.submit(this.search.form.value)
 		this.search.form.markAsPristine()
 	}
 

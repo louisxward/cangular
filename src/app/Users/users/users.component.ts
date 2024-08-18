@@ -1,36 +1,15 @@
 import { Component } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
-import { Action, Column } from 'src/app/Core/components/table/table.component'
 import { QueryService } from 'src/app/Core/services/query/query.service'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
-
-export interface TableSettings {
-	max: number
-	size: number
-	page: number
-	pages: number
-	pageSizes: number[]
-	pageSizeUpdate: (pageSize: number) => void
-	pageUpdate: (page: number | null) => void
-	sortUpdate: (field: string, sortState: boolean) => void
-}
-
-export interface Search {
-	form: FormGroup
-	formConfigs: FormConfig[]
-	submit: (formValue: { [key: string]: string | null }) => void
-	reset: () => void
-}
-
-export interface FormConfig {
-	type: string
-	// label: string
-	name: string
-	placeholder: string
-	value: string | boolean
-	required: boolean
-}
+import {
+	Action,
+	Column,
+	FormConfig,
+	Search,
+	TableSettings,
+} from 'src/app/Core/state/table'
 
 @Component({
 	selector: 'app-users',
@@ -38,15 +17,17 @@ export interface FormConfig {
 	styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
+	tableSettings: TableSettings
 	columns: Column<UserList>[]
 	data: UserList[]
-	actions: Action<UserList>[] = [] // ToDo do this on all. make this a reusbale comp too?
-	tableSettings: TableSettings
-	showActions: boolean = false
 	search: Search
+	actions: Action<UserList>[] = [] // ToDo do this on all. make this a reusbale comp too?
+	showActions: boolean = false
+
 	loaded: boolean = false
 	filter: string = ''
 	sort: string = ''
+	defaultPagesSizes: number[] = [10, 25, 50, 100]
 
 	constructor(
 		private userService: UserService,
@@ -54,7 +35,32 @@ export class UsersComponent {
 		private queryService: QueryService,
 		private router: Router
 	) {
-		//column headers
+		this.createTableSettings()
+		this.createColumnHeaders()
+		this.createRowActions()
+		this.createSearch()
+	}
+
+	ngOnInit(): void {
+		this.getResults()
+	}
+
+	// Table Settings
+	createTableSettings() {
+		this.tableSettings = {
+			max: this.defaultPagesSizes[0],
+			size: 0,
+			page: 1,
+			pages: 1,
+			pageSizes: this.defaultPagesSizes,
+			pageSizeUpdate: (pageSize) => this.pageSizeUpdate(pageSize),
+			pageUpdate: (page) => this.pageUpdate(page),
+			sortUpdate: (field, sortState) => this.sortUpdate(field, sortState),
+		}
+	}
+
+	// Columns Headers
+	createColumnHeaders() {
 		this.columns = [
 			{ header: 'ID', field: 'id', sortable: true, sortState: null, width: 10 },
 			{
@@ -72,23 +78,18 @@ export class UsersComponent {
 				width: 0,
 			},
 		]
-		// row actions
+	}
+
+	// Row Actions
+	createRowActions() {
 		this.actions = [
 			{ label: 'View', action: (record: UserList) => this.view(record) },
 		]
 		this.showActions = this.actions.length > 0
-		// table settings ToDo alot of this can be defaulted in parent comp?
-		this.tableSettings = {
-			max: 10,
-			size: 0,
-			page: 1,
-			pages: 1,
-			pageSizes: [10, 25, 50, 100],
-			pageSizeUpdate: (pageSize) => this.pageSizeUpdate(pageSize),
-			pageUpdate: (page) => this.pageUpdate(page),
-			sortUpdate: (field, sortState) => this.sortUpdate(field, sortState),
-		}
-		// searchConfig
+	}
+
+	// Search
+	createSearch() {
 		const searchFormConfigs: FormConfig[] = [
 			{
 				type: 'text',
@@ -105,7 +106,7 @@ export class UsersComponent {
 				required: false,
 			},
 		]
-		const searchForm = this.initializeForm(searchFormConfigs)
+		const searchForm = this.createForm(searchFormConfigs)
 		this.search = {
 			form: searchForm,
 			formConfigs: searchFormConfigs,
@@ -114,7 +115,7 @@ export class UsersComponent {
 		}
 	}
 
-	initializeForm(formConfigs: FormConfig[]) {
+	createForm(formConfigs: FormConfig[]) {
 		const formGroup: Record<string, any[]> = {}
 		formConfigs.forEach((field) => {
 			formGroup[field.name] = [
@@ -122,7 +123,6 @@ export class UsersComponent {
 				field.required ? Validators.required : null,
 			]
 		})
-		// ToDo this is dep vvv
 		const temp = this.fb.group(formGroup, {
 			validator: this.atLeastOneFieldValidator,
 		})
@@ -138,10 +138,7 @@ export class UsersComponent {
 		}
 	}
 
-	ngOnInit(): void {
-		this.getResults()
-	}
-
+	// Results
 	async getResults() {
 		this.loaded = false
 		await this.userService
@@ -163,14 +160,7 @@ export class UsersComponent {
 		this.loaded = true
 	}
 
-	view(record: UserList) {
-		this.router.navigate(['users/', record.id])
-	}
-
-	create() {
-		this.router.navigate(['users/', 0])
-	}
-
+	// Table Update
 	pageSizeUpdate(pageSize: number) {
 		if (this.tableSettings.max != pageSize) {
 			this.tableSettings.max = pageSize
@@ -179,8 +169,8 @@ export class UsersComponent {
 		}
 	}
 
-	pageUpdate(page: number | null) {
-		if (page && this.tableSettings.page != page) {
+	pageUpdate(page: number) {
+		if (this.tableSettings.page != page) {
 			this.tableSettings.page = page
 			this.getResults()
 		}
@@ -207,5 +197,14 @@ export class UsersComponent {
 		this.search.form.reset()
 		this.filter = ''
 		this.getResults()
+	}
+
+	// Buttons
+	view(record: UserList) {
+		this.router.navigate(['users/', record.id])
+	}
+
+	create() {
+		this.router.navigate(['users/', 0])
 	}
 }

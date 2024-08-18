@@ -69,7 +69,7 @@
 </div>
 
 <div class="search">
-	<form [formGroup]="search.form" (ngSubmit)="searchSubmit(search.form.value)">
+	<form [formGroup]="search.form" (ngSubmit)="searchSubmit()">
 		<div *ngFor="let field of search.formConfigs" style="display: inline-block">
 			<div [ngSwitch]="field.type">
 				<input
@@ -77,18 +77,7 @@
 					[formControlName]="field.name"
 					[placeholder]="field.placeholder"
 					type="text" />
-				<!-- <input
-					*ngSwitchCase="'checkbox'"
-					[formControlName]="field.name"
-					type="checkbox" /> -->
 			</div>
-			<!-- <div
-				*ngIf="
-					search.searchForm.get(field.name)?.invalid &&
-					search.searchForm.get(field.name)?.touched
-				">
-				<small>{{ field.label }} is required</small>
-			</div> -->
 		</div>
 		<button type="submit" [disabled]="search.form.invalid || !search.form.dirty">
 			Submit
