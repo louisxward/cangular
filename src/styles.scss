@@ -102,31 +102,45 @@ button {
 	appearance: none;
 	border: none;
 	outline: none;
-	background: none;
-}
-
-.button {
 	background-color: var(--primary);
 	color: black;
 	font-weight: bold;
 	padding: 6px 8px;
+	height: 100%;
 }
-.button:hover {
+button:hover {
 	background-color: black;
 	color: var(--primary);
 }
-.button:disabled {
+button:disabled {
 	cursor: not-allowed;
 }
-
 .buttons {
 	display: flex;
 }
 .buttons-right {
-	display: inline-block;
 	float: right;
 }
 
+.altButton {
+	background-color: black;
+	color: var(--primary);
+}
+.altButton:hover {
+	background-color: var(--primary);
+	color: black;
+}
+.menu-toggle {
+	cursor: pointer;
+	appearance: none;
+	border: none;
+	outline: none;
+	background-color: black;
+	padding: 0;
+}
+.menu-toggle:hover {
+	color: var(--primary);
+}
 // Forms
 .form {
 	display: inline-block;

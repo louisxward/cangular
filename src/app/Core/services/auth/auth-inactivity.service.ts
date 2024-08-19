@@ -6,13 +6,12 @@ import { LoginService } from '../login/login.service'
 })
 export class AuthInactivityService {
 	constructor(private loginService: LoginService) {
-		this.loginService.onLoginChange().subscribe((e) => this.switchTimer(e)) //ToDo - What does this pass into switch timer?
+		this.loginService.onLoginChange().subscribe((e) => this.switchTimer(e))
 	}
 	private timeoutDuration = 5 * 60 * 1000 // 5 minutes in milliseconds
 	private timeout: any
 
 	private enableTimer() {
-		console.log('enableTimer')
 		if (!this.timeout) {
 			this.startTimer()
 			this.enableActivityListeners()
@@ -20,12 +19,10 @@ export class AuthInactivityService {
 	}
 
 	private switchTimer(enable: boolean) {
-		console.log('switchTimer')
 		enable ? this.enableTimer() : this.disableTimer()
 	}
 
 	private disableTimer() {
-		console.log('disableTimer')
 		if (this.timeout) {
 			clearTimeout(this.timeout)
 			this.timeout = null
@@ -34,14 +31,12 @@ export class AuthInactivityService {
 	}
 
 	private startTimer() {
-		console.log('startTimer')
 		this.timeout = setTimeout(() => {
 			this.logout()
 		}, this.timeoutDuration)
 	}
 
 	private resetTimer() {
-		console.log('resetTimer')
 		if (this.timeout) {
 			clearTimeout(this.timeout)
 			this.startTimer()
@@ -49,7 +44,6 @@ export class AuthInactivityService {
 	}
 
 	private logout() {
-		console.log('logout')
 		this.loginService.logout(true)
 	}
 

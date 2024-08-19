@@ -1,19 +1,11 @@
 import { Injectable } from '@angular/core'
-import { Router } from '@angular/router'
-import { Store } from '@ngxs/store'
-import { ApiService } from '../api/api.service'
 import { LoginService } from '../login/login.service'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthCheckService {
-	constructor(
-		private store: Store,
-		private router: Router,
-		private apiService: ApiService,
-		private loginService: LoginService
-	) {
+	constructor(private loginService: LoginService) {
 		this.loginService.onLoginChange().subscribe((e) => this.switchTimer(e))
 	}
 	private timeoutDuration = 1 * 60 * 1000

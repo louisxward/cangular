@@ -1,4 +1,14 @@
 <main class="users-page">
 	<app-page-header header="Users"></app-page-header>
-	<app-user-table></app-user-table>
+	<app-table
+		[loaded]="loaded"
+		[columns]="columns"
+		[data]="data"
+		[showActions]="showActions"
+		[actions]="actions"
+		[tableSettings]="tableSettings"
+		[search]="search"></app-table>
+	<div class="buttons-right">
+		<button (click)="create()">Create</button>
+	</div>
 </main>

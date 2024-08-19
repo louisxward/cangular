@@ -5,21 +5,19 @@
 			<h3>Loading...</h3>
 		</div>
 		<div *ngIf="loaded">
-			<div *ngIf="avatarUrl" class="avatarDisplay">
+			<div *ngIf="avatarUrl$ | async as avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl" title="Avatar" />
 			</div>
 			<div class="info">
-				<h3>{{ username }}</h3>
-				<div *ngIf="email">
-					<h5>{{ email }}</h5>
-				</div>
+				<h3>{{ username$ | async }}</h3>
+				<h5>{{ email$ | async }}</h5>
 			</div>
 			<div class="spacing"></div>
 			<app-avatar-upload></app-avatar-upload>
 			<div class="spacing"></div>
 			<div class="buttons">
 				<div>
-					<button class="button" (click)="logout()">Logout</button>
+					<button (click)="logout()">Logout</button>
 				</div>
 			</div>
 		</div>
