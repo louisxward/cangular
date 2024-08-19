@@ -1,8 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { ErrorRespose } from 'src/app/Core/services/error/error.service'
-import { LoadingBarService } from 'src/app/Core/services/loading-bar/loading-bar.service'
 import { UserService } from 'src/app/Core/services/user/user.service'
 import { User } from 'src/app/Core/state/user/user'
 
@@ -11,14 +10,13 @@ import { User } from 'src/app/Core/state/user/user'
 	templateUrl: './user-form.component.html',
 	styleUrls: ['./user-form.component.scss'],
 })
-export class UserFormComponent implements OnInit, OnDestroy {
+export class UserFormComponent implements OnInit {
 	form: FormGroup
 	responses: ErrorRespose[]
 
 	@Input('userDetails') userDetails: User
 
 	constructor(
-		private loadingBarService: LoadingBarService,
 		private fb: FormBuilder,
 		private router: Router,
 		private userService: UserService
@@ -29,10 +27,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.setupForm()
-	}
-
-	ngOnDestroy(): void {
-		this.loadingBarService.error()
 	}
 
 	// Form
@@ -129,7 +123,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 	}
 
 	createUser() {
-		this.loadingBarService.start()
 		this.userService.createUserPassword(this.form.value).then((e) => {
 			if (e instanceof Boolean) {
 				this.router.navigate(['users'])
@@ -137,7 +130,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 				this.responses = e
 				this.updateFormErrors()
 			}
-			this.loadingBarService.complete()
 		})
 	}
 }

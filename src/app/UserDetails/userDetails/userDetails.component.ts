@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Store } from '@ngxs/store'
 import { filter, map } from 'rxjs/operators'
@@ -13,7 +13,7 @@ import { User } from 'src/app/Core/state/user/user'
 	templateUrl: './userDetails.component.html',
 	styleUrls: ['./userDetails.component.scss'],
 })
-export class UserDetailsComponent implements OnInit, OnDestroy {
+export class UserDetailsComponent implements OnInit {
 	userDetailsId: string
 	found: boolean = false
 	avatarUrl: string | null = null
@@ -41,9 +41,6 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 	) {
 		const param = this.route.snapshot.paramMap.get('userId')
 		this.userDetailsId = param ? param : '0'
-	}
-	ngOnDestroy(): void {
-		throw new Error('Method not implemented.')
 	}
 
 	async ngOnInit(): Promise<void> {

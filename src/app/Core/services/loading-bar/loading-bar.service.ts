@@ -15,6 +15,10 @@ export class LoadingBarService {
 		this.loader = base.useRef()
 	}
 
+	onColourChange() {
+		return this.colour.asObservable()
+	}
+
 	start() {
 		this.colour.next(this.defaultColour)
 		this.loader.start()

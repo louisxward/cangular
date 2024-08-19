@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+import { LoadingBarService } from '../../services/loading-bar/loading-bar.service'
 
 @Component({
 	selector: 'app-loading-bar',
@@ -6,10 +7,8 @@ import { Component } from '@angular/core'
 	styleUrls: ['./loading-bar.component.scss'],
 })
 export class LoadingBarComponent {
-	defaultColour: string = '#FFFF00'
-	errorColour: string = '#FF0000'
 	colour: string
-	constructor() {
-		this.colour = this.defaultColour
+	constructor(private loadingBarService: LoadingBarService) {
+		this.loadingBarService.onColourChange().subscribe((e) => (this.colour = e))
 	}
 }
