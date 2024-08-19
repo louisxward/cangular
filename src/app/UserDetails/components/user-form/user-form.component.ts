@@ -13,6 +13,7 @@ import { User } from 'src/app/Core/state/user/user'
 export class UserFormComponent implements OnInit {
 	form: FormGroup
 	responses: ErrorRespose[]
+	usernameRegex: RegExp = /^[a-zA-Z0-9]$/
 
 	@Input('userDetails') userDetails: User
 
@@ -39,7 +40,8 @@ export class UserFormComponent implements OnInit {
 				Validators.compose([
 					Validators.required,
 					Validators.minLength(3),
-					Validators.maxLength(64),
+					Validators.maxLength(33),
+					Validators.pattern(this.usernameRegex),
 				])
 			)
 		)
@@ -87,6 +89,8 @@ export class UserFormComponent implements OnInit {
 		}
 	}
 
+	// Form Value Handlers
+	//Errors
 	updateFormErrors() {
 		for (let repsonse of this.responses) {
 			for (let formKey of repsonse.formKeys) {
@@ -96,6 +100,25 @@ export class UserFormComponent implements OnInit {
 					control.setValue(null)
 				}
 			}
+		}
+	}
+
+	// Username
+	validateKeyPress(event: KeyboardEvent) {
+		const inputChar = String.fromCharCode(event.keyCode)
+		if (!this.usernameRegex.test(inputChar)) {
+			event.preventDefault()
+		}
+	}
+
+	validatePaste(event: ClipboardEvent) {
+		const clipboardData = event.clipboardData
+		if (!clipboardData) {
+			return
+		}
+		const pastedText = clipboardData.getData('text')
+		if (!this.usernameRegex.test(pastedText)) {
+			event.preventDefault()
 		}
 	}
 

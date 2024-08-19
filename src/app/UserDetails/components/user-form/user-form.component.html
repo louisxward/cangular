@@ -3,6 +3,8 @@
 		id="username"
 		placeholder="Username"
 		formControlName="username"
+		(keypress)="validateKeyPress($event)"
+		(paste)="validatePaste($event)"
 		[ngClass]="
 			form.controls['username'].invalid &&
 			(form.controls['username'].dirty || form.controls['username'].touched)
