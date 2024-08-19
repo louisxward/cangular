@@ -4,7 +4,8 @@ import { Router } from '@angular/router'
 import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { ErrorRespose } from 'src/app/Core/services/error/error.service'
-import { User, UserService } from 'src/app/Core/services/user/user.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
+import { User } from 'src/app/Core/state/user/user'
 
 @Component({
 	selector: 'app-user-form',

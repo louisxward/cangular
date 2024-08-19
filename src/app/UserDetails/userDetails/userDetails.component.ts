@@ -6,8 +6,9 @@ import { Store } from '@ngxs/store'
 import { filter, map } from 'rxjs/operators'
 import { SocialService } from 'src/app/Core/services/social/social.service'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
-import { User, UserService } from 'src/app/Core/services/user/user.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
 import { AuthState } from 'src/app/Core/state/auth/auth.state'
+import { User } from 'src/app/Core/state/user/user'
 
 @Component({
 	selector: 'app-userDetails',

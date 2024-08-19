@@ -4,7 +4,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { FormService } from 'src/app/Core/services/form/form.service'
 import { QueryService } from 'src/app/Core/services/query/query.service'
-import { UserList, UserService } from 'src/app/Core/services/user/user.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
 import {
 	Action,
 	Column,
@@ -12,6 +12,7 @@ import {
 	Search,
 	TableSettings,
 } from 'src/app/Core/state/table/table'
+import { UserList } from 'src/app/Core/state/user/user'
 
 @Component({
 	selector: 'app-users',
