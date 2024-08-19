@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { RoleService } from 'src/app/Core/services/role/role.service'
+import { RoleGroup } from 'src/app/Core/state/role/role'
 import { UserRoleGroup } from 'src/app/Core/state/user/user'
 
 @Component({
@@ -17,5 +18,9 @@ export class UserRoleGroupsFormComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.userRoleGroups = await this.roleService.getUserRoleGroups(this.userId)
+	}
+
+	getEnumName(roleGroup: RoleGroup): string {
+		return RoleGroup[roleGroup]
 	}
 }
