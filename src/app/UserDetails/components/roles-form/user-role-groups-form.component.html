@@ -1,0 +1,8 @@
+<div class="user-role-groups" *ngIf="userRoleGroups">
+	<h3>Role Groups</h3>
+	<li>
+		<ul *ngFor="let userRoleGroup of userRoleGroups">
+			<li>{{ userRoleGroup.roleGroup }}</li>
+		</ul>
+	</li>
+</div>

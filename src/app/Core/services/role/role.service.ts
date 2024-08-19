@@ -16,17 +16,18 @@ export class RoleService {
 	}
 
 	async getUserRoleGroups(userId: string): Promise<UserRoleGroup[]> {
-		this.loadingBarService.start()
+		//this.loadingBarService.start()
+		const filter: string = 'user = "' + userId + '"'
 		return await this.pb
-			.collection('UserRoleGroup')
-			.getFullList<UserRoleGroup>({ filter: '' })
+			.collection('user_role_groups')
+			.getFullList<UserRoleGroup>({ filter: filter })
 			.then((e) => {
 				this.loadingBarService.complete()
 				return e
 			})
 			.catch((error) => {
 				console.error(error)
-				this.loadingBarService.error()
+				//this.loadingBarService.error()
 				return []
 			})
 	}

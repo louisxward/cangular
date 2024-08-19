@@ -29,6 +29,7 @@ import { LoadingBarService } from './Core/services/loading-bar/loading-bar.servi
 import { LoginService } from './Core/services/login/login.service'
 import { NotificationService } from './Core/services/notification/notification.service'
 import { QueryService } from './Core/services/query/query.service'
+import { RoleService } from './Core/services/role/role.service'
 import { SocialService } from './Core/services/social/social.service'
 import { UploadService } from './Core/services/upload/upload.service'
 import { UserService } from './Core/services/user/user.service'
@@ -38,6 +39,7 @@ import { LoginComponent } from './Login/login/login.component'
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component'
 import { AvatarUploadComponent } from './Profile/components/avatar-upload/avatar-upload.component'
 import { ProfileComponent } from './Profile/profile/profile.component'
+import { UserRoleGroupsFormComponent } from './UserDetails/components/roles-form/user-role-groups-form.component'
 import { UserFormComponent } from './UserDetails/components/user-form/user-form.component'
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component'
 import { UsersComponent } from './Users/users/users.component'
@@ -59,6 +61,7 @@ import { UsersComponent } from './Users/users/users.component'
 		LoginComponent,
 		LoginFormComponent,
 		PageNotFoundComponent,
+		UserRoleGroupsFormComponent,
 	],
 	imports: [
 		NgxsReduxDevtoolsPluginModule.forRoot(),
@@ -89,6 +92,7 @@ import { UsersComponent } from './Users/users/users.component'
 		QueryService,
 		ErrorService,
 		FormService,
+		RoleService,
 	],
 	bootstrap: [AppComponent],
 })
