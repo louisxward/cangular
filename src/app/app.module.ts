@@ -17,7 +17,9 @@ import { LoadingBarModule } from '@ngx-loading-bar/core'
 import { ToastrModule, ToastrService } from 'ngx-toastr'
 import { AboutComponent } from './About/about/about.component'
 import { AppComponent } from './app.component'
+import { LoadingBarComponent } from './Core/components/loading-bar/loading-bar.component'
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component'
+import { SidebarComponent } from './Core/components/sidebar/sidebar.component'
 import { TableComponent } from './Core/components/table/table.component'
 import { ApiService } from './Core/services/api/api.service'
 import { AuthGuardService } from './Core/services/auth/auth-guard.service'
@@ -35,7 +37,6 @@ import { LoginComponent } from './Login/login/login.component'
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component'
 import { AvatarUploadComponent } from './Profile/components/avatar-upload/avatar-upload.component'
 import { ProfileComponent } from './Profile/profile/profile.component'
-import { SidebarComponent } from './Sidebar/sidebar/sidebar.component'
 import { UserFormComponent } from './UserDetails/components/user-form/user-form.component'
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component'
 import { UsersComponent } from './Users/users/users.component'
@@ -45,6 +46,7 @@ import { UsersComponent } from './Users/users/users.component'
 		AppComponent,
 		HomeComponent,
 		SidebarComponent,
+		LoadingBarComponent,
 		AboutComponent,
 		PageHeaderComponent,
 		UsersComponent,

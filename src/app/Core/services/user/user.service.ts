@@ -13,7 +13,7 @@ export class UserService {
 	collection: string = 'users'
 
 	constructor(
-		private apiService: ApiService,
+		apiService: ApiService,
 		private errorService: ErrorService,
 		private loadingBarService: LoadingBarService
 	) {
