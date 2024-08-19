@@ -12,7 +12,7 @@ export class UserRoleGroupsFormComponent implements OnInit {
 	loaded: boolean = false
 	@Input() userId: string
 
-	userRoleGroups: UserRoleGroup[]
+	userRoleGroups: UserRoleGroup[] = []
 
 	constructor(private roleService: RoleService) {}
 
