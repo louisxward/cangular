@@ -6,7 +6,6 @@
 				(click)="sortData(column)"
 				[style.width]="getColumnWidth(column)"
 				[style.cursor]="column.sortable ? 'pointer' : ''">
-				<!-- ToDo - fix this ^ -->
 				{{ column.header }}
 				<span *ngIf="column.sortable">{{
 					column.sortState == true ? '↓' : column.sortState == false ? '↑' : '⇅'

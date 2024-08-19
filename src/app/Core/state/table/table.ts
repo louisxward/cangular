@@ -11,6 +11,7 @@ export interface TableSettings {
 	sortUpdate: (field: string, sortState: boolean) => void
 }
 
+// ToDo - Add regex validation if needed
 export interface Search {
 	form: FormGroup
 	formConfigs: FormConfig[]

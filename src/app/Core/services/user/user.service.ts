@@ -61,7 +61,7 @@ export class UserService {
 			.update<User>(userId, user)
 			.then(() => {
 				this.loadingBarService.error()
-				return new Boolean(true) // ToDo - Hmm - Not sure why this needs to be done. Dont think passing either value back is a good idea
+				return new Boolean(true) // Not sure why this needs to be done. Dont think passing either value back is a good idea
 			})
 			.catch((error) => {
 				console.error(error)
