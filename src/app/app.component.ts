@@ -22,6 +22,7 @@ export class AppComponent {
 		isDevMode()
 			? console.info('AppMode: DEVELOPMENT')
 			: console.info('AppMode: PRODUCTION')
+		console.log('AppVersion: ', require('../../package.json').version)
 		this.appRef.isStable.pipe(first((stable) => stable)).subscribe(() => {
 			this.store.dispatch(new User.AppLoaded())
 		})
