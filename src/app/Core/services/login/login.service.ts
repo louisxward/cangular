@@ -5,7 +5,13 @@ import PocketBase from 'pocketbase'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
-import { AuthState, Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import {
+	AuthState,
+	Login,
+	Logout,
+	UpdateRoleGroups,
+	User,
+} from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
 import { LoadingBarService } from '../loading-bar/loading-bar.service'
 import { UploadService } from '../upload/upload.service'
 
@@ -61,6 +67,11 @@ export class LoginService {
 				this.store.dispatch(
 					new Login({
 						record: authRecord,
+					})
+				)
+				this.store.dispatch(
+					new UpdateRoleGroups({
+						record: [],
 					})
 				)
 				this.setLastLoggedIn(authRecord.record.id)

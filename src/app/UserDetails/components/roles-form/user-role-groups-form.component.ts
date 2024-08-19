@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { RoleService } from 'src/app/Core/services/role/role.service'
 import { RoleGroup } from 'src/app/Core/state/role/role'
-import { UserRoleGroup } from 'src/app/Core/state/user/user'
 
 @Component({
 	selector: 'app-user-role-groups-form',
@@ -12,12 +11,12 @@ export class UserRoleGroupsFormComponent implements OnInit {
 	loaded: boolean = false
 	@Input() userId: string
 
-	userRoleGroups: UserRoleGroup[] = []
+	roleGroups: RoleGroup[] = []
 
 	constructor(private roleService: RoleService) {}
 
 	async ngOnInit(): Promise<void> {
-		this.userRoleGroups = await this.roleService.getUserRoleGroups(this.userId)
+		this.roleGroups = await this.roleService.getRoleGroups(this.userId)
 	}
 
 	getEnumName(roleGroup: RoleGroup): string {

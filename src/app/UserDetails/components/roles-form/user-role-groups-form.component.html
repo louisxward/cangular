@@ -1,8 +1,8 @@
-<div class="user-role-groups" *ngIf="userRoleGroups.length > 0">
+<div class="user-role-groups" *ngIf="roleGroups.length > 0">
 	<h3>Role Groups</h3>
 	<li>
-		<ul *ngFor="let userRoleGroup of userRoleGroups">
-			<li>{{ getEnumName(userRoleGroup.roleGroup) }}</li>
+		<ul *ngFor="let roleGroup of roleGroups">
+			<li>{{ getEnumName(roleGroup) }}</li>
 		</ul>
 	</li>
 </div>
