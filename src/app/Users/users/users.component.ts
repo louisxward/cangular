@@ -9,7 +9,7 @@ import {
 	FormConfig,
 	Search,
 	TableSettings,
-} from 'src/app/Core/state/table'
+} from 'src/app/Core/state/table/table'
 
 @Component({
 	selector: 'app-users',

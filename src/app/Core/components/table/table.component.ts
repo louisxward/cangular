@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core'
-import { Action, Column, Search, TableSettings } from 'src/app/Core/state/table'
+import {
+	Action,
+	Column,
+	Search,
+	TableSettings,
+} from 'src/app/Core/state/table/table'
 
 @Component({
 	selector: 'app-table',
