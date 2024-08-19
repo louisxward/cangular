@@ -16,7 +16,7 @@
 			</div>
 
 			<div *ngIf="lastLoggedIn" class="dataTimeDisplay">
-				<h2>{{ lastLoggedIn | date : 'short' : 'UTC' }}</h2>
+				<h2>{{ lastLoggedIn | date: 'short' : 'UTC' }}</h2>
 			</div>
 			<div class="social buttons" *ngIf="!currentUser && userDetailsId != '0'">
 				<button *ngIf="!followingId" (click)="followUser()">Follow</button>

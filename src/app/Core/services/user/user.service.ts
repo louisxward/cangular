@@ -8,7 +8,10 @@ import { ErrorService } from '../error/error.service'
 export class UserService {
 	pb: PocketBase
 
-	constructor(apiService: ApiService, private errorService: ErrorService) {
+	constructor(
+		apiService: ApiService,
+		private errorService: ErrorService
+	) {
 		this.pb = apiService.pb
 	}
 
