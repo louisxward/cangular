@@ -11,6 +11,7 @@ const toastrOptionsPersist = {
 	tapToDismiss: true,
 	positionClass: 'toast-bottom-right',
 	disableTimeOut: true,
+	closeButton: true,
 	easeTime: 500,
 }
 
