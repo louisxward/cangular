@@ -20,19 +20,17 @@ export class RoleService {
 	}
 
 	hasRoleGroup(roleGroup: RoleGroup): boolean {
-		const temp = RoleGroup.Admin
-		let roleGroups: RoleGroup[] = []
 		this.store
 			.select(AuthState.getRoleGroups)
 			.subscribe((e) => {
-				roleGroups = e
+				for (let userRoleGroup of e) {
+					if (userRoleGroup == roleGroup) {
+						return true
+					}
+				}
+				return false
 			})
 			.unsubscribe()
-		for (let userRoleGroup of roleGroups) {
-			if (userRoleGroup == temp) {
-				return true
-			}
-		}
 		return false
 	}
 

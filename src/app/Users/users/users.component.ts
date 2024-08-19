@@ -4,6 +4,7 @@ import { FormService } from 'src/app/Core/services/form/form.service'
 import { QueryService } from 'src/app/Core/services/query/query.service'
 import { RoleService } from 'src/app/Core/services/role/role.service'
 import { UserService } from 'src/app/Core/services/user/user.service'
+import { RoleGroup } from 'src/app/Core/state/role/role'
 import {
 	Action,
 	Column,
@@ -190,5 +191,10 @@ export class UsersComponent {
 
 	create() {
 		this.router.navigate(['users/', 0])
+	}
+
+	// Role
+	hasRoleGroup(): boolean {
+		return this.roleService.hasRoleGroup(RoleGroup.Admin)
 	}
 }
