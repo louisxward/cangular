@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { LoadingBarService } from '@ngx-loading-bar/core/loading-bar.service'
+import { LoadingBarService } from '@ngx-loading-bar/core'
 import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import PocketBase, { ClientResponseError } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
