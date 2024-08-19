@@ -1,40 +1,36 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
-import { LoadingBarService } from '@ngx-loading-bar/core'
-import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { ErrorRespose } from 'src/app/Core/services/error/error.service'
-import { User, UserService } from 'src/app/Core/services/user/user.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
+import { User } from 'src/app/Core/state/user/user'
 
 @Component({
 	selector: 'app-user-form',
 	templateUrl: './user-form.component.html',
 	styleUrls: ['./user-form.component.scss'],
 })
-export class UserFormComponent implements OnInit, OnDestroy {
-	loader: LoadingBarState
+export class UserFormComponent implements OnInit {
 	form: FormGroup
 	responses: ErrorRespose[]
+	usernameRegex: RegExp = /^[a-zA-Z0-9]$/
 
 	@Input('userDetails') userDetails: User
 
 	constructor(
-		private loadingBarService: LoadingBarService,
 		private fb: FormBuilder,
 		private router: Router,
 		private userService: UserService
 	) {
-		this.loader = this.loadingBarService.useRef()
 		this.form = this.fb.group({})
 		this.responses = []
 	}
-	ngOnDestroy(): void {
-		this.loader.stop
-	}
+
 	ngOnInit(): void {
 		this.setupForm()
 	}
 
+	// Form
 	setupForm() {
 		// Username
 		this.form.addControl(
@@ -44,7 +40,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
 				Validators.compose([
 					Validators.required,
 					Validators.minLength(3),
-					Validators.maxLength(64),
+					Validators.maxLength(33),
+					Validators.pattern(this.usernameRegex),
 				])
 			)
 		)
@@ -92,30 +89,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	submit() {
-		this.responses = []
-		if (this.userDetails.id == '0') {
-			this.createUser()
-		} else {
-			this.saveUser()
-		}
-	}
-
-	saveUser() {
-		this.loader.start()
-		this.userService
-			.updateUser(this.form.value, this.userDetails.id)
-			.then((e) => {
-				if (e instanceof Boolean) {
-					this.router.navigate(['users'])
-				} else {
-					this.responses = e
-					this.updateFormErrors()
-				}
-				this.loader.complete()
-			})
-	}
-
+	// Form Value Handlers
+	//Errors
 	updateFormErrors() {
 		for (let repsonse of this.responses) {
 			for (let formKey of repsonse.formKeys) {
@@ -128,8 +103,49 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// Username
+	validateKeyPress(event: KeyboardEvent) {
+		const inputChar = String.fromCharCode(event.keyCode)
+		if (!this.usernameRegex.test(inputChar)) {
+			event.preventDefault()
+		}
+	}
+
+	validatePaste(event: ClipboardEvent) {
+		const clipboardData = event.clipboardData
+		if (!clipboardData) {
+			return
+		}
+		const pastedText = clipboardData.getData('text')
+		if (!this.usernameRegex.test(pastedText)) {
+			event.preventDefault()
+		}
+	}
+
+	// Form Actions
+	submit() {
+		this.responses = []
+		if (this.userDetails.id == '0') {
+			this.createUser()
+		} else {
+			this.saveUser()
+		}
+	}
+
+	saveUser() {
+		this.userService
+			.updateUser(this.form.value, this.userDetails.id)
+			.then((e) => {
+				if (e instanceof Boolean) {
+					this.router.navigate(['users'])
+				} else {
+					this.responses = e
+					this.updateFormErrors()
+				}
+			})
+	}
+
 	createUser() {
-		this.loader.start()
 		this.userService.createUserPassword(this.form.value).then((e) => {
 			if (e instanceof Boolean) {
 				this.router.navigate(['users'])
@@ -137,7 +153,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 				this.responses = e
 				this.updateFormErrors()
 			}
-			this.loader.complete()
 		})
 	}
 }

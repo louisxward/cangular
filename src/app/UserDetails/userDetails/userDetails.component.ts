@@ -1,22 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { LoadingBarService } from '@ngx-loading-bar/core'
-import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { Store } from '@ngxs/store'
 import { filter, map } from 'rxjs/operators'
 import { SocialService } from 'src/app/Core/services/social/social.service'
 import { UploadService } from 'src/app/Core/services/upload/upload.service'
-import { User, UserService } from 'src/app/Core/services/user/user.service'
+import { UserService } from 'src/app/Core/services/user/user.service'
 import { AuthState } from 'src/app/Core/state/auth/auth.state'
+import { User } from 'src/app/Core/state/user/user'
 
 @Component({
 	selector: 'app-userDetails',
 	templateUrl: './userDetails.component.html',
 	styleUrls: ['./userDetails.component.scss'],
 })
-export class UserDetailsComponent implements OnInit, OnDestroy {
-	loader: LoadingBarState
-
+export class UserDetailsComponent implements OnInit {
 	userDetailsId: string
 	found: boolean = false
 	avatarUrl: string | null = null
@@ -36,19 +33,14 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	constructor(
-		private loadingBarService: LoadingBarService,
 		private route: ActivatedRoute,
 		private uploadService: UploadService,
 		private socialService: SocialService,
 		private userService: UserService,
 		private store: Store
 	) {
-		this.loader = this.loadingBarService.useRef()
 		const param = this.route.snapshot.paramMap.get('userId')
 		this.userDetailsId = param ? param : '0'
-	}
-	ngOnDestroy(): void {
-		this.loader.stop
 	}
 
 	async ngOnInit(): Promise<void> {
@@ -95,7 +87,6 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	followUser() {
-		this.loader.start()
 		this.socialService
 			.follow(this.currentUserId, this.userDetailsId)
 			.then((followingId) => {
@@ -107,25 +98,21 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 							this.mutuals = null != mutuals
 						})
 				}
-				this.loader.complete()
 			})
 	}
 
 	unfollowUser() {
 		if (null != this.followingId) {
-			this.loader.start()
 			this.socialService.unfollow(this.followingId).then((followingId) => {
 				this.followingId = followingId
 				if (!this.followingId) {
 					this.mutuals = false
 				}
-				this.loader.complete()
 			})
 		}
 	}
 
 	async getUser() {
-		this.loader.start()
 		return this.userService.getUser(this.userDetailsId).then((record) => {
 			if (record) {
 				this.userDetails = {
@@ -139,10 +126,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 					.then((url) => {
 						this.avatarUrl = url
 					})
-				this.loader.complete()
 				return true
 			}
-			this.loader.stop()
 			return false
 		})
 	}

@@ -1,0 +1,90 @@
+<table>
+	<thead>
+		<tr>
+			<th
+				*ngFor="let column of columns"
+				(click)="sortData(column)"
+				[style.width]="getColumnWidth(column)"
+				[style.cursor]="column.sortable ? 'pointer' : ''">
+				{{ column.header }}
+				<span *ngIf="column.sortable">{{
+					column.sortState == true ? '↓' : column.sortState == false ? '↑' : '⇅'
+				}}</span>
+			</th>
+			<th *ngIf="showActions" style="width: 10%; text-align: center">ACTIONS</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngIf="!loaded && tableSettings.size == 0">
+			<td>Loading...</td>
+		</tr>
+		<tr *ngIf="loaded && tableSettings.size == 0">
+			<td>No Results</td>
+		</tr>
+		<tr *ngFor="let row of data" class="data">
+			<td *ngFor="let column of columns">{{ row[column.field] }}</td>
+			<td *ngIf="showActions" style="padding: 0">
+				<button
+					class="altButton"
+					style="width: 100%"
+					*ngFor="let action of actions"
+					(click)="action.action(row)">
+					{{ action.label }}
+				</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="pagnation">
+	<div class="filter">
+		<h3>Size</h3>
+		<select (change)="updatePageSize($event)">
+			<option *ngFor="let pageSize of tableSettings.pageSizes" [value]="pageSize">
+				{{ pageSize }}
+			</option>
+		</select>
+	</div>
+	<div class="filter">
+		<h3>Page</h3>
+		<li>
+			<ul *ngFor="let page of getPages()" (click)="tableSettings.pageUpdate(page)">
+				<div *ngIf="page == tableSettings.page" style="display: inline-block">
+					<b>{{ page }}</b>
+				</div>
+				<div
+					*ngIf="page != tableSettings.page"
+					style="display: inline-block; cursor: pointer">
+					{{ page }}
+				</div>
+				<div *ngIf="page != getPages().length" style="display: inline-block">,</div>
+			</ul>
+		</li>
+	</div>
+	<div class="filter">
+		<h3>Results</h3>
+		{{ tableSettings.size }}
+	</div>
+</div>
+
+<div class="search">
+	<form [formGroup]="search.form" (ngSubmit)="searchSubmit()">
+		<div *ngFor="let field of search.formConfigs" style="display: inline-block">
+			<div [ngSwitch]="field.type">
+				<input
+					*ngSwitchCase="'text'"
+					[formControlName]="field.name"
+					[placeholder]="field.placeholder"
+					type="text" />
+			</div>
+		</div>
+		<button type="submit" [disabled]="search.form.invalid || !search.form.dirty">
+			Submit
+		</button>
+		<button
+			(click)="search.reset()"
+			[disabled]="search.form.invalid && !search.form.dirty">
+			Reset
+		</button>
+	</form>
+</div>

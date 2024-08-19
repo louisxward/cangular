@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 // States
 import { AuthState, UserState } from './Core/state'
 
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin'
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin'
 import { NgxsModule } from '@ngxs/store'
@@ -17,10 +17,15 @@ import { LoadingBarModule } from '@ngx-loading-bar/core'
 import { ToastrModule, ToastrService } from 'ngx-toastr'
 import { AboutComponent } from './About/about/about.component'
 import { AppComponent } from './app.component'
+import { LoadingBarComponent } from './Core/components/loading-bar/loading-bar.component'
 import { PageHeaderComponent } from './Core/components/page-header/page-header.component'
+import { SidebarComponent } from './Core/components/sidebar/sidebar.component'
+import { TableComponent } from './Core/components/table/table.component'
 import { ApiService } from './Core/services/api/api.service'
 import { AuthGuardService } from './Core/services/auth/auth-guard.service'
 import { ErrorService } from './Core/services/error/error.service'
+import { FormService } from './Core/services/form/form.service'
+import { LoadingBarService } from './Core/services/loading-bar/loading-bar.service'
 import { LoginService } from './Core/services/login/login.service'
 import { NotificationService } from './Core/services/notification/notification.service'
 import { QueryService } from './Core/services/query/query.service'
@@ -33,10 +38,8 @@ import { LoginComponent } from './Login/login/login.component'
 import { PageNotFoundComponent } from './PageNotFound/pageNotFound/pageNotFound.component'
 import { AvatarUploadComponent } from './Profile/components/avatar-upload/avatar-upload.component'
 import { ProfileComponent } from './Profile/profile/profile.component'
-import { SidebarComponent } from './Sidebar/sidebar/sidebar.component'
 import { UserFormComponent } from './UserDetails/components/user-form/user-form.component'
 import { UserDetailsComponent } from './UserDetails/userDetails/userDetails.component'
-import { UserTableComponent } from './Users/components/user-table/user-table.component'
 import { UsersComponent } from './Users/users/users.component'
 
 @NgModule({
@@ -44,10 +47,11 @@ import { UsersComponent } from './Users/users/users.component'
 		AppComponent,
 		HomeComponent,
 		SidebarComponent,
+		LoadingBarComponent,
 		AboutComponent,
 		PageHeaderComponent,
 		UsersComponent,
-		UserTableComponent,
+		TableComponent,
 		UserDetailsComponent,
 		UserFormComponent,
 		ProfileComponent,
@@ -66,6 +70,7 @@ import { UsersComponent } from './Users/users/users.component'
 		AppRoutingModule,
 		BrowserAnimationsModule,
 		NgbModule,
+		FormsModule,
 		ReactiveFormsModule,
 		ToastrModule.forRoot({ maxOpened: 5 }),
 		//LoadingBarRouterModule,
@@ -74,6 +79,7 @@ import { UsersComponent } from './Users/users/users.component'
 	providers: [
 		ApiService,
 		AuthGuardService,
+		LoadingBarService,
 		LoginService,
 		UserService,
 		NotificationService,
@@ -82,6 +88,7 @@ import { UsersComponent } from './Users/users/users.component'
 		SocialService,
 		QueryService,
 		ErrorService,
+		FormService,
 	],
 	bootstrap: [AppComponent],
 })

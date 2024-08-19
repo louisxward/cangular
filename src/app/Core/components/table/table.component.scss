@@ -2,16 +2,24 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	text-align: left;
+	font-size: 16px;
 }
 
 thead {
 	color: black;
 	background-color: var(--primary);
-	font-size: 20px;
+	user-select: none;
 }
 
 tbody {
-	font-size: 16px;
+}
+
+tr {
+	height: 40px;
+}
+
+tr {
+	height: 100%;
 }
 
 table td + td {
@@ -40,14 +48,14 @@ tr.data:last-child {
 th,
 td,
 .pagnation {
-	padding: 0.5rem;
+	padding: 0.25rem;
 }
 
 .pagnation {
 	width: 100%;
 	color: black;
 	background-color: var(--primary);
-	height: 21%;
+	user-select: none;
 }
 
 .filter {

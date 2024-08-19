@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { LoadingBarService } from '@ngx-loading-bar/core'
-import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
 import { AuthState, Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import { LoadingBarService } from '../loading-bar/loading-bar.service'
 import { UploadService } from '../upload/upload.service'
 
 @Injectable()
 export class LoginService {
 	pb: PocketBase
-	loader: LoadingBarState
 	loggedIn: BehaviorSubject<boolean>
 
 	constructor(
@@ -25,7 +23,6 @@ export class LoginService {
 		private uploadService: UploadService
 	) {
 		this.pb = this.apiService.pb
-		this.loader = this.loadingBarService.useRef()
 		this.store
 			.select(AuthState.isAuthenticated)
 			.subscribe((e) => {
@@ -36,7 +33,7 @@ export class LoginService {
 
 	async login(username: string, password: string): Promise<boolean> {
 		// ToDo - Tidy upppppp
-		this.loader.start()
+		this.loadingBarService.start()
 		const myPromise = this.pb
 			.collection('users')
 			.authWithPassword(username, password)
@@ -70,11 +67,11 @@ export class LoginService {
 				this.router.navigate(['/profile'])
 				this.notificationService.success('welcome ' + authRecord.record.username)
 				this.loggedIn.next(true)
-				this.loader.complete()
+				this.loadingBarService.complete()
 				return true
 			})
 			.catch(() => {
-				this.loader.stop()
+				this.loadingBarService.error()
 				return false
 			})
 	}
@@ -92,6 +89,7 @@ export class LoginService {
 		if (!force) {
 			this.notificationService.success('logged out')
 		} else {
+			console.error('login expired')
 			this.notificationService.error('login expired')
 		}
 		this.router.navigate(['/login'])
