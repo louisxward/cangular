@@ -16,6 +16,7 @@ export class UserFormComponent implements OnInit {
 	usernameRegex: RegExp = /^[a-zA-Z0-9]+$/
 
 	@Input('userDetails') userDetails: User
+	@Input('currentUser') currentUser: boolean = false
 
 	constructor(
 		private fb: FormBuilder,
@@ -86,6 +87,9 @@ export class UserFormComponent implements OnInit {
 		// If not new user
 		else {
 			this.form.controls['email'].disable()
+		}
+		if (!this.currentUser) {
+			this.form.disable()
 		}
 	}
 

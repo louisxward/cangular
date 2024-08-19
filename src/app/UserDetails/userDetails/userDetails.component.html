@@ -6,7 +6,9 @@
 		<div *ngIf="!found && !loaded"><h3>Loading...</h3></div>
 		<div *ngIf="!found && loaded"><h3>Not found</h3></div>
 		<div *ngIf="found && loaded">
-			<app-user-form [userDetails]="userDetails"></app-user-form>
+			<app-user-form
+				[userDetails]="userDetails"
+				[currentUser]="currentUser"></app-user-form>
 			<div *ngIf="avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl" title="Avatar" />
 			</div>
