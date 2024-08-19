@@ -13,7 +13,7 @@ import { User } from 'src/app/Core/state/user/user'
 export class UserFormComponent implements OnInit {
 	form: FormGroup
 	responses: ErrorRespose[]
-	usernameRegex: RegExp = /^[a-zA-Z0-9]$/
+	usernameRegex: RegExp = /^[a-zA-Z0-9]+$/
 
 	@Input('userDetails') userDetails: User
 
