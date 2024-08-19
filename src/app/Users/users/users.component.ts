@@ -26,9 +26,12 @@ export class UsersComponent {
 	showActions: boolean = false
 
 	loaded: boolean = false
-	filter: string = ''
-	sort: string = ''
+	filter: string
+	sort: string
+
 	defaultPagesSizes: number[] = [10, 25, 50, 100]
+	defaultFilter: string = ''
+	defaultSort: string = '+created' //ToDo not type safe at all
 
 	constructor(
 		private userService: UserService,
@@ -36,6 +39,8 @@ export class UsersComponent {
 		private router: Router,
 		private formService: FormService
 	) {
+		this.filter = this.defaultFilter
+		this.sort = this.defaultSort
 		this.createTableSettings()
 		this.createColumnHeaders()
 		this.createRowActions()
@@ -162,6 +167,7 @@ export class UsersComponent {
 	}
 
 	sortUpdate(field: string, sortState: boolean) {
+		//ToDo - think about allowing user to reset to default sort if this is created time or null
 		const newSort = this.queryService.formatSort(field, sortState)
 		if (this.sort != newSort) {
 			this.sort = newSort
@@ -171,7 +177,7 @@ export class UsersComponent {
 
 	searchReset() {
 		this.search.form.reset()
-		this.filter = ''
+		this.filter = this.defaultFilter
 		this.getResults()
 	}
 

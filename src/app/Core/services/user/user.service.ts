@@ -94,19 +94,19 @@ export class UserService {
 		this.loadingBarService.start()
 		console.info('UserService.getResults()')
 		console.info(
-			'query: "' +
+			'query: {' +
 				'page: ' +
 				page +
 				' ' +
-				'max: ' +
+				', max: ' +
 				max +
 				' ' +
-				'filter: ' +
+				', filter: "' +
 				filter +
-				' ' +
-				'sort: ' +
+				'" ' +
+				', sort: "' +
 				sort +
-				'"'
+				'"}'
 		)
 		try {
 			return await this.pb
