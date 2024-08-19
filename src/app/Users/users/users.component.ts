@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
+import { FormService } from 'src/app/Core/services/form/form.service'
 import { QueryService } from 'src/app/Core/services/query/query.service'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
 import {
@@ -21,7 +21,7 @@ export class UsersComponent {
 	columns: Column<UserList>[]
 	data: UserList[]
 	search: Search
-	actions: Action<UserList>[] = [] // ToDo do this on all. make this a reusbale comp too?
+	actions: Action<UserList>[] = []
 	showActions: boolean = false
 
 	loaded: boolean = false
@@ -31,9 +31,9 @@ export class UsersComponent {
 
 	constructor(
 		private userService: UserService,
-		private fb: FormBuilder,
 		private queryService: QueryService,
-		private router: Router
+		private router: Router,
+		private formService: FormService
 	) {
 		this.createTableSettings()
 		this.createColumnHeaders()
@@ -106,35 +106,11 @@ export class UsersComponent {
 				required: false,
 			},
 		]
-		const searchForm = this.createForm(searchFormConfigs)
 		this.search = {
-			form: searchForm,
+			form: this.formService.createSearchForm(searchFormConfigs),
 			formConfigs: searchFormConfigs,
 			submit: (formValue) => this.searchUpdate(formValue),
 			reset: () => this.searchReset(),
-		}
-	}
-
-	createForm(formConfigs: FormConfig[]) {
-		const formGroup: Record<string, any[]> = {}
-		formConfigs.forEach((field) => {
-			formGroup[field.name] = [
-				field.value || '',
-				field.required ? Validators.required : null,
-			]
-		})
-		const temp = this.fb.group(formGroup, {
-			validator: this.atLeastOneFieldValidator,
-		})
-		return temp
-	}
-
-	atLeastOneFieldValidator(formGroup: FormGroup) {
-		const controls = formGroup.controls
-		if (Object.values(controls).some((control) => control.value)) {
-			return null // valid
-		} else {
-			return { atLeastOneRequired: true } // invalid
 		}
 	}
 
@@ -177,7 +153,6 @@ export class UsersComponent {
 	}
 
 	searchUpdate(formValue: { [key: string]: string | null }) {
-		console.log('searchUpdate()')
 		const newFilter = this.queryService.formatQueryAnd(formValue)
 		if (this.filter != newFilter) {
 			this.filter = newFilter
