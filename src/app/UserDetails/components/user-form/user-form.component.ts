@@ -29,13 +29,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		this.form = this.fb.group({})
 		this.responses = []
 	}
-	ngOnDestroy(): void {
-		this.loader.stop
-	}
+
 	ngOnInit(): void {
 		this.setupForm()
 	}
 
+	ngOnDestroy(): void {
+		this.loader.stop
+	}
+
+	// Form
 	setupForm() {
 		// Username
 		this.form.addControl(
@@ -93,30 +96,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	submit() {
-		this.responses = []
-		if (this.userDetails.id == '0') {
-			this.createUser()
-		} else {
-			this.saveUser()
-		}
-	}
-
-	saveUser() {
-		this.loader.start()
-		this.userService
-			.updateUser(this.form.value, this.userDetails.id)
-			.then((e) => {
-				if (e instanceof Boolean) {
-					this.router.navigate(['users'])
-				} else {
-					this.responses = e
-					this.updateFormErrors()
-				}
-				this.loader.complete()
-			})
-	}
-
 	updateFormErrors() {
 		for (let repsonse of this.responses) {
 			for (let formKey of repsonse.formKeys) {
@@ -127,6 +106,29 @@ export class UserFormComponent implements OnInit, OnDestroy {
 				}
 			}
 		}
+	}
+
+	// Form Actions
+	submit() {
+		this.responses = []
+		if (this.userDetails.id == '0') {
+			this.createUser()
+		} else {
+			this.saveUser()
+		}
+	}
+
+	saveUser() {
+		this.userService
+			.updateUser(this.form.value, this.userDetails.id)
+			.then((e) => {
+				if (e instanceof Boolean) {
+					this.router.navigate(['users'])
+				} else {
+					this.responses = e
+					this.updateFormErrors()
+				}
+			})
 	}
 
 	createUser() {
