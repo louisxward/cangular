@@ -5,4 +5,11 @@ import { Component } from '@angular/core'
 	templateUrl: './loading-bar.component.html',
 	styleUrls: ['./loading-bar.component.scss'],
 })
-export class LoadingBarComponent {}
+export class LoadingBarComponent {
+	defaultColour: string = '#FFFF00'
+	errorColour: string = '#FF0000'
+	colour: string
+	constructor() {
+		this.colour = this.defaultColour
+	}
+}
