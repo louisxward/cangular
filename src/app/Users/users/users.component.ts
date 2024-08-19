@@ -1,5 +1,7 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
+import { LoadingBarService } from '@ngx-loading-bar/core'
+import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import { FormService } from 'src/app/Core/services/form/form.service'
 import { QueryService } from 'src/app/Core/services/query/query.service'
 import { UserList, UserService } from 'src/app/Core/services/user/user.service'
@@ -24,6 +26,7 @@ export class UsersComponent {
 	actions: Action<UserList>[] = []
 	showActions: boolean = false
 
+	loader: LoadingBarState
 	loaded: boolean = false
 	filter: string = ''
 	sort: string = ''
@@ -33,8 +36,10 @@ export class UsersComponent {
 		private userService: UserService,
 		private queryService: QueryService,
 		private router: Router,
-		private formService: FormService
+		private formService: FormService,
+		private loadingBarService: LoadingBarService
 	) {
+		this.loader = this.loadingBarService.useRef()
 		this.createTableSettings()
 		this.createColumnHeaders()
 		this.createRowActions()
@@ -117,6 +122,7 @@ export class UsersComponent {
 	// Results
 	async getResults() {
 		this.loaded = false
+		this.loader.start()
 		await this.userService
 			.getResults(
 				this.tableSettings.page,
@@ -133,6 +139,7 @@ export class UsersComponent {
 					this.data = records.items
 				}
 			})
+		this.loader.complete()
 		this.loaded = true
 	}
 
