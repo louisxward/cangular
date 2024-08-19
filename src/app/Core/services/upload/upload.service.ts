@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core'
-import { LoadingBarService } from '@ngx-loading-bar/core'
-import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
+import { LoadingBarService } from '../loading-bar/loading-bar.service'
 import { NotificationService } from '../notification/notification.service'
 
 @Injectable()
 export class UploadService {
 	pb: PocketBase
-	loader: LoadingBarState
 
 	constructor(
 		private notificationService: NotificationService,
@@ -16,7 +14,6 @@ export class UploadService {
 		private loadingBarService: LoadingBarService
 	) {
 		this.pb = this.apiService.pb
-		this.loader = this.loadingBarService.useRef()
 	}
 
 	async upload(
@@ -25,40 +22,40 @@ export class UploadService {
 		collection: string,
 		column: string
 	): Promise<string | null> {
-		this.loader.start()
+		this.loadingBarService.start()
 		const value = new FormData()
 		value.append(column, file)
 		return this.pb
 			.collection(collection)
 			.update(id, value)
 			.then((record) => {
-				this.loader.complete()
+				this.loadingBarService.complete()
 				this.notificationService.success('file uploaded')
 				return record[column]
 			})
 			.catch((error) => {
 				console.error(error)
-				this.loader.stop()
+				this.loadingBarService.error()
 				this.notificationService.error('file upload failed')
 				return null
 			})
 	}
 
 	async delete(id: string, collection: string, column: string) {
-		this.loader.start()
+		this.loadingBarService.start()
 		const value = new FormData()
 		value.append(column, '')
 		return this.pb
 			.collection(collection)
 			.update(id, value)
 			.then(() => {
-				this.loader.complete()
+				this.loadingBarService.complete()
 				this.notificationService.success('file deleted')
 				return true
 			})
 			.catch((error) => {
 				console.error(error)
-				this.loader.stop()
+				this.loadingBarService.error()
 				this.notificationService.error('file delete failed')
 				return false
 			})

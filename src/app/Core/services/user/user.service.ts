@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core'
-import { LoadingBarService } from '@ngx-loading-bar/core'
-import { LoadingBarState } from '@ngx-loading-bar/core/loading-bar.state'
 import PocketBase, { ClientResponseError } from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { User, UserList, UserPassword } from '../../state/user/user'
 import { ErrorService } from '../error/error.service'
+import { LoadingBarService } from '../loading-bar/loading-bar.service'
 
 @Injectable()
 export class UserService {
 	pb: PocketBase
-	loader: LoadingBarState
 	collection: string = 'users'
 
 	constructor(
@@ -18,38 +16,37 @@ export class UserService {
 		private loadingBarService: LoadingBarService
 	) {
 		this.pb = apiService.pb
-		this.loader = this.loadingBarService.useRef()
 	}
 
 	async createUser(user: User) {
-		this.loader.start()
+		this.loadingBarService.start()
 		try {
 			return await this.pb
 				.collection(this.collection)
 				.create<User>(user)
 				.then((e) => {
-					this.loader.complete()
+					this.loadingBarService.complete()
 					return e
 				})
 		} catch (error) {
 			console.error(error)
-			this.loader.stop()
+			this.loadingBarService.error()
 			return null
 		}
 	}
 
 	async createUserPassword(user: UserPassword) {
-		this.loader.start()
+		this.loadingBarService.start()
 		return await this.pb
 			.collection(this.collection)
 			.create(user)
 			.then(() => {
-				this.loader.complete()
+				this.loadingBarService.complete()
 				return new Boolean(true)
 			})
 			.catch((error) => {
 				console.error(error)
-				this.loader.stop()
+				this.loadingBarService.error()
 				if (error instanceof ClientResponseError) {
 					return this.errorService.parseError(error)
 				}
@@ -58,17 +55,17 @@ export class UserService {
 	}
 
 	async updateUser(user: User, userId: string) {
-		this.loader.start()
+		this.loadingBarService.start()
 		return await this.pb
 			.collection(this.collection)
 			.update<User>(userId, user)
 			.then(() => {
-				this.loader.complete()
+				this.loadingBarService.error()
 				return new Boolean(true) // ToDo - Hmm - Not sure why this needs to be done. Dont think passing either value back is a good idea
 			})
 			.catch((error) => {
 				console.error(error)
-				this.loader.stop()
+				this.loadingBarService.error()
 				if (error instanceof ClientResponseError) {
 					return this.errorService.parseError(error)
 				}
@@ -77,24 +74,24 @@ export class UserService {
 	}
 
 	async getUser(id: string) {
-		this.loader.start()
+		this.loadingBarService.start()
 		try {
 			return await this.pb
 				.collection(this.collection)
 				.getOne<User>(id, {})
 				.then((e) => {
-					this.loader.complete()
+					this.loadingBarService.complete()
 					return e
 				})
 		} catch (error) {
 			console.error(error)
-			this.loader.stop()
+			this.loadingBarService.error()
 			return null
 		}
 	}
 
 	async getResults(page: number, max: number, filter: string, sort: string) {
-		this.loader.start()
+		this.loadingBarService.start()
 		console.info('UserService.getResults()')
 		console.info(
 			'query: "' +
@@ -116,12 +113,12 @@ export class UserService {
 				.collection(this.collection)
 				.getList<UserList>(page, max, { filter: filter, sort: sort })
 				.then((e) => {
-					this.loader.complete()
+					this.loadingBarService.complete()
 					return e
 				})
 		} catch (error) {
 			console.error(error)
-			this.loader.stop()
+			this.loadingBarService.error()
 			return null
 		}
 	}
