@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 import { FormService } from 'src/app/Core/services/form/form.service'
 import { QueryService } from 'src/app/Core/services/query/query.service'
+import { RoleService } from 'src/app/Core/services/role/role.service'
 import { UserService } from 'src/app/Core/services/user/user.service'
 import {
 	Action,
@@ -37,7 +38,8 @@ export class UsersComponent {
 		private userService: UserService,
 		private queryService: QueryService,
 		private router: Router,
-		private formService: FormService
+		private formService: FormService,
+		private roleService: RoleService
 	) {
 		this.filter = this.defaultFilter
 		this.sort = this.defaultSort

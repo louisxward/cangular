@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core'
+import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
 import { ApiService } from 'src/app/Core/services/api/api.service'
+import { AuthState } from '../../state/auth/auth.state'
 import { RoleGroup } from '../../state/role/role'
 import { UserRoleGroup } from '../../state/user/user'
 import { LoadingBarService } from '../loading-bar/loading-bar.service'
@@ -11,9 +13,27 @@ export class RoleService {
 
 	constructor(
 		apiService: ApiService,
-		private loadingBarService: LoadingBarService
+		private loadingBarService: LoadingBarService,
+		private store: Store
 	) {
 		this.pb = apiService.pb
+	}
+
+	hasRoleGroup(roleGroup: RoleGroup): boolean {
+		const temp = RoleGroup.Admin
+		let roleGroups: RoleGroup[] = []
+		this.store
+			.select(AuthState.getRoleGroups)
+			.subscribe((e) => {
+				roleGroups = e
+			})
+			.unsubscribe()
+		for (let userRoleGroup of roleGroups) {
+			if (userRoleGroup == temp) {
+				return true
+			}
+		}
+		return false
 	}
 
 	// ToDo - Can be removed. only need the rolegroup not the whole record

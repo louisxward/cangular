@@ -52,13 +52,8 @@ export class AuthState {
 	}
 
 	@Selector()
-	static hasRoleGroup(state: AuthStateModel, roleGroup: RoleGroup): boolean {
-		for (let userRoleGroup of state.roleGroups) {
-			if (userRoleGroup == roleGroup) {
-				return true
-			}
-		}
-		return false
+	static getRoleGroups(state: AuthStateModel): RoleGroup[] {
+		return state.roleGroups
 	}
 
 	// Actions
