@@ -9,10 +9,7 @@
 		[tableSettings]="tableSettings"
 		[search]="search"></app-table>
 	<div class="buttons-right">
-		{{ hasRoleGroupBool }}
-		<div *ngIf="hasRoleGroup2">
-			{{ hasRoleGroup2 }}
-		</div>
+		{{ hasCreateRoleGroup }}
 		<button (click)="create()">Create</button>
 	</div>
 </main>

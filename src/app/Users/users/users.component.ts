@@ -35,6 +35,11 @@ export class UsersComponent {
 	defaultFilter: string = ''
 	defaultSort: string = '+created' //ToDo not type safe at all
 
+	// ToDo not sure on this, was thinking inline html roles but think it makes more sense to do it here. still a better way to do it though
+	// Roles
+	createRoleGroup: RoleGroup = RoleGroup.Admin
+	hasCreateRoleGroup: boolean = false
+
 	constructor(
 		private userService: UserService,
 		private queryService: QueryService,
@@ -50,8 +55,10 @@ export class UsersComponent {
 		this.createSearch()
 	}
 
-	ngOnInit(): void {
-		this.hasRoleGroup() // ToDo remove
+	async ngOnInit(): Promise<void> {
+		this.hasCreateRoleGroup = await this.roleService.hasRoleGroup(
+			this.createRoleGroup
+		)
 		this.getResults()
 	}
 
@@ -192,20 +199,5 @@ export class UsersComponent {
 
 	create() {
 		this.router.navigate(['users/', 0])
-	}
-
-	// Role
-	hasRoleGroupBool: boolean
-
-	hasRoleGroup() {
-		console.log('hasRoleGroup()1')
-		this.roleService
-			.hasRoleGroup(RoleGroup.Admin)
-			.then((e) => (this.hasRoleGroupBool = e))
-	}
-
-	async hasRoleGroup2(): Promise<boolean> {
-		console.log('hasRoleGroup2()1')
-		return await this.roleService.hasRoleGroup(RoleGroup.Admin)
 	}
 }
