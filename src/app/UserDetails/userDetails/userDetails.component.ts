@@ -113,7 +113,7 @@ export class UserDetailsComponent implements OnInit {
 	}
 
 	async getUser() {
-		return this.userService.getUser(this.userDetailsId).then((record) => {
+		return await this.userService.getUser(this.userDetailsId).then((record) => {
 			if (record) {
 				this.userDetails = {
 					id: record.id,
