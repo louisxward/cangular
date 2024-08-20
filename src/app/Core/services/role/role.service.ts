@@ -21,7 +21,6 @@ export class RoleService {
 	}
 
 	async hasRoleGroup(roleGroup: RoleGroup): Promise<boolean> {
-		console.log('hasRoleGroup()2')
 		return await firstValueFrom(this.store.select(AuthState.getRoleGroups))
 			.then((e) => {
 				for (let userRoleGroup of e) {
