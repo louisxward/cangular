@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Action, Selector, State, StateContext } from '@ngxs/store'
 import { RecordAuthResponse } from 'pocketbase'
+import { RoleGroup } from '../role/role'
 
 // Define actions
 export class Login {
@@ -12,11 +13,17 @@ export class Logout {
 	static readonly type = '[Auth] Logout'
 }
 
+export class UpdateRoleGroups {
+	static readonly type = '[Auth] Update Role Groups'
+	constructor(public payload: { record: RoleGroup[] }) {}
+}
+
 // Define the state model
 export interface AuthStateModel {
 	id: string | null
 	token: string | null
 	isAuthenticated: boolean
+	roleGroups: RoleGroup[]
 }
 
 // Define the default state
@@ -24,6 +31,7 @@ const defaults: AuthStateModel = {
 	id: null,
 	token: null,
 	isAuthenticated: false,
+	roleGroups: [],
 }
 
 @State<AuthStateModel>({
@@ -43,6 +51,12 @@ export class AuthState {
 		return state.id
 	}
 
+	@Selector()
+	static getRoleGroups(state: AuthStateModel): RoleGroup[] {
+		console.log('getRoleGroups()')
+		return state.roleGroups
+	}
+
 	// Actions
 	@Action(Login)
 	login(ctx: StateContext<AuthStateModel>, action: Login) {
@@ -57,5 +71,12 @@ export class AuthState {
 	@Action(Logout)
 	logout(ctx: StateContext<AuthStateModel>) {
 		ctx.setState(defaults)
+	}
+
+	@Action(UpdateRoleGroups)
+	updateRoleGroups(ctx: StateContext<AuthStateModel>, action: UpdateRoleGroups) {
+		ctx.patchState({
+			roleGroups: action.payload.record,
+		})
 	}
 }

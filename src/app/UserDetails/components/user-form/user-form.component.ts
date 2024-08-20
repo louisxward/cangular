@@ -2,7 +2,9 @@ import { Component, Input, OnInit } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { ErrorRespose } from 'src/app/Core/services/error/error.service'
+import { RoleService } from 'src/app/Core/services/role/role.service'
 import { UserService } from 'src/app/Core/services/user/user.service'
+import { RoleGroup } from 'src/app/Core/state/role/role'
 import { User } from 'src/app/Core/state/user/user'
 
 @Component({
@@ -12,26 +14,35 @@ import { User } from 'src/app/Core/state/user/user'
 })
 export class UserFormComponent implements OnInit {
 	form: FormGroup
-	responses: ErrorRespose[]
+	responses: ErrorRespose[] = []
 	usernameRegex: RegExp = /^[a-zA-Z0-9]+$/
 
 	@Input('userDetails') userDetails: User
+	@Input('currentUser') currentUser: boolean = false
+
+	overrideSaveRoleGroup: RoleGroup = RoleGroup.Admin
+	hasOverrideSaveRoleGroup: boolean = false
+
+	loaded: boolean = false
 
 	constructor(
 		private fb: FormBuilder,
 		private router: Router,
-		private userService: UserService
-	) {
-		this.form = this.fb.group({})
-		this.responses = []
-	}
+		private userService: UserService,
+		private roleService: RoleService
+	) {}
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
+		this.hasOverrideSaveRoleGroup = await this.roleService.hasRoleGroup(
+			this.overrideSaveRoleGroup
+		)
 		this.setupForm()
+		this.loaded = true
 	}
 
 	// Form
 	setupForm() {
+		this.form = new FormGroup({})
 		// Username
 		this.form.addControl(
 			'username',
@@ -86,6 +97,9 @@ export class UserFormComponent implements OnInit {
 		// If not new user
 		else {
 			this.form.controls['email'].disable()
+		}
+		if (!this.currentUser && !this.hasOverrideSaveRoleGroup) {
+			this.form.disable()
 		}
 	}
 

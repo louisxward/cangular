@@ -1,60 +1,62 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="form">
-	<input
-		id="username"
-		placeholder="Username"
-		formControlName="username"
-		(keypress)="validateKeyPress($event)"
-		(paste)="validatePaste($event)"
-		[ngClass]="
-			form.controls['username'].invalid &&
-			(form.controls['username'].dirty || form.controls['username'].touched)
-				? 'formError'
-				: ''
-		" />
-	<input
-		id="email"
-		placeholder="Email"
-		formControlName="email"
-		type="email"
-		[ngClass]="
-			form.controls['email'].invalid &&
-			(form.controls['email'].dirty || form.controls['email'].touched)
-				? 'formError'
-				: ''
-		" />
-	<input
-		id="password"
-		placeholder="Password"
-		formControlName="password"
-		*ngIf="form.controls['password']"
-		type="password"
-		[ngClass]="
-			form.controls['password'].invalid &&
-			(form.controls['password'].dirty || form.controls['password'].touched)
-				? 'formError'
-				: ''
-		" />
-	<input
-		id="passwordConfirm"
-		placeholder="Confirm Password"
-		formControlName="passwordConfirm"
-		*ngIf="form.controls['passwordConfirm']"
-		type="password"
-		[ngClass]="
-			form.controls['passwordConfirm'].invalid &&
-			(form.controls['passwordConfirm'].dirty ||
-				form.controls['passwordConfirm'].touched)
-				? 'formError'
-				: ''
-		" />
-	<br />
-	<button
-		type="submit"
-		*ngIf="form.status != 'DISABLED'"
-		[disabled]="!form.valid || (form.valid && !form.dirty)">
-		{{ userDetails.id == '0' ? 'Create' : 'Save' }}
-	</button>
-	<div class="formMessage">
-		<h3 *ngFor="let response of responses">{{ response.response }}</h3>
-	</div>
-</form>
+<div *ngIf="loaded" class="form">
+	<form [formGroup]="form" (ngSubmit)="submit()">
+		<input
+			id="username"
+			placeholder="Username"
+			formControlName="username"
+			(keypress)="validateKeyPress($event)"
+			(paste)="validatePaste($event)"
+			[ngClass]="
+				form.controls['username'].invalid &&
+				(form.controls['username'].dirty || form.controls['username'].touched)
+					? 'formError'
+					: ''
+			" />
+		<input
+			id="email"
+			placeholder="Email"
+			formControlName="email"
+			type="email"
+			[ngClass]="
+				form.controls['email'].invalid &&
+				(form.controls['email'].dirty || form.controls['email'].touched)
+					? 'formError'
+					: ''
+			" />
+		<input
+			id="password"
+			placeholder="Password"
+			formControlName="password"
+			*ngIf="form.controls['password']"
+			type="password"
+			[ngClass]="
+				form.controls['password'].invalid &&
+				(form.controls['password'].dirty || form.controls['password'].touched)
+					? 'formError'
+					: ''
+			" />
+		<input
+			id="passwordConfirm"
+			placeholder="Confirm Password"
+			formControlName="passwordConfirm"
+			*ngIf="form.controls['passwordConfirm']"
+			type="password"
+			[ngClass]="
+				form.controls['passwordConfirm'].invalid &&
+				(form.controls['passwordConfirm'].dirty ||
+					form.controls['passwordConfirm'].touched)
+					? 'formError'
+					: ''
+			" />
+		<br />
+		<button
+			type="submit"
+			*ngIf="form.status != 'DISABLED'"
+			[disabled]="!form.valid || (form.valid && !form.dirty)">
+			{{ userDetails.id == '0' ? 'Create' : 'Save' }}
+		</button>
+		<div class="formMessage">
+			<h3 *ngFor="let response of responses">{{ response.response }}</h3>
+		</div>
+	</form>
+</div>
