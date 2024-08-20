@@ -70,7 +70,7 @@ export class UserDetailsComponent implements OnInit {
 	async checkSocial() {
 		if (!this.currentUser) {
 			// check if authd user follows this user
-			this.socialService
+			await this.socialService
 				.checkFollowing(this.currentUserId, this.userDetailsId)
 				.then((e) => {
 					this.followingId = e
@@ -113,7 +113,7 @@ export class UserDetailsComponent implements OnInit {
 	}
 
 	async getUser() {
-		return this.userService.getUser(this.userDetailsId).then((record) => {
+		return await this.userService.getUser(this.userDetailsId).then((record) => {
 			if (record) {
 				this.userDetails = {
 					id: record.id,

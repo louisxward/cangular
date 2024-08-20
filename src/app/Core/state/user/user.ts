@@ -1,3 +1,5 @@
+import { RoleGroup } from '../role/role'
+
 export interface User {
 	//ToDo - Read 'https://stackoverflow.com/questions/12789231/class-type-check-in-typescript'
 	id: string
@@ -18,4 +20,9 @@ export interface UserList {
 	id: string
 	username: string
 	email: string | null
+}
+
+export interface UserRoleGroup {
+	userId: string
+	roleGroup: RoleGroup
 }

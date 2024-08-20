@@ -5,8 +5,16 @@ import PocketBase from 'pocketbase'
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
-import { AuthState, Login, Logout, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import {
+	AuthState,
+	Login,
+	Logout,
+	UpdateRoleGroups,
+	User,
+} from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import { RoleGroup } from '../../state/role/role'
 import { LoadingBarService } from '../loading-bar/loading-bar.service'
+import { RoleService } from '../role/role.service'
 import { UploadService } from '../upload/upload.service'
 
 @Injectable()
@@ -20,7 +28,8 @@ export class LoginService {
 		private notificationService: NotificationService,
 		private apiService: ApiService,
 		private loadingBarService: LoadingBarService,
-		private uploadService: UploadService
+		private uploadService: UploadService,
+		private roleService: RoleService
 	) {
 		this.pb = this.apiService.pb
 		this.store
@@ -61,6 +70,15 @@ export class LoginService {
 				this.store.dispatch(
 					new Login({
 						record: authRecord,
+					})
+				)
+				const roleGroups: RoleGroup[] = await this.roleService.getRoleGroups(
+					authRecord.record.id
+				)
+				console.log('roleGroups: ' + roleGroups)
+				this.store.dispatch(
+					new UpdateRoleGroups({
+						record: roleGroups,
 					})
 				)
 				this.setLastLoggedIn(authRecord.record.id)

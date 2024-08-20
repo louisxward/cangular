@@ -6,7 +6,9 @@
 		<div *ngIf="!found && !loaded"><h3>Loading...</h3></div>
 		<div *ngIf="!found && loaded"><h3>Not found</h3></div>
 		<div *ngIf="found && loaded">
-			<app-user-form [userDetails]="userDetails"></app-user-form>
+			<app-user-form
+				[userDetails]="userDetails"
+				[currentUser]="currentUser"></app-user-form>
 			<div *ngIf="avatarUrl" class="avatarDisplay">
 				<img [src]="avatarUrl" title="Avatar" />
 			</div>
@@ -16,12 +18,14 @@
 			</div>
 
 			<div *ngIf="lastLoggedIn" class="dataTimeDisplay">
-				<h2>{{ lastLoggedIn | date: 'short' : 'UTC' }}</h2>
+				<h2>{{ lastLoggedIn | date : 'short' : 'UTC' }}</h2>
 			</div>
 			<div class="social buttons" *ngIf="!currentUser && userDetailsId != '0'">
 				<button *ngIf="!followingId" (click)="followUser()">Follow</button>
 				<button *ngIf="followingId" (click)="unfollowUser()">Unfollow</button>
 			</div>
+			<!-- <app-user-role-groups-form
+				[userId]="userDetailsId"></app-user-role-groups-form> -->
 		</div>
 	</div>
 </main>
