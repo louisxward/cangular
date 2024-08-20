@@ -53,6 +53,7 @@ export class AuthState {
 
 	@Selector()
 	static getRoleGroups(state: AuthStateModel): RoleGroup[] {
+		console.log('getRoleGroups()')
 		return state.roleGroups
 	}
 

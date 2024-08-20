@@ -51,6 +51,7 @@ export class UsersComponent {
 	}
 
 	ngOnInit(): void {
+		this.hasRoleGroup() // ToDo remove
 		this.getResults()
 	}
 
@@ -194,7 +195,17 @@ export class UsersComponent {
 	}
 
 	// Role
-	hasRoleGroup(): boolean {
-		return this.roleService.hasRoleGroup(RoleGroup.Admin)
+	hasRoleGroupBool: boolean
+
+	hasRoleGroup() {
+		console.log('hasRoleGroup()1')
+		this.roleService
+			.hasRoleGroup(RoleGroup.Admin)
+			.then((e) => (this.hasRoleGroupBool = e))
+	}
+
+	async hasRoleGroup2(): Promise<boolean> {
+		console.log('hasRoleGroup2()1')
+		return await this.roleService.hasRoleGroup(RoleGroup.Admin)
 	}
 }

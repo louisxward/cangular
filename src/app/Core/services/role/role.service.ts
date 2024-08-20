@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Store } from '@ngxs/store'
 import PocketBase from 'pocketbase'
+import { firstValueFrom } from 'rxjs'
 import { ApiService } from 'src/app/Core/services/api/api.service'
 import { AuthState } from '../../state/auth/auth.state'
 import { RoleGroup } from '../../state/role/role'
@@ -19,10 +20,10 @@ export class RoleService {
 		this.pb = apiService.pb
 	}
 
-	hasRoleGroup(roleGroup: RoleGroup): boolean {
-		this.store
-			.select(AuthState.getRoleGroups)
-			.subscribe((e) => {
+	async hasRoleGroup(roleGroup: RoleGroup): Promise<boolean> {
+		console.log('hasRoleGroup()2')
+		return await firstValueFrom(this.store.select(AuthState.getRoleGroups))
+			.then((e) => {
 				for (let userRoleGroup of e) {
 					if (userRoleGroup == roleGroup) {
 						return true
@@ -30,8 +31,10 @@ export class RoleService {
 				}
 				return false
 			})
-			.unsubscribe()
-		return false
+			.catch((error) => {
+				console.error(error)
+				return false
+			})
 	}
 
 	// ToDo - Can be removed. only need the rolegroup not the whole record
