@@ -75,7 +75,6 @@ export class LoginService {
 				const roleGroups: RoleGroup[] = await this.roleService.getRoleGroups(
 					authRecord.record.id
 				)
-				console.log('roleGroups: ' + roleGroups)
 				this.store.dispatch(
 					new UpdateRoleGroups({
 						record: roleGroups,
@@ -134,8 +133,8 @@ export class LoginService {
 	}
 
 	testAuth() {
-		console.log(this.pb.authStore.isValid)
-		console.log(this.pb.authStore.token)
-		console.log(this.pb.authStore.model)
+		console.info(this.pb.authStore.isValid)
+		console.info(this.pb.authStore.token)
+		console.info(this.pb.authStore.model)
 	}
 }
