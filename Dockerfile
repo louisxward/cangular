@@ -14,7 +14,7 @@ RUN npm run build --configuration=production;
 FROM nginx:alpine
 
 # Copy custom Nginx config ToDo - Cannot tell if this is working
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+#COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the static website files to the appropriate directory
 COPY --from=build app/dist/cangular /usr/share/nginx/html
