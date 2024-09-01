@@ -3,7 +3,7 @@ FROM node:18 AS build
 
 WORKDIR /app
 
-COPY ../../package*.json ./
+COPY package*.json ./
 RUN npm install
 
 COPY . .
@@ -12,6 +12,7 @@ RUN npm run build --configuration=production;
 
 # Step 2: Serve the app with Nginx
 FROM nginx:alpine
+
 
 # Copy the static website files to the appropriate directory
 COPY --from=build app/dist/cangular /usr/share/nginx/html
