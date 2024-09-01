@@ -18,3 +18,5 @@ services:
   build:
    context: ../backend
    dockerfile: Dockerfile
+  volumes:
+   - ../../../data:/pb/pb_data
