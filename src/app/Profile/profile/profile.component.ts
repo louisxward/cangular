@@ -20,7 +20,10 @@ export class ProfileComponent implements OnInit {
 
 	loaded = false
 
-	constructor(private store: Store, private loginService: LoginService) {}
+	constructor(
+		private store: Store,
+		private loginService: LoginService
+	) {}
 
 	async ngOnInit(): Promise<void> {
 		const userId$ = this.store.select(AuthState.getId).pipe(
