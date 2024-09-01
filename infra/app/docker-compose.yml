@@ -11,7 +11,7 @@ services:
    - backend
  frontend:
   build:
-   context: ../frontend
+   context: ../../
    dockerfile: Dockerfile
  backend:
   build:
