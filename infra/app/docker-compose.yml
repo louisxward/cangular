@@ -6,6 +6,7 @@ services:
    - '80:80'
   volumes:
    - ./nginx.conf:/etc/nginx/nginx.conf:ro
+   - ../../../static:/opt/static:ro
   depends_on:
    - frontend
    - backend
