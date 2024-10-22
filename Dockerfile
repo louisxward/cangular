@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN ng build --configuration=production;
+RUN ng build --configuration=production
 
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
