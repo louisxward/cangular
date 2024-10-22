@@ -1,28 +1,23 @@
-version: '3.7'
-
 services:
  nginx:
+  container_name: nginx
   image: nginx:alpine
   ports:
    - '80:80'
   volumes:
    - ./nginx.conf:/etc/nginx/conf.d/default.conf
    - ../../../static:/opt/static
-  depends_on:
-   - frontend
-   - backend
+
  frontend:
-  build:
-   context: ../../
-   dockerfile: Dockerfile
+  container_name: frontend
+  build: ../../
   ports:
    - '4200:4200'
 
  backend:
-  build:
-   context: ../backend
-   dockerfile: Dockerfile
-  volumes:
-   - ../../../data:/pb/pb_data
+  container_name: backend
+  build: ../backend
   ports:
    - '8090:8090'
+  volumes:
+   - ../../../data:/pb/pb_data
