@@ -11,7 +11,7 @@ COPY . .
 RUN ng build --configuration=production
 
 FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html/frontend
+COPY --from=builder /app/dist/cangular /usr/share/nginx/html/frontend
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 4200
