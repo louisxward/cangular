@@ -13,3 +13,9 @@ RUN ng build --configuration=production
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html/frontend
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 4200
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
