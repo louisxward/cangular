@@ -28,8 +28,10 @@ services:
   ports:
    - '80:80'
   depends_on:
-   - frontend
-   - backend
+   frontend:
+    condition: service_completed_successfully
+   backend:
+    condition: service_completed_successfully
   networks:
    - app-network
 
