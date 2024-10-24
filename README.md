@@ -1,8 +1,8 @@
 # Cangular
 
-Project version 0.8.9
+Project version 0.9.0
 <br>
-Angular version 15.0.4
+Angular version 15.0.0
 <br>
 Pocketbase version 0.22.17
 
