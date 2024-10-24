@@ -1,5 +1,5 @@
 # Use a Node.js base image
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 WORKDIR /app
 
