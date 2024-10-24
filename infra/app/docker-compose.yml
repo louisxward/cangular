@@ -3,7 +3,7 @@ services:
   container_name: frontend
   build: /opt/cangular
   ports:
-   - '8080:80'
+   - '80:80'
   volumes:
    - /opt/cangular:/app
    - /opt/cangular/node_modules
