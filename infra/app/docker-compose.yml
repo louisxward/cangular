@@ -8,10 +8,10 @@ services:
    - /opt/cangular:/app
    - /opt/cangular/node_modules
    - /opt/static:/var/www/html
-   - /opt/cangular/nginx.conf:/etc/nginx/conf.d/default.conf
+   - /opt/cangular/nginx.conf:/etc/nginx/conf.d/default.conf:ro
   networks:
    - app-network
-  command: ['nginx', '-g', 'daemon off;'] # Run Nginx in the foreground
+  command: ['nginx', '-g', 'daemon off;']
 
  backend:
   container_name: backend
