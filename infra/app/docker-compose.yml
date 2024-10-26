@@ -1,6 +1,7 @@
 services:
  frontend:
   container_name: frontend
+  restart: unless-stopped
   build: /opt/cangular
   ports:
    - '80:80'
@@ -16,6 +17,7 @@ services:
 
  backend:
   container_name: backend
+  restart: unless-stopped
   build: ../backend
   ports:
    - '8090:8090'
