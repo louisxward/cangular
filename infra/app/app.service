@@ -6,9 +6,8 @@ After=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=/opt/cangular/infra/app/docker-compose.yml
-ExecStart=/usr/local/bin/docker-compose up -d
-ExecStop=/usr/local/bin/docker-compose down
+ExecStart=/bin/bash -c "docker compose -f /opt/cangular/infra/app/docker-compose.yml up --detach"
+ExecStop=/bin/bash -c "docker compose -f /opt/cangular/infra/app/docker-compose.yml stop"
 TimeoutStartSec=0
 
 [Install]
