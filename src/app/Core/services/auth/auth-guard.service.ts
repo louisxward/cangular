@@ -9,7 +9,10 @@ import { AuthState } from 'src/app/Core/state/auth/auth.state'
 	providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-	constructor(private store: Store, private router: Router) {}
+	constructor(
+		private store: Store,
+		private router: Router
+	) {}
 
 	canActivate(): Observable<boolean> {
 		return this.store.select(AuthState.isAuthenticated).pipe(
