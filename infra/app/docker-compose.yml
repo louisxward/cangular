@@ -8,7 +8,7 @@ services:
   volumes:
    # Cangular files
    - /opt/cangular:/app
-   - /opt/cangular/node_modules
+   - /opt/cangular/node_modules:/app/node_modules
    # Static
    - /opt/static:/var/www/html
    # Proxy
