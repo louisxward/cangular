@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core'
-import PocketBase from 'pocketbase'
-import { environment } from 'src/environment/environment'
 
 @Injectable()
 export class ApiService {
-	pb: PocketBase
+	private apiUrl = 'https://your-api-endpoint.com' // Replace with your API endpoint
 
-	constructor() {
-		this.pb = new PocketBase(environment.apiUrl)
+	constructor(private http: HttpClient) {}
+
+	getData(): Observable<MyData[]> {
+		return this.http.get<MyData[]>(this.apiUrl)
+	}
+
+	postData(data: any): Observable<any> {
+		return this.http.post(this.apiUrl, data)
 	}
 }

@@ -1,19 +1,44 @@
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { Store } from '@ngxs/store'
+import PocketBase from 'pocketbase'
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
+import { ApiService } from 'src/app/Core/services/api/api.service'
 import { NotificationService } from 'src/app/Core/services/notification/notification.service'
-import { Login, UpdateRoleGroups, User } from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
+import {
+	AuthState,
+	Login,
+	Logout,
+	UpdateRoleGroups,
+	User,
+} from 'src/app/Core/state/index' // Hmm not keen on this not sure how it knows which Login action to use. Probs will error if it can pick more than one
 import { RoleGroup } from '../../state/role/role'
 import { LoadingBarService } from '../loading-bar/loading-bar.service'
+import { RoleService } from '../role/role.service'
+import { UploadService } from '../upload/upload.service'
 
 @Injectable()
 export class LoginService {
+	pb: PocketBase
+	loggedIn: BehaviorSubject<boolean>
+
 	constructor(
 		private store: Store,
 		private router: Router,
 		private notificationService: NotificationService,
-		private loadingBarService: LoadingBarService
-	) {}
+		private apiService: ApiService,
+		private loadingBarService: LoadingBarService,
+		private uploadService: UploadService,
+		private roleService: RoleService
+	) {
+		this.pb = this.apiService.pb
+		this.store
+			.select(AuthState.isAuthenticated)
+			.subscribe((e) => {
+				this.loggedIn = new BehaviorSubject<boolean>(e)
+			})
+			.unsubscribe()
+	}
 
 	async login(username: string, password: string): Promise<boolean> {
 		// ToDo - Tidy upppppp
@@ -68,7 +93,44 @@ export class LoginService {
 			})
 	}
 
-	logout(force: boolean) {}
+	onLoginChange() {
+		return this.loggedIn.asObservable()
+	}
+
+	logout(force: boolean) {
+		this.store.dispatch(new User.Login.Logout())
+		this.store.dispatch(new Logout())
+		this.pb.authStore.clear()
+		this.pb.cancelAllRequests()
+		this.loggedIn.next(false)
+		if (!force) {
+			this.notificationService.success('logged out')
+		} else {
+			console.error('login expired')
+			this.notificationService.error('login expired')
+		}
+		this.router.navigate(['/login'])
+	}
+
+	setLastLoggedIn(id: string) {
+		this.pb.collection('users').update(id, { lastLoggedIn: new Date() })
+	}
+
+	async checkAuth() {
+		if (!this.pb.authStore.isValid) {
+			return false
+		}
+		return await this.pb
+			.collection('users')
+			.authRefresh()
+			.then(() => {
+				return true
+			})
+			.catch((error) => {
+				console.error(error)
+				return false
+			})
+	}
 
 	testAuth() {
 		console.info(this.pb.authStore.isValid)
