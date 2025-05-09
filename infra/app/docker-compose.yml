@@ -2,7 +2,7 @@ services:
  frontend:
   container_name: frontend
   restart: unless-stopped
-  build: ../../cangular
+  build: ../../
   ports:
    - '80:80'
   volumes:
