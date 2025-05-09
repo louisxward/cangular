@@ -1,6 +1,6 @@
 #!/bin/bash
 echo DEPLOYMENT - START
-cd /opt/cangular/infra/app
+cd /home/git/repositories/cangular/infra/app
 echo DEPLOYMENT - git pull
 git pull
 echo DEPLOYMENT - docker build
