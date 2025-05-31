@@ -17,8 +17,8 @@ services:
   container_name: backend
   restart: unless-stopped
   build: ../backend
-  ports:
-   - '8090:8090'
+  expose:
+   - '8090'
   volumes:
    - /opt/data/cangular:/pb/pb_data
   networks:
